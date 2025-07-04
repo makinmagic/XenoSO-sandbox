@@ -107,6 +107,9 @@ async function loadOnlinePlayers() {
             const creationDate = new Date(playerDetails.date * 1000); // Convert to milliseconds
             const currentDate = new Date();
             const ageInDays = Math.floor((currentDate - creationDate) / (1000 * 60 * 60 * 24)); // Age in days
+
+// Check if this Sim is a favorite
+const isFavorite = favoriteSims[avatar.avatar_id];
 			
 // Define emoji rules
 const adminNames = ["Sorta", "Savaki", "Daat", "Xeno", "Eric"];
