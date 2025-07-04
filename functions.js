@@ -127,7 +127,7 @@ if (emojiMap[avatar.name]) {
 // Add shield for admins
 
 if (adminNames.includes(avatar.name)) {
-    displayName += ` <i class="fa-solid fa-shield" title="Admin" style="color: #9215E6;"></i>`;
+    displayName += ` <span title="Admin">🛡️</span>`;
 }
 
 
