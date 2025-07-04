@@ -127,7 +127,7 @@ if (emojiMap[avatar.name]) {
 // Add 🛡️ for admins
 
 if (adminNames.includes(avatar.name)) {
-    displayName += ` <i class="fa-solid fa-shield-halved" title="Admin" style="color: purple;"></i>`;
+    displayName += ` <i class="fa-solid fa-shield-halved" title="Admin" style="color: #9215E6;"></i>`;
 }
 
 
