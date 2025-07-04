@@ -117,17 +117,14 @@ const emojiMap = {
     "Mr Teddy": "🐻"
 };
 
-// Add 🛡️ for admins
-if (adminNames.includes(avatar.name)) {
-    emojiMap[avatar.name] = "🛡️";
-}
-
-// Final display name
+// Display name
 let displayName = avatar.name;
 
 if (emojiMap[avatar.name]) {
     displayName += ` ${emojiMap[avatar.name]}`;
 }
+
+// Add 🛡️ for admins
 
 if (adminNames.includes(avatar.name)) {
     displayName += ` <span title="Admin">🛡️</span>`;
