@@ -1053,20 +1053,24 @@ function sortByFavorites() {
       }
     }
 
+// One-off announcements
 document.addEventListener("DOMContentLoaded", function () {
   const now = new Date();
-  const expiry = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 22, 30, 0));
-  
-  if (now > expiry) {
-    expiry.setUTCDate(expiry.getUTCDate() + 1);
-  }
+
+  const expiry = new Date(Date.UTC(2025, 6, 5, 22, 40, 0));
 
   const timeUntilExpire = expiry - now;
 
-  setTimeout(() => {
+  if (timeUntilExpire > 0) {
+    setTimeout(() => {
+      const msg = document.getElementById('event-message');
+      if (msg) msg.style.display = 'none';
+    }, timeUntilExpire);
+  } else {
+    
     const msg = document.getElementById('event-message');
     if (msg) msg.style.display = 'none';
-  }, timeUntilExpire);
+  }
 });
         
 document.addEventListener('DOMContentLoaded', () => {
