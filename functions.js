@@ -1052,6 +1052,22 @@ function sortByFavorites() {
         stars.appendChild(star);
       }
     }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const now = new Date();
+  const expiry = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 22, 30, 0));
+  
+  if (now > expiry) {
+    expiry.setUTCDate(expiry.getUTCDate() + 1);
+  }
+
+  const timeUntilExpire = expiry - now;
+
+  setTimeout(() => {
+    const msg = document.getElementById('event-message');
+    if (msg) msg.style.display = 'none';
+  }, timeUntilExpire);
+});
         
 document.addEventListener('DOMContentLoaded', () => {
     // Check if dark mode was previously enabled
