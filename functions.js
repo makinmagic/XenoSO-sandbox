@@ -1057,7 +1057,7 @@ function sortByFavorites() {
 document.addEventListener("DOMContentLoaded", function () {
   const now = new Date();
 
-  const expiry = new Date(Date.UTC(2025, 6, 5, 22, 40, 0));
+  const expiry = new Date(Date.UTC(2025, 6, 4, 22, 45, 0));
 
   const timeUntilExpire = expiry - now;
 
