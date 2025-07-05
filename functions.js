@@ -1093,7 +1093,7 @@ function updateCountdown() {
     }
   }
 
-const countdownInterval = setInterval(updateCountdown, 1000); */
+const countdownInterval = setInterval(updateCountdown, 1000);
         
 document.addEventListener('DOMContentLoaded', () => {
     // Check if dark mode was previously enabled
