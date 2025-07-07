@@ -169,7 +169,7 @@ if (adminNames.includes(avatar.name)) {
 
 } catch (error) {
         console.error('Failed to load online players:', error);
-        document.getElementById('players').innerHTML = 'Error loading online players.';
+        document.getElementById('players').innerHTML = 'Error loading data.';
         // If there is an error, reset the title to show 0
         if (playersTitle) {
             playersTitle.innerHTML = `<span class="sims-online-icon"></span> Sims Online: 0 <span class="sims-online-icon"></span>`;
@@ -982,27 +982,47 @@ async function loadTopPayingMOs() {
     endTime.setUTCDate(startTime.getUTCDate() + 1);
 
     const container = document.getElementById("money-object");
-    const guideLink = document.getElementById("guideLink");
+    const viewAllLink = document.getElementById("viewAllLink");
+    const allMOList = document.getElementById("all-mo-list");
+    const modal = document.getElementById("moModal");
 
     if (utcNow < startTime || utcNow >= endTime) {
       container.style.display = "none";
-
-      const tempoSim = document.getElementById("tempoSim");
-      tempoSim.parentNode.insertBefore(guideLink, tempoSim);
-
       return;
     }
 
-    const topMOs = Object.entries(latest)
-      .filter(([key, val]) => key !== "Timestamp" && parseInt(val) > 140)
+    const entries = Object.entries(latest).filter(([key]) => key !== "Timestamp");
+
+    const topMOs = entries
+      .filter(([, val]) => parseInt(val) > 140)
       .sort((a, b) => parseInt(b[1]) - parseInt(a[1]))
       .map(([key, val]) => `${key} (${parseInt(val)}%)`);
 
-    container.textContent = `Today's top-paying MOs are: ${topMOs.join(', ')}`;
-    container.style.display = "block";
+    container.firstChild.textContent = `Today's top-paying MOs are: ${topMOs.join(', ')}`;
+    viewAllLink.style.display = "inline";
 
-    const bottomContainer = document.getElementById("bottom-container");
-    bottomContainer.parentNode.insertBefore(guideLink, document.getElementById("footer-note"));
+    // Populate modal list
+    allMOList.innerHTML = entries
+      .sort((a, b) => parseInt(b[1]) - parseInt(a[1]))
+      .map(([key, val]) => `<p>${key}: ${parseInt(val)}%</p>`)
+      .join('');
+
+    // Event listener for opening modal
+    viewAllLink.onclick = (e) => {
+      e.preventDefault();
+      modal.style.display = "block";
+    };
+
+    // Event listener for closing modal
+    document.querySelector(".modal .close").onclick = () => {
+      modal.style.display = "none";
+    };
+
+    window.onclick = (e) => {
+      if (e.target == modal) modal.style.display = "none";
+    };
+
+    container.style.display = "block";
 
   } catch (error) {
     console.error("Error fetching top-paying MOs:", error);
