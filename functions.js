@@ -959,6 +959,51 @@ function addFavoriteStar(type, id, name) {
     return starIcon;
 }
 
+//Top-paying MOs
+async function loadTopPayingMOs() {
+  const url = 'https://opensheet.elk.sh/1DJHQ0f5X9NUuAouEf5osJgLV2r2nuzsGLIyjLkm-0NM/MOs';
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (!data.length) return;
+
+    // Use the last submitted entry
+    const latest = data[data.length - 1];
+
+    // Parse the Google Forms timestamp
+    const formTimestamp = new Date(latest.Timestamp);
+    const utcNow = new Date();
+
+    // Define the current 3 AM UTC window
+    const startTime = new Date(Date.UTC(
+      formTimestamp.getUTCFullYear(),
+      formTimestamp.getUTCMonth(),
+      formTimestamp.getUTCDate(),
+      3, 0, 0
+    ));
+
+    const endTime = new Date(startTime);
+    endTime.setUTCDate(startTime.getUTCDate() + 1);
+
+    // Only display data if within valid window
+    if (utcNow < startTime || utcNow >= endTime) return;
+
+    // Filter and sort all values above 140
+const topMOs = Object.entries(latest)
+  .filter(([key, val]) => key !== "Timestamp" && parseInt(val) > 140)
+  .sort((a, b) => parseInt(b[1]) - parseInt(a[1]))
+  .map(([key, val]) => `${key} (${parseInt(val)}%)`);
+
+const output = `Today's top-paying MOs are: ${topMOs.join(', ')}`;
+document.getElementById("top-paying-mos").textContent = output;
+
+  } catch (error) {
+    console.error("Error fetching top-paying MOs:", error);
+  }
+}
+
 async function fetchMoneyObject() {
     const cacheBuster = `?t=${new Date().getTime()}`;
     const response = await fetch(`https://makinmagic.github.io/XenoSO/data/highest_paying_object.json${cacheBuster}`);
@@ -1112,7 +1157,11 @@ async function loadCountdown() {
         const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
-        timeEl.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        let display = '';
+	if (days > 0) display += `${days}d `;
+	display += `${hours}h ${minutes}m ${seconds}s`;
+	timeEl.innerHTML = display;
+
       } else {
         countdownEl.style.display = "none";
         clearInterval(interval);
