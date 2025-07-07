@@ -1099,9 +1099,8 @@ async function loadCountdown() {
     const message = countdownData.message;
 
     const countdownEl = document.getElementById("countdown");
-    const timeEl = document.getElementById("time");
-
     countdownEl.innerHTML = `${message} <span id="time"></span>`;
+    const timeEl = document.getElementById("time");
 
     function updateCountdown() {
       const now = new Date().getTime();
