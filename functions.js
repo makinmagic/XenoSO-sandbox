@@ -112,7 +112,7 @@ async function loadOnlinePlayers() {
 const isFavorite = favoriteSims[avatar.avatar_id];
 			
 // Define emoji rules
-const adminNames = ["Sorta", "Savaki", "Daat", "Xeno", "Eric"];
+const adminNames = ["Sorta", "Savaki", "Daat", "Xeno", "Eric", "Sneaky"];
 const emojiMap = {
     "Mr Teddy": "🐻"
 };
@@ -176,6 +176,7 @@ if (adminNames.includes(avatar.name)) {
         }
     }
 }
+
        // Mapping for lot categories
         const categoryMapping = {
             1: 'Money',
@@ -410,11 +411,25 @@ async function displayLotInfo(lotId) {
 }
 
 async function fetchPlayerImages() {
-    const playerImagesUrl = 'https://makinmagic.github.io/XenoSO/profile-pictures.json';
+    const playerImagesUrl = 'https://opensheet.vercel.app/1CJQX1Y5zwayEqCpu3T2DljNkHBOCSNPTbH0YEhnpkqA/PFP';
+
     try {
         const response = await fetch(playerImagesUrl);
         if (!response.ok) throw new Error('Failed to fetch player images.');
-        return await response.json();
+
+        const rawData = await response.json();
+        const result = {};
+
+        rawData.forEach(entry => {
+            const name = entry["Sim Name"]?.trim();
+            const url = entry["PFP URL"]?.trim();
+
+            if (name && url) {
+                result[name] = url;
+            }
+        });
+
+        return result;
     } catch (error) {
         console.error(error);
         return {}; // Return an empty object on error
@@ -1057,7 +1072,7 @@ function sortByFavorites() {
 document.addEventListener("DOMContentLoaded", function () {
   const now = new Date();
 
-  const expiry = new Date(Date.UTC(2025, 6, 4, 22, 45, 0));
+  const expiry = new Date(Date.UTC(2025, 6, 7, 4, 0, 0));
 
   const timeUntilExpire = expiry - now;
 
@@ -1076,7 +1091,7 @@ document.addEventListener("DOMContentLoaded", function () {
 //Countdown
 
 function updateCountdown() {
-    const endTime = new Date("July 14, 2025 03:00:00 UTC").getTime(); //To be changed as needed
+    const endTime = new Date("July 14, 2025 03:00:00 UTC").getTime();
     const now = new Date().getTime();
     const timeRemaining = endTime - now;
 
@@ -1086,7 +1101,7 @@ function updateCountdown() {
       const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
-      document.getElementById("time").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      document.getElementById("time").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`; //add/remove ${days}d as needed
     } else {
       document.getElementById("countdown").style.display = "none";
       clearInterval(countdownInterval);
