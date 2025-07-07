@@ -1089,26 +1089,46 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 //Countdown
+async function loadCountdown() {
+  try {
+    const response = await fetch('https://opensheet.elk.sh/YOUR_SHEET_ID/Countdown');
+    const data = await response.json();
 
-function updateCountdown() {
-    const endTime = new Date("July 14, 2025 03:00:00 UTC").getTime();
-    const now = new Date().getTime();
-    const timeRemaining = endTime - now;
+    const countdownData = data[0];
+    const endTime = new Date(countdownData.endTime).getTime();
+    const message = countdownData.message;
 
-    if (timeRemaining > 0) {
-      const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+    const countdownEl = document.getElementById("countdown");
+    const timeEl = document.getElementById("time");
 
-      document.getElementById("time").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`; //add/remove ${days}d as needed
-    } else {
-      document.getElementById("countdown").style.display = "none";
-      clearInterval(countdownInterval);
+    countdownEl.innerHTML = `${message} <span id="time"></span>`;
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const timeRemaining = endTime - now;
+
+      if (timeRemaining > 0) {
+        const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+        timeEl.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      } else {
+        countdownEl.style.display = "none";
+        clearInterval(interval);
+      }
     }
-  }
 
-const countdownInterval = setInterval(updateCountdown, 1000);
+    const interval = setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+  } catch (error) {
+    console.error("Failed to load countdown data:", error);
+  }
+}
+
+loadCountdown();
         
 document.addEventListener('DOMContentLoaded', () => {
     // Check if dark mode was previously enabled
