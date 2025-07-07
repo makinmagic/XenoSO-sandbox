@@ -1091,7 +1091,7 @@ document.addEventListener("DOMContentLoaded", function () {
 //Countdown
 async function loadCountdown() {
   try {
-    const response = await fetch('https://opensheet.elk.sh/YOUR_SHEET_ID/Countdown');
+    const response = await fetch('https://opensheet.elk.sh/1eTaXmyKRXZmWCvX5ZnSbjaWlT8X_KDWvN2PwBrlwEmc/Countdown');
     const data = await response.json();
 
     const countdownData = data[0];
