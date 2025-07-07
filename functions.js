@@ -752,7 +752,7 @@ async function searchLot(event) {
         }
     }
 }
-const eventsUrl = 'https://makinmagic.github.io/XenoSO/events.json';
+const eventsUrl = 'https://opensheet.elk.sh/1xWQc2P86fisaRSdxyGWwTddX_a4ZGmWYaWRK0ZfXb_4/Events';
 
 async function fetchEvents() {
     try {
@@ -816,7 +816,7 @@ function displayEventInfo(event) {
         <div class="console-title">
             ${event.name}
         </div>
-        <p><strong>Description:</strong> ${event.description}</p>
+        <p><strong>Description:</strong> ${event.description.replace(/(\r\n|\n|\r)/g, "<br>")}</p>
         <p><strong>Date:</strong> ${formattedDate}</p>
         <p><strong>Time:</strong> ${formattedTime}</p>
         <p><strong>Location:</strong> ${event.location}</p>
