@@ -28,7 +28,7 @@
   <a href="https://makinmagic.github.io/pizza/" target="_blank">Pizza Helper</a>
 </div>
     <div id="tempoSim" style="font-weight: bold;">Time in Xenovia: Loading time...</div>
-	<!-- <div id="money-object" style="font-weight: bold;">Loading today's money object...</div> -->
+	<div id="money-object" style="font-weight: bold;">Loading today's top-paying MOs...</div>
    <div id="countdown" style="text-align: center; font-weight: bold;"></div>
 	<!-- <p id="event-message" style="font-weight: bold; font-size: 18px; text-align: center;">Happening now: 🔋 FREE GREEN 🔋 at skill lots!</p> -->
     <div id="currentEvent" style="text-align: center; font-weight: bold;"></div>
@@ -109,7 +109,8 @@ async function init() {
     tempoSim(); // Start simulation timing
     // fetchMoneyObject(); // Display the money object
     generateStars(); // Starry background - used with permission from Sorta
-    await loadCountdown();
+    await loadCountdown(); // Countdown messages
+    await loadTopPayingMOs(); // Top-paying MOs (manual)
     await loadOnlinePlayers(); // Load online players
     await loadLots(); // Load active lots
     fetchEvents(); // Load and display upcoming events
