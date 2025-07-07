@@ -12,6 +12,15 @@
     <!-- <script src="https://makinmagic.github.io/XenoSO/functions/functions-nye.js"></script> -->
     <link rel="stylesheet" href="https://makinmagic.github.io/XenoSO/styles/style.css">
 </head>
+	<!-- Modal -->
+<div id="moModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h3>All Money Object Percentages</h3>
+    <div id="all-mo-list"></div>
+  </div>
+</div>
+
 <body>
    <!-- Stars background - used with permission from Sorta -->
   <div class="stars" id="stars"></div>
@@ -22,7 +31,7 @@
     <i class="fa-solid fa-rhombus"></i> XenoSO Dashboard <i class="fa-solid fa-rhombus"></i>
 </h1>
     <div id="tempoSim" style="font-weight: bold;">Time in Xenovia: Loading time...</div>
-	<div id="money-object" style="font-weight: bold;">Loading today's top-paying MOs...</div>
+	<div id="money-object" style="font-weight: bold;">Loading today's top-paying MOs...<a href="#" id="viewAllLink" style="display:none; margin-left: 10px;">(View All)</a></div>
    <div id="countdown" style="text-align: center; font-weight: bold;"></div>
 	<!-- <p id="event-message" style="font-weight: bold; font-size: 18px; text-align: center;">Happening now: 🔋 FREE GREEN 🔋 at skill lots!</p> -->
     <div id="currentEvent" style="text-align: center; font-weight: bold;"></div>
