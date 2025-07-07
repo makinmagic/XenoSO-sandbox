@@ -1076,7 +1076,7 @@ document.addEventListener("DOMContentLoaded", function () {
 //Countdown
 
 function updateCountdown() {
-    const endTime = new Date("July 5, 2025 04:00:00 UTC").getTime(); //To be changed as needed
+    const endTime = new Date("July 14, 2025 03:00:00 UTC").getTime(); //To be changed as needed
     const now = new Date().getTime();
     const timeRemaining = endTime - now;
 
@@ -1086,7 +1086,7 @@ function updateCountdown() {
       const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
-      document.getElementById("time").innerHTML = `${hours}h ${minutes}m ${seconds}s`;
+      document.getElementById("time").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
     } else {
       document.getElementById("countdown").style.display = "none";
       clearInterval(countdownInterval);
