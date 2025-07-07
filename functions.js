@@ -967,16 +967,17 @@ async function loadTopPayingMOs() {
     const response = await fetch(url);
     const data = await response.json();
 
-    if (!data.length) return;
+    const container = document.getElementById("money-object");
 
-    // Use the last submitted entry
+    if (!data.length) {
+      container.style.display = "none";
+      return;
+    }
+
     const latest = data[data.length - 1];
-
-    // Parse the Google Forms timestamp
     const formTimestamp = new Date(latest.Timestamp);
     const utcNow = new Date();
 
-    // Define the current 3 AM UTC window
     const startTime = new Date(Date.UTC(
       formTimestamp.getUTCFullYear(),
       formTimestamp.getUTCMonth(),
@@ -987,22 +988,27 @@ async function loadTopPayingMOs() {
     const endTime = new Date(startTime);
     endTime.setUTCDate(startTime.getUTCDate() + 1);
 
-    // Only display data if within valid window
-    if (utcNow < startTime || utcNow >= endTime) return;
+    if (utcNow < startTime || utcNow >= endTime) {
+      container.style.display = "none";
+      return;
+    }
 
-    // Filter and sort all values above 140
-const topMOs = Object.entries(latest)
-  .filter(([key, val]) => key !== "Timestamp" && parseInt(val) > 140)
-  .sort((a, b) => parseInt(b[1]) - parseInt(a[1]))
-  .map(([key, val]) => `${key} (${parseInt(val)}%)`);
+    const topMOs = Object.entries(latest)
+      .filter(([key, val]) => key !== "Timestamp" && parseInt(val) > 140)
+      .sort((a, b) => parseInt(b[1]) - parseInt(a[1]))
+      .map(([key, val]) => `${key} (${parseInt(val)}%)`);
 
-const output = `Today's top-paying MOs are: ${topMOs.join(', ')}`;
-document.getElementById("top-paying-mos").textContent = output;
+    const output = `Today's top-paying MOs are: ${topMOs.join(', ')}`;
+    container.textContent = output;
+    container.style.display = "block";
 
   } catch (error) {
     console.error("Error fetching top-paying MOs:", error);
+    document.getElementById("money-object").style.display = "none";
   }
 }
+
+// Top-paying MOs (Piggy version)
 
 async function fetchMoneyObject() {
     const cacheBuster = `?t=${new Date().getTime()}`;
