@@ -960,6 +960,18 @@ function addFavoriteStar(type, id, name) {
 }
 
 //Top-paying MOs
+
+const emojiMap = {
+  Pinatas: "🪅",
+  Writers: "📝",
+  Boards: "🧑‍🏫",
+  Easels: "🖌️",
+  Jams: "🍓",
+  Potions: "🧑‍🔬",
+  Phones: "☎️",
+  Gnomes: "⚒️"
+};
+
 async function loadTopPayingMOs() {
   const url = 'https://opensheet.elk.sh/1DJHQ0f5X9NUuAouEf5osJgLV2r2nuzsGLIyjLkm-0NM/MOs';
 
@@ -1002,10 +1014,12 @@ async function loadTopPayingMOs() {
     viewAllLink.style.display = "inline";
 
     // Populate modal list
-    allMOList.innerHTML = entries
-      .sort((a, b) => parseInt(b[1]) - parseInt(a[1]))
-      .map(([key, val]) => `<p>${key}: ${parseInt(val)}%</p>`)
-      .join('');
+    const sorted = entries.sort((a, b) => parseInt(b[1]) - parseInt(a[1]));
+
+	allMOList.innerHTML = sorted.map(([key, val]) => {
+  const emoji = emojiMap[key];
+  return `<p style="font-size: 1.2em;">${emoji} <strong>${key}</strong>: ${parseInt(val)}%</p>`;
+	}).join('');
 
     // Event listener for opening modal
     viewAllLink.onclick = (e) => {
