@@ -399,9 +399,23 @@ async function displayLotInfo(lotId) {
             <div class="description-container">${formattedDescription}</div>
             <p><strong>Lot Type:</strong> ${categoryMapping[lotData.category] || 'Unknown'}</p>
             <p><strong>Admit Mode:</strong> ${admitModeMapping[lotData.admit_mode] || 'Unknown'}</p>
-            <p><strong>Owner:</strong> ${ownerName}</p>
-            <p><strong>Roommates:</strong> ${roommateNames.length > 0 ? roommateNames.join(', ') : 'None'}</p>
-            <p><strong>Known Sims Inside:</strong> ${knownSims.length > 0 ? knownSims.join(', ') : 'None'}</p>
+            <p><strong>Owner:</strong> <span style="color: #dda0dd;">${ownerName}</span></p>
+            <p><strong>Roommates:</strong> ${
+  		roommateNames.length > 0
+    		? roommateNames.map(name => `<span style="color: #dda0dd;">${name}</span>`).join(', ')
+ 		   : 'None'
+		}</p>
+            <p><strong>Known Sims Inside:</strong> ${
+  knownSims.length > 0
+    ? knownSims.map(name => {
+        const trimmed = name.trim();
+        const isOwnerOrRoomie = trimmed === ownerName || roommateNames.includes(trimmed);
+        return isOwnerOrRoomie
+          ? `<span style="color: #dda0dd;">${trimmed}</span>`
+          : trimmed;
+      }).join(', ')
+    : 'None'
+}</p>
             ${showHiddenNote ? `<p><em>There are sims inside with their location hidden.</em></p>` : ''}
         `;
     } catch (error) {
@@ -739,10 +753,24 @@ async function searchLot(event) {
                 <p><strong>Lot Type:</strong> ${categoryMapping[lotData.category] || 'Unknown'}</p>
                 <p><strong>Admit Mode:</strong> ${admitModeMapping[lotData.admit_mode] || 'Unknown'}</p>
                 <p><strong>Owner:</strong> ${ownerName || 'Unknown'}</p>
-                <p><strong>Roommates:</strong> ${roommateNames.length > 0 ? roommateNames.join(', ') : 'None'}</p>
+                <p><strong>Roommates:</strong> ${
+  roommateNames.length > 0
+    ? roommateNames.map(name => `<span style="color: #dda0dd;">${name}</span>`).join(', ')
+    : 'None'
+}</p>
                 <p><strong>Currently Active:</strong> ${activeStatus}</p>
                 ${activeStatus === 'Yes' ? `
-    <p><strong>Known Sims Inside:</strong> ${knownSims.length > 0 ? knownSims.map(name => name.trim()).join(', ') : 'None'}</p>
+    <p><strong>Known Sims Inside:</strong> ${
+  knownSims.length > 0
+    ? knownSims.map(name => {
+        const trimmed = name.trim();
+        const isOwnerOrRoomie = trimmed === ownerName || roommateNames.includes(trimmed);
+        return isOwnerOrRoomie
+          ? `<span style="color: #dda0dd;">${trimmed}</span>`
+          : trimmed;
+      }).join(', ')
+    : 'None'
+}</p>
     ${showHiddenNote ? `<p><em>There are sims inside with their location hidden.</em></p>` : ''}
 ` : ''}
 `;
@@ -752,6 +780,7 @@ async function searchLot(event) {
         }
     }
 }
+
 const eventsUrl = 'https://opensheet.elk.sh/1xWQc2P86fisaRSdxyGWwTddX_a4ZGmWYaWRK0ZfXb_4/Events';
 
 async function fetchEvents() {
@@ -988,7 +1017,7 @@ async function loadTopPayingMOs() {
       formTimestamp.getUTCFullYear(),
       formTimestamp.getUTCMonth(),
       formTimestamp.getUTCDate(),
-      3, 0, 0
+      4, 0, 0
     ));
     const endTime = new Date(startTime);
     endTime.setUTCDate(startTime.getUTCDate() + 1);
@@ -997,16 +1026,21 @@ async function loadTopPayingMOs() {
     const viewAllLink = document.getElementById("viewAllLink");
     const allMOList = document.getElementById("all-mo-list");
     const modal = document.getElementById("moModal");
+    const guideLink = document.getElementById("guideLink");
 
     if (utcNow < startTime || utcNow >= endTime) {
       container.style.display = "none";
+  const tempoSim = document.getElementById("tempoSim");
+  if (guideLink && tempoSim) {
+    tempoSim.parentNode.insertBefore(guideLink, tempoSim);
+  }
       return;
     }
 
     const entries = Object.entries(latest).filter(([key]) => key !== "Timestamp");
 
     const topMOs = entries
-      .filter(([, val]) => parseInt(val) > 140)
+      .filter(([, val]) => parseInt(val) > 139)
       .sort((a, b) => parseInt(b[1]) - parseInt(a[1]))
       .map(([key, val]) => `${key} (${parseInt(val)}%)`);
 
@@ -1037,6 +1071,14 @@ async function loadTopPayingMOs() {
     };
 
     container.style.display = "block";
+
+	    // Move guideLink back to bottom
+  const bottomContainer = document.getElementById("bottom-container");
+  const footerNote = document.getElementById("footer-note");
+  if (bottomContainer && footerNote && guideLink) {
+    bottomContainer.parentNode.insertBefore(guideLink, footerNote);
+  }
+
 
   } catch (error) {
     console.error("Error fetching top-paying MOs:", error);
