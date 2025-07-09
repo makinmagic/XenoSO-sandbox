@@ -399,7 +399,7 @@ async function displayLotInfo(lotId) {
             <div class="description-container">${formattedDescription}</div>
             <p><strong>Lot Type:</strong> ${categoryMapping[lotData.category] || 'Unknown'}</p>
             <p><strong>Admit Mode:</strong> ${admitModeMapping[lotData.admit_mode] || 'Unknown'}</p>
-            <p><strong>Owner:</strong> <span style="color: #dda0dd;">${ownerName}</span></p>
+            <p><strong>Owner:</strong> <span style="color: #FFA502;">${ownerName}</span></p>
             <p><strong>Roommates:</strong> ${
   		roommateNames.length > 0
     		? roommateNames.map(name => `<span style="color: #dda0dd;">${name}</span>`).join(', ')
@@ -409,10 +409,13 @@ async function displayLotInfo(lotId) {
   knownSims.length > 0
     ? knownSims.map(name => {
         const trimmed = name.trim();
-        const isOwnerOrRoomie = trimmed === ownerName || roommateNames.includes(trimmed);
-        return isOwnerOrRoomie
-          ? `<span style="color: #dda0dd;">${trimmed}</span>`
-          : trimmed;
+        if (trimmed === ownerName) {
+          return `<span style="color: #FFA502;">${trimmed}</span>`;
+        } else if (roommateNames.includes(trimmed)) {
+          return `<span style="color: #DDA0DD;">${trimmed}</span>`;
+        } else {
+          return trimmed;
+        }
       }).join(', ')
     : 'None'
 }</p>
@@ -752,7 +755,7 @@ async function searchLot(event) {
                 <div class="description-container">${formattedDescription}</div>
                 <p><strong>Lot Type:</strong> ${categoryMapping[lotData.category] || 'Unknown'}</p>
                 <p><strong>Admit Mode:</strong> ${admitModeMapping[lotData.admit_mode] || 'Unknown'}</p>
-                <p><strong>Owner:</strong> ${ownerName || 'Unknown'}</p>
+                <p><strong>Owner:</strong> <span style="color: #FFA502;">${ownerName}</span></p>
                 <p><strong>Roommates:</strong> ${
   roommateNames.length > 0
     ? roommateNames.map(name => `<span style="color: #dda0dd;">${name}</span>`).join(', ')
@@ -764,10 +767,13 @@ async function searchLot(event) {
   knownSims.length > 0
     ? knownSims.map(name => {
         const trimmed = name.trim();
-        const isOwnerOrRoomie = trimmed === ownerName || roommateNames.includes(trimmed);
-        return isOwnerOrRoomie
-          ? `<span style="color: #dda0dd;">${trimmed}</span>`
-          : trimmed;
+        if (trimmed === ownerName) {
+          return `<span style="color: #FFA502;">${trimmed}</span>`;
+        } else if (roommateNames.includes(trimmed)) {
+          return `<span style="color: #DDA0DD;">${trimmed}</span>`;
+        } else {
+          return trimmed;
+        }
       }).join(', ')
     : 'None'
 }</p>
