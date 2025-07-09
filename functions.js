@@ -112,7 +112,7 @@ async function loadOnlinePlayers() {
 const isFavorite = favoriteSims[avatar.avatar_id];
 			
 // Define emoji rules
-const adminNames = ["Sorta", "Savaki", "Daat", "Xeno", "Eric", "Sneaky"];
+const adminNames = ["Sorta", "Savaki", "Daat", "Xeno", "Eric", "Sneaky", "Nyx"];
 const emojiMap = {
     "Mr Teddy": "🐻"
 };
@@ -367,6 +367,21 @@ async function displayLotInfo(lotId) {
             })
             .map(row => row.querySelector('td').textContent.trim()); // Trim each Sim's name
 
+	// Try to deduce a hidden host and append them to knownSims if not already shown
+let appendedHiddenHost = null;
+
+if (onlineHosts.length === 1 && onlineHosts[0].location === 'Unknown') {
+    const hostName = onlineHosts[0].name;
+    if (!knownSims.includes(hostName)) {
+        appendedHiddenHost = hostName;
+    }
+} else if (onlineHosts.length >= 1) {
+    const insideHosts = onlineHosts.filter(host => host.location === lotId.toString());
+    if (insideHosts.length === 1 && !knownSims.includes(insideHosts[0].name)) {
+        appendedHiddenHost = insideHosts[0].name;
+    }
+}
+
 	// Get total Sims inside from Active Lots table
         let totalSimsInside = 0;
         const lotsContainer = document.getElementById('lots');
@@ -406,17 +421,20 @@ async function displayLotInfo(lotId) {
  		   : 'None'
 		}</p>
             <p><strong>Known Sims Inside:</strong> ${
-  knownSims.length > 0
-    ? knownSims.map(name => {
-        const trimmed = name.trim();
-        if (trimmed === ownerName) {
-          return `<span style="color: #FFA502;">${trimmed}</span>`;
-        } else if (roommateNames.includes(trimmed)) {
-          return `<span style="color: #DDA0DD;">${trimmed}</span>`;
-        } else {
-          return trimmed;
-        }
-      }).join(', ')
+  const fullKnownSimsList = [...knownSims];
+if (appendedHiddenHost) fullKnownSimsList.push(`${appendedHiddenHost} (hidden)`);
+
+fullKnownSimsList.map(name => {
+    const trimmed = name.trim().replace(' (hidden)', '');
+    const isHidden = name.includes('(hidden)');
+    if (trimmed === ownerName) {
+      return `<span style="color: #FFA502;">${trimmed}${isHidden ? ' (hidden)' : ''}</span>`;
+    } else if (roommateNames.includes(trimmed)) {
+      return `<span style="color: #DDA0DD;">${trimmed}${isHidden ? ' (hidden)' : ''}</span>`;
+    } else {
+      return `${trimmed}${isHidden ? ' (hidden)' : ''}`;
+    }
+}).join(', ')
     : 'None'
 }</p>
             ${showHiddenNote ? `<p><em>There are sims inside with their location hidden.</em></p>` : ''}
