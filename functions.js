@@ -387,8 +387,6 @@ const cleanedLocation = location?.trim().toLowerCase() || '';
 const isUnknown = cleanedLocation === '0' || /unknown|^\s*$|^[-–]$/.test(cleanedLocation);
 const alreadyListed = normalizedKnown.includes(normalizedName);
 
-console.log(`${name}: location="${cleanedLocation}" | isHost=${isHost} | isUnknown=${isUnknown} | alreadyListed=${alreadyListed}`);
-
     return isHost && isUnknown && !alreadyListed ? name : null;
   })
   .filter(Boolean);
@@ -773,6 +771,35 @@ async function searchLot(event) {
                     return locationCell && locationCell.textContent == lotData.location;
                 })
                 .map(row => row.querySelector('td').textContent);
+
+		let appendedHiddenHost = null;
+const allHosts = [ownerName, ...roommateNames];
+const normalizedHosts = new Set(allHosts.map(n => n.trim().toLowerCase()));
+const normalizedKnown = new Set(knownSims.map(n => n.trim().toLowerCase()));
+
+const candidateHosts = Array.from(playersContainer.querySelectorAll('tr'))
+  .map(row => {
+    const nameCell = row.querySelector('td');
+    const locationCell = row.querySelector('.hidden:nth-child(4)');
+    const name = nameCell?.textContent.trim();
+    const location = locationCell?.textContent.trim().toLowerCase() || '';
+
+    const isHost = normalizedHosts.has(name.toLowerCase());
+    const isUnknown = location === '0' || /unknown|^$|^[-–]$/.test(location);
+    const alreadyListed = normalizedKnown.has(name.toLowerCase());
+
+    return isHost && isUnknown && !alreadyListed ? name : null;
+  })
+  .filter(Boolean);
+
+if (candidateHosts.length === 1) {
+  appendedHiddenHost = candidateHosts[0];
+}
+
+const fullKnownSimsList = [...knownSims];
+if (appendedHiddenHost) {
+  fullKnownSimsList.push(`${appendedHiddenHost} (hidden)`);
+}
                 
             const showHiddenNote = totalSimsInside > knownSims.length;
 
@@ -800,9 +827,8 @@ async function searchLot(event) {
 }</p>
                 <p><strong>Currently Active:</strong> ${activeStatus}</p>
                 ${activeStatus === 'Yes' ? `
-    <p><strong>Known Sims Inside:</strong> ${
-  knownSims.length > 0
-    ? knownSims.map(name => {
+    <p><strong>Known Sims Inside:</strong> ${fullKnownSimsList.length > 0
+    ? fullKnownSimsList.map(name => {
         const trimmed = name.trim();
         if (trimmed === ownerName) {
           return `<span style="color: #FFA502;">${trimmed}</span>`;
