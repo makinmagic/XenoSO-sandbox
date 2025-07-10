@@ -397,13 +397,19 @@ console.log("Online hosts found in Sims Online table:", onlineHosts);
 	// Try to deduce a hidden host and append them to knownSims if not already shown
 let appendedHiddenHost = null;
 
-if (onlineHosts.length === 1 && onlineHosts[0].location === 'Unknown') {
+if (
+  onlineHosts.length === 1 &&
+  onlineHosts[0].location &&
+  onlineHosts[0].location.trim().toLowerCase() === 'unknown'
+) {
     const hostName = onlineHosts[0].name;
     if (!knownSims.includes(hostName)) {
         appendedHiddenHost = hostName;
     }
 } else if (onlineHosts.length >= 1) {
-    const insideHosts = onlineHosts.filter(host => host.location === lotId.toString());
+    const insideHosts = onlineHosts.filter(
+  host => host.location?.trim() === lotId.toString()
+);
     if (insideHosts.length === 1 && !knownSims.includes(insideHosts[0].name)) {
         appendedHiddenHost = insideHosts[0].name;
     }
