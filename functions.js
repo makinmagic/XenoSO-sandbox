@@ -372,33 +372,23 @@ let appendedHiddenHost = null;
 const allHosts = [ownerName, ...roommateNames];
 
 const candidateHosts = playersRows
-  .filter(row => {
-    const name = row.querySelector('td')?.textContent.trim();
-    const location = row.querySelector('.hidden:nth-child(4)')?.textContent.trim();
+  .map(row => {
+    const nameCell = row.querySelector('td');
+    const locationCell = row.querySelector('.hidden:nth-child(4)');
+    const name = nameCell?.textContent.trim();
+    const location = locationCell?.textContent.trim();
 
-    const isHost = allHosts.includes(name);
-    const isUnknown = location?.toLowerCase() === 'unknown';
-    const alreadyListed = knownSims.includes(name);
+    const normalizedName = name?.toLowerCase();
+    const isHost = allHosts.map(n => n.toLowerCase()).includes(normalizedName);
+    const isUnknown = location && location.toLowerCase().includes('unknown');
+    const alreadyListed = knownSims.map(n => n.toLowerCase()).includes(normalizedName);
 
-    return isHost && isUnknown && !alreadyListed;
-  });
-
-	console.log('--- Hidden Host Debug ---');
-console.log('All Hosts:', allHosts);
-console.log('Known Sims:', knownSims);
-playersRows.forEach(row => {
-  const name = row.querySelector('td')?.textContent.trim();
-  const location = row.querySelector('.hidden:nth-child(4)')?.textContent.trim();
-  const isHost = allHosts.includes(name);
-  const isUnknown = location?.toLowerCase() === 'unknown';
-  const alreadyListed = knownSims.includes(name);
-  if (isHost) {
-    console.log(`${name}: isHost = true, isUnknown = ${isUnknown}, alreadyListed = ${alreadyListed}`);
-  }
-});
+    return isHost && isUnknown && !alreadyListed ? name : null;
+  })
+  .filter(Boolean);
 
 if (candidateHosts.length === 1) {
-  appendedHiddenHost = candidateHosts[0].querySelector('td')?.textContent.trim();
+  appendedHiddenHost = candidateHosts[0];
 }
 
 	const fullKnownSimsList = [...knownSims];
