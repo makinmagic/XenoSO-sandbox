@@ -784,9 +784,9 @@ const candidateHosts = Array.from(playersContainer.querySelectorAll('tr'))
     const name = nameCell?.textContent.trim();
     const location = locationCell?.textContent.trim().toLowerCase() || '';
 
-    const isHost = normalizedHosts.has(name.toLowerCase());
+    const isHost = name && normalizedHosts.has(name.toLowerCase());
     const isUnknown = location === '0' || /unknown|^$|^[-–]$/.test(location);
-    const alreadyListed = normalizedKnown.has(name.toLowerCase());
+    const alreadyListed = name && normalizedKnown.has(name.toLowerCase());
 
     return isHost && isUnknown && !alreadyListed ? name : null;
   })
