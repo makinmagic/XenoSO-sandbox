@@ -100,7 +100,6 @@ async function loadOnlinePlayers() {
 
         // Process sorted online players
         sortedAvatars.forEach((avatar, index) => {
-            const lotName = lotMapping[avatar.location] || 'Unknown'; // Get lot name
             const playerDetails = playerDetailsArray[index]; // Get the corresponding player details
 
 // Determine if this is a job lot
