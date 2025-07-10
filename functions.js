@@ -384,7 +384,7 @@ const normalizedKnown = knownSims.map(n => n.trim().toLowerCase());
 
 const isHost = normalizedHosts.includes(normalizedName);
 const cleanedLocation = location?.trim().toLowerCase() || '';
-const isUnknown = /unknown|^\s*$|^[-–]$/.test(cleanedLocation);
+const isUnknown = cleanedLocation === '0' || /unknown|^\s*$|^[-–]$/.test(cleanedLocation);
 const alreadyListed = normalizedKnown.includes(normalizedName);
 
 console.log(`${name}: location="${cleanedLocation}" | isHost=${isHost} | isUnknown=${isUnknown} | alreadyListed=${alreadyListed}`);
