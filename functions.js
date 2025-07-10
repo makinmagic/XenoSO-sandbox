@@ -379,11 +379,21 @@ const playersOnlineRows = playersRows.filter(row => {
   return playerName && lowerHostNames.includes(playerName);
 });
 
+console.log("Trying to deduce host from onlineHosts...");
+console.log("Known Sims Inside:", knownSims);
+console.log("Appending:", appendedHiddenHost);
+
 const onlineHosts = playersOnlineRows.map(row => {
   const name = row.querySelector('td')?.textContent.trim();
   const location = row.querySelector('.hidden:nth-child(4)')?.textContent.trim();
   return { name, location };
 });
+
+console.log("Owner:", ownerName);
+console.log("Roommates:", roommateNames);
+console.log("All hosts (owner + roommates):", allHosts);
+console.log("Lowercase host names:", lowerHostNames);
+console.log("Online hosts found in Sims Online table:", onlineHosts);
 
 	// Try to deduce a hidden host and append them to knownSims if not already shown
 let appendedHiddenHost = null;
