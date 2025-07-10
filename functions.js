@@ -367,26 +367,17 @@ async function displayLotInfo(lotId) {
             })
             .map(row => row.querySelector('td').textContent.trim()); // Trim each Sim's name
 
-	    // Determine the host (owner/roommate who may be online)
-const allHosts = [ownerName, ...roommateNames];
+	    const allHosts = [ownerName, ...roommateNames];
 
-// Extract online host info
-const lowerHostNames = allHosts.map(name => name.toLowerCase());
-
-const playersOnlineRows = playersRows.filter(row => {
-  const nameCell = row.querySelector('td');
-  const playerName = nameCell?.textContent.trim().toLowerCase();
-  return playerName && lowerHostNames.includes(playerName);
-});
-
-console.log("Trying to deduce host from onlineHosts...");
-console.log("Known Sims Inside:", knownSims);
-
-const onlineHosts = playersOnlineRows.map(row => {
-  const name = row.querySelector('td')?.textContent.trim();
-  const location = row.querySelector('.hidden:nth-child(4)')?.textContent.trim();
-  return { name, location };
-});
+const onlineHosts = playersRows
+    .map(row => {
+        const name = row.querySelector('td')?.textContent.trim();
+        const location = row.querySelector('.hidden:nth-child(4)')?.textContent.trim();
+        return { name, location };
+    })
+    .filter(host =>
+        name && allHosts.includes(host.name)
+    );
 
 console.log("Owner:", ownerName);
 console.log("Roommates:", roommateNames);
