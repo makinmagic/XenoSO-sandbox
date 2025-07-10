@@ -370,29 +370,30 @@ async function displayLotInfo(lotId) {
 	// Identify a single host with location = Unknown
 let appendedHiddenHost = null;
 const allHosts = [ownerName, ...roommateNames];
-
-const candidateHosts = playersRows
-  .map(row => {
-    const nameCell = row.querySelector('td');
-    const locationCell = row.querySelector('.hidden:nth-child(4)');
-    const name = nameCell?.textContent.trim();
-    const location = locationCell?.textContent.trim();
-
-    const normalizedName = name?.trim().toLowerCase() || '';
 const normalizedHosts = allHosts.map(n => n.trim().toLowerCase());
 const normalizedKnown = knownSims.map(n => n.trim().toLowerCase());
+	    
+const anyHostAlreadyListed = normalizedHosts.some(name => normalizedKnown.includes(name));
 
-const isHost = normalizedHosts.includes(normalizedName);
-const cleanedLocation = location?.trim().toLowerCase() || '';
-const isUnknown = cleanedLocation === '0' || /unknown|^\s*$|^[-–]$/.test(cleanedLocation);
-const alreadyListed = normalizedKnown.includes(normalizedName);
+if (!anyHostAlreadyListed) {
+  const candidateHosts = playersRows
+    .map(row => {
+      const nameCell = row.querySelector('td');
+      const locationCell = row.querySelector('.hidden:nth-child(4)');
+      const name = nameCell?.textContent.trim();
+      const location = locationCell?.textContent.trim().toLowerCase() || '';
 
-    return isHost && isUnknown && !alreadyListed ? name : null;
-  })
-  .filter(Boolean);
+      const isHost = name && normalizedHosts.includes(name.toLowerCase());
+      const isUnknown = location === '0' || /unknown|^\s*$|^[-–]$/.test(location);
+      const alreadyListed = name && normalizedKnown.includes(name.toLowerCase());
 
-if (candidateHosts.length === 1) {
-  appendedHiddenHost = candidateHosts[0];
+      return isHost && isUnknown && !alreadyListed ? name : null;
+    })
+    .filter(Boolean);
+
+  if (candidateHosts.length === 1) {
+    appendedHiddenHost = candidateHosts[0];
+  }
 }
 
 	const fullKnownSimsList = [...knownSims];
@@ -777,23 +778,27 @@ const allHosts = [ownerName, ...roommateNames];
 const normalizedHosts = new Set(allHosts.map(n => n.trim().toLowerCase()));
 const normalizedKnown = new Set(knownSims.map(n => n.trim().toLowerCase()));
 
-const candidateHosts = Array.from(playersContainer.querySelectorAll('tr'))
-  .map(row => {
-    const nameCell = row.querySelector('td');
-    const locationCell = row.querySelector('.hidden:nth-child(4)');
-    const name = nameCell?.textContent.trim();
-    const location = locationCell?.textContent.trim().toLowerCase() || '';
+const anyHostAlreadyListed = Array.from(normalizedHosts).some(name => normalizedKnown.has(name));
 
-    const isHost = name && normalizedHosts.has(name.toLowerCase());
-    const isUnknown = location === '0' || /unknown|^$|^[-–]$/.test(location);
-    const alreadyListed = name && normalizedKnown.has(name.toLowerCase());
+if (!anyHostAlreadyListed) {
+  const candidateHosts = Array.from(playersContainer.querySelectorAll('tr'))
+    .map(row => {
+      const nameCell = row.querySelector('td');
+      const locationCell = row.querySelector('.hidden:nth-child(4)');
+      const name = nameCell?.textContent.trim();
+      const location = locationCell?.textContent.trim().toLowerCase() || '';
 
-    return isHost && isUnknown && !alreadyListed ? name : null;
-  })
-  .filter(Boolean);
+      const isHost = name && normalizedHosts.has(name.toLowerCase());
+      const isUnknown = location === '0' || /unknown|^$|^[-–]$/.test(location);
+      const alreadyListed = name && normalizedKnown.has(name.toLowerCase());
 
-if (candidateHosts.length === 1) {
-  appendedHiddenHost = candidateHosts[0];
+      return isHost && isUnknown && !alreadyListed ? name : null;
+    })
+    .filter(Boolean);
+
+  if (candidateHosts.length === 1) {
+    appendedHiddenHost = candidateHosts[0];
+  }
 }
 
 const fullKnownSimsList = [...knownSims];
