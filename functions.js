@@ -102,7 +102,26 @@ async function loadOnlinePlayers() {
         sortedAvatars.forEach((avatar, index) => {
             const lotName = lotMapping[avatar.location] || 'Unknown'; // Get lot name
             const playerDetails = playerDetailsArray[index]; // Get the corresponding player details
-            
+
+// Determine if this is a job lot
+const isJobLot = avatar.location.toString().length === 10;
+
+// Map job ID to name
+const jobMap = {
+    1: "Factory",
+    2: "Diner",
+    3: "Club"
+};
+
+let lotName;
+
+if (isJobLot && playerDetails.current_job) {
+    const jobName = jobMap[playerDetails.current_job] || "Job";
+    lotName = `At ${jobName} Job`;
+} else {
+    lotName = lotMapping[avatar.location] || 'Unknown';
+}
+		
             // Calculate player age from Unix timestamp (avatar.date)
             const creationDate = new Date(playerDetails.date * 1000); // Convert to milliseconds
             const currentDate = new Date();
