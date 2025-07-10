@@ -829,15 +829,15 @@ if (appendedHiddenHost) {
                 ${activeStatus === 'Yes' ? `
     <p><strong>Known Sims Inside:</strong> ${fullKnownSimsList.length > 0
     ? fullKnownSimsList.map(name => {
-        const trimmed = name.trim().replace(' (hidden)', '');
-        if (trimmed === ownerName) {
-          return `<span style="color: #FFA502;">${trimmed}</span>`;
-        } else if (roommateNames.includes(trimmed)) {
-          return `<span style="color: #DDA0DD;">${trimmed}</span>`;
-        } else {
-          return trimmed;
-        }
-      }).join(', ')
+    const trimmed = name.trim().replace(' (hidden)', '');
+    if (trimmed === ownerName) {
+      return `<span style="color: #FFA502;">${name}</span>`;
+    } else if (roommateNames.includes(trimmed)) {
+      return `<span style="color: #DDA0DD;">${name}</span>`;
+    } else {
+      return name;
+    }
+  }).join(', ')
     : 'None'
 }</p>
     ${showHiddenNote ? `<p><em>There are sims inside with their location hidden.</em></p>` : ''}
