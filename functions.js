@@ -369,16 +369,20 @@ async function displayLotInfo(lotId) {
 
 	    // Determine the host (owner/roommate who may be online)
 const allHosts = [ownerName, ...roommateNames];
-const playersOnlineRows = playersRows.filter(row => {
-    const nameCell = row.querySelector('td');
-    return nameCell && allHosts.includes(nameCell.textContent.trim());
-});
 
 // Extract online host info
+const lowerHostNames = allHosts.map(name => name.toLowerCase());
+
+const playersOnlineRows = playersRows.filter(row => {
+  const nameCell = row.querySelector('td');
+  const playerName = nameCell?.textContent.trim().toLowerCase();
+  return playerName && lowerHostNames.includes(playerName);
+});
+
 const onlineHosts = playersOnlineRows.map(row => {
-    const name = row.querySelector('td')?.textContent.trim();
-    const location = row.querySelector('.hidden:nth-child(4)')?.textContent.trim();
-    return { name, location };
+  const name = row.querySelector('td')?.textContent.trim();
+  const location = row.querySelector('.hidden:nth-child(4)')?.textContent.trim();
+  return { name, location };
 });
 
 	// Try to deduce a hidden host and append them to knownSims if not already shown
@@ -1302,7 +1306,7 @@ async function loadCountdown() {
 
 loadCountdown();
         
-document.addEventListener('DOMContentLoaded', () => {
+/* document.addEventListener('DOMContentLoaded', () => {
     // Check if dark mode was previously enabled
     if (localStorage.getItem('darkMode') === 'enabled') {
         document.body.classList.add('dark-mode');
@@ -1322,4 +1326,4 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('darkMode', 'disabled'); // Save preference
         }
     });
-});
+}); */
