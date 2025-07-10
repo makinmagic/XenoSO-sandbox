@@ -381,7 +381,6 @@ const playersOnlineRows = playersRows.filter(row => {
 
 console.log("Trying to deduce host from onlineHosts...");
 console.log("Known Sims Inside:", knownSims);
-console.log("Appending:", appendedHiddenHost);
 
 const onlineHosts = playersOnlineRows.map(row => {
   const name = row.querySelector('td')?.textContent.trim();
@@ -430,6 +429,8 @@ if (onlineHosts.length === 1 && onlineHosts[0].location === 'Unknown') {
 	// Prepare full known Sims list
 const fullKnownSimsList = [...knownSims];
 if (appendedHiddenHost) fullKnownSimsList.push(`${appendedHiddenHost} (hidden)`);
+
+console.log("Appending:", appendedHiddenHost);
 
 // Format with color + (hidden) tag
 const knownSimsHtml = fullKnownSimsList.length > 0
