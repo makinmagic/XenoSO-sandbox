@@ -383,6 +383,20 @@ const candidateHosts = playersRows
     return isHost && isUnknown && !alreadyListed;
   });
 
+	console.log('--- Hidden Host Debug ---');
+console.log('All Hosts:', allHosts);
+console.log('Known Sims:', knownSims);
+playersRows.forEach(row => {
+  const name = row.querySelector('td')?.textContent.trim();
+  const location = row.querySelector('.hidden:nth-child(4)')?.textContent.trim();
+  const isHost = allHosts.includes(name);
+  const isUnknown = location?.toLowerCase() === 'unknown';
+  const alreadyListed = knownSims.includes(name);
+  if (isHost) {
+    console.log(`${name}: isHost = true, isUnknown = ${isUnknown}, alreadyListed = ${alreadyListed}`);
+  }
+});
+
 if (candidateHosts.length === 1) {
   appendedHiddenHost = candidateHosts[0].querySelector('td')?.textContent.trim();
 }
