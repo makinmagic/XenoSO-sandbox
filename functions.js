@@ -378,10 +378,16 @@ const candidateHosts = playersRows
     const name = nameCell?.textContent.trim();
     const location = locationCell?.textContent.trim();
 
-    const normalizedName = name?.toLowerCase();
-    const isHost = allHosts.map(n => n.toLowerCase()).includes(normalizedName);
-    const isUnknown = location && location.toLowerCase().includes('unknown');
-    const alreadyListed = knownSims.map(n => n.toLowerCase()).includes(normalizedName);
+    const normalizedName = name?.trim().toLowerCase() || '';
+const normalizedHosts = allHosts.map(n => n.trim().toLowerCase());
+const normalizedKnown = knownSims.map(n => n.trim().toLowerCase());
+
+const isHost = normalizedHosts.includes(normalizedName);
+const cleanedLocation = location?.trim().toLowerCase() || '';
+const isUnknown = /unknown|^\s*$|^[-–]$/.test(cleanedLocation);
+const alreadyListed = normalizedKnown.includes(normalizedName);
+
+console.log(`${name}: location="${cleanedLocation}" | isHost=${isHost} | isUnknown=${isUnknown} | alreadyListed=${alreadyListed}`);
 
     return isHost && isUnknown && !alreadyListed ? name : null;
   })
