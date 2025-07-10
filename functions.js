@@ -829,7 +829,7 @@ if (appendedHiddenHost) {
                 ${activeStatus === 'Yes' ? `
     <p><strong>Known Sims Inside:</strong> ${fullKnownSimsList.length > 0
     ? fullKnownSimsList.map(name => {
-        const trimmed = name.trim();
+        const trimmed = name.trim().replace(' (hidden)', '');
         if (trimmed === ownerName) {
           return `<span style="color: #FFA502;">${trimmed}</span>`;
         } else if (roommateNames.includes(trimmed)) {
