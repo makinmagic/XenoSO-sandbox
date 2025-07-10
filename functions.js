@@ -367,24 +367,24 @@ async function displayLotInfo(lotId) {
             })
             .map(row => row.querySelector('td').textContent.trim()); // Trim each Sim's name
 
-	// Try to safely deduce a hidden host (owner or roommate who is online with location hidden)
+	// Identify a single host with location = Unknown
 let appendedHiddenHost = null;
 const allHosts = [ownerName, ...roommateNames];
 
-const hiddenHosts = playersRows
-  .map(row => {
+const candidateHosts = playersRows
+  .filter(row => {
     const name = row.querySelector('td')?.textContent.trim();
     const location = row.querySelector('.hidden:nth-child(4)')?.textContent.trim();
-    return { name, location };
-  })
-  .filter(entry =>
-    entry.location?.toLowerCase() === 'unknown' &&
-    allHosts.includes(entry.name) &&
-    !knownSims.includes(entry.name)
-  );
 
-if (hiddenHosts.length === 1) {
-  appendedHiddenHost = hiddenHosts[0].name;
+    const isHost = allHosts.includes(name);
+    const isUnknown = location?.toLowerCase() === 'unknown';
+    const alreadyListed = knownSims.includes(name);
+
+    return isHost && isUnknown && !alreadyListed;
+  });
+
+if (candidateHosts.length === 1) {
+  appendedHiddenHost = candidateHosts[0].querySelector('td')?.textContent.trim();
 }
 
 	const fullKnownSimsList = [...knownSims];
