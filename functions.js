@@ -1473,6 +1473,11 @@ function updateCurrentJobLabel() {
   const label = activeJobs.length ? activeJobs.join(" + ") : "None";
   document.getElementById("current-job-label").textContent = label;
 }
+
+setInterval(() => {
+  tempoSim();
+  updateJobCountdown();
+}, 1000);
         
 /* document.addEventListener('DOMContentLoaded', () => {
     // Check if dark mode was previously enabled
