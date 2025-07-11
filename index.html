@@ -38,10 +38,13 @@
   <input type="text" id="sim-search" placeholder="Search any Sim" autocomplete="off" style="display: none; margin-left: 10px;" onkeyup="searchSim(event)">
 </div>
 
-<div class="current-job-summary" style="text-align: center; margin-bottom: 8px;">
-  💼 Current Job: <span id="current-job-label">Loading...</span> |
-  <a href="#" class="job-link" onclick="openJobSchedulerModal()">View Schedule</a>
-</div>	
+<div style="display: flex; align-items: center; justify-content: center; margin-bottom: 8px; margin-top: 4px;">
+  <div class="current-job-summary" style="margin: 0;">
+    💼 Current Job: <span id="current-job-label">Loading...</span> |
+    <a href="#" class="job-link" onclick="openJobSchedulerModal()">View Schedule</a>
+  </div>
+</div>
+	
             <div class="scrollable" id="players"></div>
         </div>
         <div class="container">
