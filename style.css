@@ -491,6 +491,14 @@ body.dark-mode #console-content a {
   50% { opacity: 0.6; }
 }
 
+.job-credit {
+  margin-top: 20px;
+  font-size: 0.9em;
+  color: #aaa;
+  font-style: italic;
+  text-align: center;
+}
+
     /* Stars background - used with permission from Sorta */
     .stars {
       position: fixed;
