@@ -109,6 +109,7 @@ const isJobLot = avatar.location.toString().length === 10;
 const jobMap = {
     1: "Factory",
     2: "Diner",
+    4: "Club",
     5: "Club"
 };
 
@@ -555,6 +556,7 @@ async function displayPlayerInfo(avatarId) {
 	const jobMap = {
    	 1: 'Factory',
  	 2: 'Diner',
+	 4: 'Club',
 	 5: 'Club'
 	};
 	const jobName = jobMap[playerData.current_job];
@@ -683,6 +685,7 @@ async function searchSim(event) {
 	   const jobMap = {
  	   1: 'Factory',
     	   2: 'Diner',
+	   4: 'Club',
     	   5: 'Club'
 	    };
 	   const jobName = jobMap[playerData.current_job];
@@ -1370,6 +1373,23 @@ async function loadCountdown() {
 }
 
 loadCountdown();
+
+function updateCurrentJobLabel() {
+  const currentMinutes = calculateXenoviaTime().totalMinutes;
+
+  let currentJob = 'None';
+
+  if (currentMinutes >= 540 && currentMinutes < 660) {
+    currentJob = 'Factory';
+  } else if (currentMinutes >= 660 && currentMinutes < 1200) {
+    currentJob = 'Diner';
+  } else if (currentMinutes >= 1200 || currentMinutes < 540) {
+    currentJob = 'Club';
+  }
+
+  document.getElementById('current-job-label').textContent = currentJob;
+}
+setInterval(updateCurrentJobLabel, 5000);
         
 /* document.addEventListener('DOMContentLoaded', () => {
     // Check if dark mode was previously enabled
