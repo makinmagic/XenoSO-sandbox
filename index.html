@@ -30,20 +30,18 @@
     <div id="currentEvent" style="text-align: center; font-weight: bold;"></div>
     <div id="main-container">
 <div class="container">
-            <h3 id="players-title" style="text-align: center;">
-  <span class="sims-online-icon"></span> Sims Online: 0 <span class="sims-online-icon"></span>
-</h3>
+            <div style="display: flex; align-items: center;">
+  <h3 id="players-title" style="flex-grow: 1; text-align: center;">
+    <span class="sims-online-icon"></span> Sims Online: 0 <span class="sims-online-icon"></span>
+  </h3>
+  <i class="fa-solid fa-search search-icon" onclick="toggleSearch('sim')"></i>
+  <input type="text" id="sim-search" placeholder="Search any Sim" autocomplete="off" style="display: none; margin-left: 10px;" onkeyup="searchSim(event)">
+</div>
 
 <div class="current-job-summary" style="text-align: center; margin-bottom: 8px;">
   💼 Current Job: <span id="current-job-label">Loading...</span> |
   <a href="#" class="job-link" onclick="openJobSchedulerModal()">View Schedule</a>
-</div>
-
-<div style="text-align: right; margin-bottom: 5px;">
-  <i class="fa-solid fa-search search-icon" onclick="toggleSearch('sim')"></i>
-  <input type="text" id="sim-search" placeholder="Search any Sim" autocomplete="off" style="display: none; margin-left: 10px;" onkeyup="searchSim(event)">
-</div>
-	
+</div>	
             <div class="scrollable" id="players"></div>
         </div>
         <div class="container">
