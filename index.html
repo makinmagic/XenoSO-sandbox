@@ -123,8 +123,6 @@ async function init() {
     await loadLots(); // Load active lots
     fetchEvents(); // Load and display upcoming events
     displayCurrentEvent(); // Initial check for any ongoing event and add balloon icon
-    updateCurrentJobLabel();
-    setInterval(updateCurrentJobLabel, 1000);
     switchJob('factory');
 }
 
