@@ -145,7 +145,33 @@ window.onload = () => {
   <div class="modal-content">
     <span class="close" onclick="closeJobSchedulerModal()">&times;</span>
     <div id="job-scheduler-container">
-      <!-- Sorta's scheduler -->
+      <div class="panel">
+  <div class="panel-header">
+    <span>💼</span>
+    <span>Job Scheduler</span>
+  </div>
+  <div class="panel-content">
+    <div class="job-selector">
+      <button id="job-factory" class="job-btn active" onclick="switchJob('factory')">Factory</button>
+      <button id="job-restaurant" class="job-btn" onclick="switchJob('restaurant')">Diner</button>
+      <button id="job-nightclub" class="job-btn" onclick="switchJob('nightclub')">Club</button>
+    </div>
+    <div class="job-info">
+      <div class="info-row">
+        <span>Job:</span>
+        <span id="current-job-name" class="time-value">Robot Factory</span>
+      </div>
+      <div class="info-row">
+        <span>Shift Time:</span>
+        <span id="current-job-time" class="time-value">9:00 AM</span>
+      </div>
+      <div class="info-row">
+        <span>Next Shift:</span>
+        <span id="job-countdown" class="time-value job-countdown">--:--:--</span>
+      </div>
+    </div>
+  </div>
+</div>
     </div>
   </div>
 </div>
