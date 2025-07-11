@@ -704,8 +704,8 @@ async function searchSim(event) {
                 <p><strong>Description:</strong></p>
                 <div class="description-container">${(playerData.description || 'No description available.').replace(/(\r\n|\n|\r)/g, '<br>')}</div>
                 <p><strong>Age:</strong> ${ageInDays} days old</p>
-		${jobName ? `<p><strong>Job:</strong> ${jobName}</p>` : ''}
                 ${isOnline ? `<p><strong>Location:</strong> ${playerLocation}</p>` : ''}
+		${jobName ? `<p><strong>Job:</strong> ${jobName}</p>` : ''}
                 <p><strong>Currently Online:</strong> ${isOnline ? 'Yes' : 'No'}</p>
             `;
         } catch (error) {
