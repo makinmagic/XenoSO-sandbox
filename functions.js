@@ -1372,7 +1372,69 @@ async function loadCountdown() {
   }
 }
 
-loadCountdown();
+// Job Scheduler Modal
+
+const jobs = {
+  factory: {
+    name: 'Robot Factory',
+    time: '9:00 AM',
+    startMinutes: 9 * 60
+  },
+  restaurant: {
+    name: 'Diner',
+    time: '11:00 AM',
+    startMinutes: 11 * 60
+  },
+  nightclub: {
+    name: 'Club',
+    time: '8:00 PM',
+    startMinutes: 20 * 60
+  }
+};
+
+let currentJob = 'factory';
+
+function switchJob(jobKey) {
+  currentJob = jobKey;
+
+  // Deactivate all buttons
+  document.querySelectorAll('.job-btn').forEach(btn => btn.classList.remove('active'));
+
+  // Activate selected button
+  const selectedButton = document.getElementById(`job-${jobKey}`);
+  if (selectedButton) selectedButton.classList.add('active');
+
+  // Update display
+  const job = jobs[jobKey];
+  document.getElementById('current-job-name').textContent = job.name;
+  document.getElementById('current-job-time').textContent = job.time;
+
+  updateJobCountdown();
+}
+
+function updateJobCountdown() {
+  const job = jobs[currentJob];
+  const currentMinutes = getXenoviaMinutes();
+
+  let minutesUntilJob;
+  if (currentMinutes < job.startMinutes) {
+    minutesUntilJob = job.startMinutes - currentMinutes;
+  } else {
+    minutesUntilJob = (24 * 60) - currentMinutes + job.startMinutes;
+  }
+
+  const realSeconds = minutesUntilJob * 5;
+  const hrs = Math.floor(realSeconds / 3600);
+  const mins = Math.floor((realSeconds % 3600) / 60);
+  const secs = realSeconds % 60;
+
+  const display =
+    hrs > 0
+      ? `${hrs}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
+      : `${mins}:${secs.toString().padStart(2, '0')}`;
+
+  document.getElementById('job-countdown').textContent = display;
+}
 
 function getXenoviaMinutes() {
   const currentTime = new Date();
