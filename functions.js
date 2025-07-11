@@ -551,6 +551,14 @@ async function displayPlayerInfo(avatarId) {
         const favorites = JSON.parse(localStorage.getItem('favorites')) || {};
         const isFavorite = favorites.sims && favorites.sims[avatarId];
 
+	// Job mapping
+	const jobMap = {
+   	 1: 'Factory',
+ 	 2: 'Diner',
+	 5: 'Club'
+	};
+	const jobName = jobMap[playerData.current_job];
+
         // Display all information in the Console
         consoleContent.innerHTML = `
             <div class="console-title">
@@ -569,6 +577,7 @@ async function displayPlayerInfo(avatarId) {
             <div class="description-container">${formattedDescription}</div>
             <p><strong>Age:</strong> ${ageInDays} days old</p>
             <p><strong>Location:</strong> ${playerLocation}</p>
+	    ${jobName ? `<p><strong>Job:</strong> ${jobName}</p>` : ''}
         `;
     } catch (error) {
         console.error('Failed to fetch player details:', error);
@@ -614,7 +623,7 @@ function toggleSearch(type) {
     } else {
         simSearchInput.style.display = 'none';
         simSearchInput.value = '';
-        document.getElementById('console-content').innerHTML = '<p style="text-align: center; color: black;">Select a Sim or a Lot to see more information.</p>';
+        document.getElementById('console-content').innerHTML = '<p style="text-align: center; color: #F0F0F0;">Select or search for a Sim or Lot to see more information, or click on an Event to view details.</p>';
     }
 }
 
@@ -670,6 +679,14 @@ async function searchSim(event) {
             const favorites = JSON.parse(localStorage.getItem('favorites')) || {};
             const isFavorite = favorites.sims && favorites.sims[idFromName];
 
+	    // Job mapping
+	   const jobMap = {
+ 	   1: 'Factory',
+    	   2: 'Diner',
+    	   5: 'Club'
+	    };
+	   const jobName = jobMap[playerData.current_job];
+
             // Display all information in the Console
             consoleContent.innerHTML = `
                 <div class="console-title">
@@ -687,6 +704,7 @@ async function searchSim(event) {
                 <p><strong>Description:</strong></p>
                 <div class="description-container">${(playerData.description || 'No description available.').replace(/(\r\n|\n|\r)/g, '<br>')}</div>
                 <p><strong>Age:</strong> ${ageInDays} days old</p>
+		${jobName ? `<p><strong>Job:</strong> ${jobName}</p>` : ''}
                 ${isOnline ? `<p><strong>Location:</strong> ${playerLocation}</p>` : ''}
                 <p><strong>Currently Online:</strong> ${isOnline ? 'Yes' : 'No'}</p>
             `;
