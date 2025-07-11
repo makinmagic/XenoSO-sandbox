@@ -1374,22 +1374,36 @@ async function loadCountdown() {
 
 loadCountdown();
 
-function updateCurrentJobLabel() {
-  const currentMinutes = calculateXenoviaTime().totalMinutes;
+function getXenoviaMinutes() {
+  const currentTime = new Date();
+  let hours = currentTime.getUTCHours();
+  let minutes = currentTime.getUTCMinutes();
+  let seconds = currentTime.getUTCSeconds();
+  let cycle = (hours % 2 === 1) ? 3600 : 0;
+  cycle += minutes * 60 + seconds;
 
+  let tsoHours = Math.floor(cycle / 300);
+  if (tsoHours > 12) tsoHours -= 12;
+  if (tsoHours === 0) tsoHours = 12;
+
+  let tsoMinutes = Math.floor((cycle % 300) / 5);
+
+  let suffix = (hours % 2 === 1) ? "PM" : "AM";
+
+  const totalMinutes = (suffix === "PM" ? 12 * 60 : 0) + (tsoHours === 12 ? 0 : tsoHours * 60) + tsoMinutes;
+  return totalMinutes;
+}
+
+function updateCurrentJobLabel() {
+  const currentMinutes = getXenoviaMinutes();
   const activeJobs = [];
 
-  // Factory: 9:00 AM – 10:59 AM
   if (currentMinutes >= 540 && currentMinutes < 660) {
     activeJobs.push("Factory");
   }
-
-  // Diner: 11:00 AM – 7:59 PM
   if (currentMinutes >= 660 && currentMinutes < 1200) {
     activeJobs.push("Diner");
   }
-
-  // Night Club: 8:00 PM – 8:59 AM (wraps around midnight)
   if (currentMinutes >= 1200 || currentMinutes < 540) {
     activeJobs.push("Club");
   }
@@ -1397,8 +1411,6 @@ function updateCurrentJobLabel() {
   const label = activeJobs.length ? activeJobs.join(" + ") : "None";
   document.getElementById("current-job-label").textContent = label;
 }
-
-setInterval(updateCurrentJobLabel, 5000);
         
 /* document.addEventListener('DOMContentLoaded', () => {
     // Check if dark mode was previously enabled
