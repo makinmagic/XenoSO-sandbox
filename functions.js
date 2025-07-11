@@ -1414,7 +1414,14 @@ function switchJob(jobKey) {
 
 function updateJobCountdown() {
   const job = jobs[currentJob];
-  const currentMinutes = getXenoviaMinutes();
+  const currentTime = new Date();
+  let hours = currentTime.getUTCHours();
+  let minutes = currentTime.getUTCMinutes();
+  let seconds = currentTime.getUTCSeconds();
+  let cycle = (hours % 2 === 1) ? 3600 : 0;
+  cycle += minutes * 60 + seconds;
+
+  const currentMinutes = cycle / 5; // fractional minutes
 
   let minutesUntilJob;
   if (currentMinutes < job.startMinutes) {
@@ -1423,7 +1430,8 @@ function updateJobCountdown() {
     minutesUntilJob = (24 * 60) - currentMinutes + job.startMinutes;
   }
 
-  const realSeconds = minutesUntilJob * 5;
+  const realSeconds = Math.round(minutesUntilJob * 5); // round to avoid weird decimals
+
   const hrs = Math.floor(realSeconds / 3600);
   const mins = Math.floor((realSeconds % 3600) / 60);
   const secs = realSeconds % 60;
