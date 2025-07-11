@@ -499,6 +499,23 @@ body.dark-mode #console-content a {
   text-align: center;
 }
 
+.current-job-summary {
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  margin: 4px 0 10px 0;
+}
+
+.job-link {
+  color: #c169ff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.job-link:hover {
+  text-decoration: underline;
+}
+
     /* Stars background - used with permission from Sorta */
     .stars {
       position: fixed;
