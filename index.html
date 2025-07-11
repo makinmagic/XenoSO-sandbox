@@ -135,6 +135,13 @@ function closeJobSchedulerModal() {
 }
 
 window.onload = () => {
+
+	document.querySelectorAll(".modal .close").forEach(closeBtn => {
+  closeBtn.addEventListener("click", () => {
+    closeBtn.closest(".modal").style.display = "none";
+  });
+});
+
     init();
     setInterval(displayCurrentEvent, 60000); // Update "Current Event" status every minute
 };
