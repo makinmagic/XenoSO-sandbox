@@ -1476,6 +1476,7 @@ function updateCurrentJobLabel() {
 
 setInterval(() => {
   tempoSim();
+  updateCurrentJobLabel();
   updateJobCountdown();
 }, 1000);
         
