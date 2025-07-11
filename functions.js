@@ -1377,18 +1377,27 @@ loadCountdown();
 function updateCurrentJobLabel() {
   const currentMinutes = calculateXenoviaTime().totalMinutes;
 
-  let currentJob = 'None';
+  const activeJobs = [];
 
+  // Factory: 9:00 AM – 10:59 AM
   if (currentMinutes >= 540 && currentMinutes < 660) {
-    currentJob = 'Factory';
-  } else if (currentMinutes >= 660 && currentMinutes < 1200) {
-    currentJob = 'Diner';
-  } else if (currentMinutes >= 1200 || currentMinutes < 540) {
-    currentJob = 'Club';
+    activeJobs.push("Factory");
   }
 
-  document.getElementById('current-job-label').textContent = currentJob;
+  // Diner: 11:00 AM – 7:59 PM
+  if (currentMinutes >= 660 && currentMinutes < 1200) {
+    activeJobs.push("Diner");
+  }
+
+  // Night Club: 8:00 PM – 8:59 AM (wraps around midnight)
+  if (currentMinutes >= 1200 || currentMinutes < 540) {
+    activeJobs.push("Club");
+  }
+
+  const label = activeJobs.length ? activeJobs.join(" + ") : "None";
+  document.getElementById("current-job-label").textContent = label;
 }
+
 setInterval(updateCurrentJobLabel, 5000);
         
 /* document.addEventListener('DOMContentLoaded', () => {
