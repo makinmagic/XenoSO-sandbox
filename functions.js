@@ -117,7 +117,20 @@ let lotName;
 
 if (isJobLot && playerDetails.current_job) {
     const jobName = jobMap[playerDetails.current_job] || "Job";
-    lotName = `At ${jobName} Job`;
+    // Attempt to extract job level from description (if present)
+let jobLevel = null;
+if (typeof playerDetails.description === 'string') {
+    const levelMatch = playerDetails.description.match(/level\s*([1-9]|10)\b/i);
+    if (levelMatch) {
+        jobLevel = parseInt(levelMatch[1]);
+    }
+}
+
+lotName = `At ${jobName} Job 💼`;
+if (jobLevel) {
+    lotName += ` (Lv. ${jobLevel})`;
+}
+
 } else {
     lotName = lotMapping[avatar.location] || 'Unknown';
 }
@@ -1119,7 +1132,15 @@ async function loadTopPayingMOs() {
     if (!data.length) return;
 
     const latest = data[data.length - 1];
-    const formTimestamp = new Date(latest.Timestamp);
+    const local = new Date(latest.Timestamp);
+const formTimestamp = new Date(Date.UTC(
+  local.getFullYear(),
+  local.getMonth(),
+  local.getDate(),
+  local.getHours(),
+  local.getMinutes(),
+  local.getSeconds()
+));
     const utcNow = new Date();
 
     const startTime = new Date(Date.UTC(
