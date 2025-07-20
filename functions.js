@@ -1004,10 +1004,12 @@ async function openSimModal(event) {
         <a href="https://forms.gle/p7DTPGDpiztywdsM9" target="_blank" style="text-decoration: underline;">Submit/Change Profile Picture</a>
       </p>
       <div class="description-container">${(playerData.description || 'No description available.').replace(/(\r\n|\n|\r)/g, '<br>')}</div>
-      <p><strong>Age:</strong> ${ageInDays} days old</p>
-      ${isOnline ? `<p><strong>Location:</strong> ${playerLocation}</p>` : ''}
-      ${jobName ? `<p><strong>Job:</strong> ${jobName}</p>` : ''}
-      <p><strong>Currently Online:</strong> ${isOnline ? 'Yes' : 'No'}</p>
+      <div style="text-align: left; margin-top: 10px;">
+  	<p><strong>Age:</strong> ${ageInDays} days old</p>
+  	${isOnline ? `<p><strong>Location:</strong> ${playerLocation}</p>` : ''}
+  	${jobName ? `<p><strong>Job:</strong> ${jobName}</p>` : ''}
+  	<p><strong>Currently Online:</strong> ${isOnline ? 'Yes' : 'No'}</p>
+	</div>
     `;
   } catch (error) {
     console.error('Failed to fetch sim details:', error);
