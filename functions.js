@@ -462,10 +462,10 @@ consoleContent.innerHTML = `
     <p><strong>Roommates:</strong> ${
         roommateNames.length > 0
         ? roommateNames.map(name => `
-            <span class="sim-name" data-simname="${name}" onclick="openSimModal(event)" style="color: #DDA0DD;">${name}</span>
-        `).join(', ')
-        : 'None'
-    }</p>
+            `<span class="sim-name" data-simname="${name}" onclick="openSimModal(event)" style="color: #DDA0DD;">${name}</span>`
+      ).join(', ')
+    : 'None'
+}</p>
     <p><strong>Known Sims Inside:</strong> ${
         fullKnownSimsList.length > 0
         ? fullKnownSimsList.map(name => {
@@ -474,14 +474,10 @@ consoleContent.innerHTML = `
             const isOwner = trimmed === ownerName;
             const isRoommate = roommateNames.includes(trimmed);
             const color = isOwner ? '#FFA502' : isRoommate ? '#DDA0DD' : '#FFF';
-            return `
-  <span class="sim-name" data-simname="${trimmed}" onclick="openSimModal(event)" style="color: ${color};">
-    ${formatDisplayName(trimmed)}${isHidden ? ' (hidden)' : ''}
-  </span>
-`;
-        }).join(', ')
-        : 'None'
-    }</p>
+            return `<span class="sim-name" data-simname="${trimmed}" onclick="openSimModal(event)" style="color: ${color};">${formatDisplayName(trimmed)}${isHidden ? ' (hidden)' : ''}</span>`;
+      }).join(', ')
+    : 'None'
+}</p>
     ${showHiddenNote ? `<p><em>There are sims inside with their location hidden.</em></p>` : ''}
 `;
 
@@ -896,10 +892,8 @@ if (appendedHiddenHost) {
 <p><strong>Roommates:</strong> ${
   roommateNames.length > 0
     ? roommateNames.map(name => `
-        <span class="sim-name" data-simname="${name}" onclick="openSimModal(event)" style="color: #DDA0DD;">
-          ${name}
-        </span>
-      `).join(', ')
+        `<span class="sim-name" data-simname="${name}" onclick="openSimModal(event)" style="color: #DDA0DD;">${name}</span>`
+      ).join(', ')
     : 'None'
 }</p>
 
@@ -914,14 +908,10 @@ ${activeStatus === 'Yes' ? `
           const isOwner = trimmed === ownerName;
           const isRoommate = roommateNames.includes(trimmed);
           const color = isOwner ? '#FFA502' : isRoommate ? '#DDA0DD' : '#FFF';
-          return `
-  <span class="sim-name" data-simname="${trimmed}" onclick="openSimModal(event)" style="color: ${color};">
-    ${formatDisplayName(trimmed)}${isHidden ? ' (hidden)' : ''}
-  </span>
-`;
-        }).join(', ')
-      : 'None'
-  }</p>
+          return `<span class="sim-name" data-simname="${trimmed}" onclick="openSimModal(event)" style="color: ${color};">${formatDisplayName(trimmed)}${isHidden ? ' (hidden)' : ''}</span>`;
+      }).join(', ')
+    : 'None'
+}</p>
   ${showHiddenNote ? `<p><em>There are sims inside with their location hidden.</em></p>` : ''}
 ` : ''}
 `;
@@ -1313,18 +1303,20 @@ document.querySelectorAll(".modal .close").forEach((btn) => {
 
 // Close modals when clicking outside the modal content
 window.addEventListener("click", (e) => {
-  document.querySelectorAll(".modal").forEach((modal) => {
-    const content = modal.querySelector(".modal-content");
-    if (
-      modal.style.display === "block" &&
-      !content.contains(e.target) &&
-      modal.contains(e.target)
-    ) {
+  const modals = document.querySelectorAll(".modal");
+  modals.forEach((modal) => {
+    if (e.target === modal) {
       modal.style.display = "none";
     }
   });
 });
 	  
+    window.onclick = (e) => {
+      if (e.target == modal) modal.style.display = "none";
+    };
+
+    container.style.display = "block";
+
 	    // Move guideLink back to bottom
   const bottomContainer = document.getElementById("bottom-container");
   const footerNote = document.getElementById("footer-note");
