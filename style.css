@@ -427,6 +427,10 @@ body.dark-mode #console-content a {
   border: 2px solid #9215e6;
 }
 
+#sim-modal .modal-content {
+  margin-top: 5% !important;
+}
+
 .close {
   color: #aaa;
   float: right;
