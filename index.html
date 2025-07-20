@@ -98,10 +98,10 @@
         <div id="console-content">
             <p style="text-align: center; color: #black;">Select or search for a Sim or Lot to see more information, or click on an Event to view details.</p>
             <!-- Content for Console will go here -->
-		<button id="backToTopBtn" title="Back to Top">⬆️</button>
         </div>
     </div>
 </div>
+	<button id="backToTopBtn" title="Back to Top">⬆️</button>
 	<div id="guideLink" style="text-align: center; font-weight: bold;">
     <a href="https://xenoso.space/" target="_blank">Main Website</a> |
   <a href="https://xenoso.fandom.com/" target="_blank">Wiki</a> |
@@ -150,22 +150,13 @@ window.onload = () => {
     });
   });
 
-  // Setup "Back to Top" button
-  const backToTopBtn = document.getElementById("backToTopBtn");
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 300) {
-      backToTopBtn.style.display = "block";
-    } else {
-      backToTopBtn.style.display = "none";
-    }
+  // "Back to Top" button
+  document.getElementById("backToTopBtn").addEventListener('click', () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
   });
-
-  backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  });
+});
 
   init();
   setInterval(displayCurrentEvent, 60000);
