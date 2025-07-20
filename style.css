@@ -351,6 +351,11 @@ body.dark-mode #console-content a {
   -webkit-font-smoothing: antialiased;
 }
 
+.sim-name {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .sims-online-icon::before {
     font: var(--fa-font-solid);
     content: "\f500";
