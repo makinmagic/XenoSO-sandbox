@@ -117,19 +117,20 @@ let lotName;
 
 if (isJobLot && playerDetails.current_job) {
     const jobName = jobMap[playerDetails.current_job] || "Job";
-    // Attempt to extract job level from description (if present)
-let jobLevel = null;
-if (typeof playerDetails.description === 'string') {
-    const levelMatch = playerDetails.description.match(/level\s*([1-9]|10)\b/i);
-    if (levelMatch) {
-        jobLevel = parseInt(levelMatch[1]);
-    }
-}
 
-lotName = `At ${jobName} Job 💼`;
-if (jobLevel) {
-    lotName += ` (Lv. ${jobLevel})`;
-}
+    // Attempt to extract job level from description
+    let jobLevel = null;
+    if (typeof playerDetails.description === 'string') {
+        const levelMatch = playerDetails.description.match(/level\s*(\b(?:[0-9]|10))\b/i);
+        if (levelMatch) {
+            jobLevel = parseInt(levelMatch[1]);
+        }
+    }
+
+    lotName = `At ${jobName} Job 💼`;
+    if (jobLevel !== null && !isNaN(jobLevel)) {
+        lotName += ` (Lv. ${jobLevel})`;
+    }
 
 } else {
     lotName = lotMapping[avatar.location] || 'Unknown';
@@ -488,6 +489,12 @@ if (appendedHiddenHost) {
 </p>
             ${showHiddenNote ? `<p><em>There are sims inside with their location hidden.</em></p>` : ''}
         `;
+
+	    document.getElementById('console-container')?.scrollIntoView({
+    	behavior: 'smooth',
+   	block: 'start'
+	});
+	    
     } catch (error) {
         console.error('Failed to fetch lot details:', error);
         consoleContent.innerHTML = 'Error loading lot details.';
@@ -592,6 +599,12 @@ async function displayPlayerInfo(avatarId) {
             <p><strong>Location:</strong> ${playerLocation}</p>
 	    ${jobName ? `<p><strong>Job:</strong> ${jobName}</p>` : ''}
         `;
+
+	document.getElementById('console-container')?.scrollIntoView({
+    	behavior: 'smooth',
+   	block: 'start'
+	});
+	    
     } catch (error) {
         console.error('Failed to fetch player details:', error);
         document.getElementById('console-content').innerHTML = 'Error loading player details.';
@@ -721,8 +734,8 @@ async function searchSim(event) {
 		${jobName ? `<p><strong>Job:</strong> ${jobName}</p>` : ''}
                 <p><strong>Currently Online:</strong> ${isOnline ? 'Yes' : 'No'}</p>
             `;
-
-		document.getElementById('console-container')?.scrollIntoView({
+		
+	document.getElementById('console-container')?.scrollIntoView({
     	behavior: 'smooth',
    	block: 'start'
 	});
@@ -907,7 +920,7 @@ if (appendedHiddenHost) {
     	behavior: 'smooth',
    	block: 'start'
 	});
-			
+		
         } catch (error) {
             console.error('Failed to fetch lot details:', error);
             document.getElementById('console-content').innerHTML = 'Lot not found.';
