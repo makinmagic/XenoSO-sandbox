@@ -877,41 +877,9 @@ if (appendedHiddenHost) {
             const showHiddenNote = totalSimsInside > knownSims.length;
 
                         // Display lot information in Console
-            const consoleContent = document.getElementById('console-content');
-            consoleContent.innerHTML = `
-                <div class="console-title">
-                    ${lotData.name}
-					<i class="${isFavorite ? 'fa-solid fa-star' : 'fa-regular fa-star'}" 
-                       title="Click to toggle favorite" 
-                       onclick="toggleFavorite('lots', '${lotData.location}', '${lotData.name}', event)"></i>
-                </div>
-                <img src="https://api.xenoso.space/userapi/city/1/${lotData.location}.png" 
-                   alt="${lotData.name}" 
-                   class="console-img">
-                <div class="description-container">${formattedDescription}</div>
-                <p><strong>Lot Type:</strong> ${categoryMapping[lotData.category] || 'Unknown'}</p>
-                <p><strong>Admit Mode:</strong> ${admitModeMapping[lotData.admit_mode] || 'Unknown'}</p>
-                <p><strong>Owner:</strong> 
-  <span class="sim-name" data-simname="${ownerName}" onclick="openSimModal(event)" style="color: #FFA502;">
-    ${ownerName}
-  </span>
-</p>
-
-<p><strong>Roommates:</strong> ${
-  roommateNames.length > 0
-    ? roommateNames.map(name => `
-        <span class="sim-name" data-simname="${name}" onclick="openSimModal(event)" style="color: #DDA0DD;">
-          ${name}
-        </span>
-      `).join(', ')
-    : 'None'
-}</p>
-
-<p><strong>Currently Active:</strong> ${activeStatus}</p>
-
-${activeStatus === 'Yes' ? `
-  <p><strong>Known Sims Inside:</strong> ${
-  fullKnownSimsList.length > 0
+let knownSimsHTML = '';
+if (activeStatus === 'Yes') {
+  const knownSims = fullKnownSimsList.length > 0
     ? fullKnownSimsList.map(name => {
         const trimmed = name.trim().replace(' (hidden)', '');
         const isHidden = name.includes('(hidden)');
@@ -920,22 +888,51 @@ ${activeStatus === 'Yes' ? `
         const color = isOwner ? '#FFA502' : isRoommate ? '#DDA0DD' : '#FFF';
         return `<span class="sim-name" data-simname="${trimmed}" onclick="openSimModal(event)" style="color: ${color};">${getDisplayName(trimmed)}${isHidden ? ' (hidden)' : ''}</span>`;
       }).join(', ')
-    : 'None'
-}</p>
-${showHiddenNote ? `<p><em>There are sims inside with their location hidden.</em></p>` : ''}
+    : 'None';
+
+  knownSimsHTML = `
+    <p><strong>Known Sims Inside:</strong> ${knownSims}</p>
+    ${showHiddenNote ? `<p><em>There are sims inside with their location hidden.</em></p>` : ''}
+  `;
+}
+
+const consoleContent = document.getElementById('console-content');
+consoleContent.innerHTML = `
+  <div class="console-title">
+    ${lotData.name}
+    <i class="${isFavorite ? 'fa-solid fa-star' : 'fa-regular fa-star'}" 
+       title="Click to toggle favorite" 
+       onclick="toggleFavorite('lots', '${lotData.location}', '${lotData.name}', event)"></i>
+  </div>
+  <img src="https://api.xenoso.space/userapi/city/1/${lotData.location}.png" 
+       alt="${lotData.name}" 
+       class="console-img">
+  <div class="description-container">${formattedDescription}</div>
+  <p><strong>Lot Type:</strong> ${categoryMapping[lotData.category] || 'Unknown'}</p>
+  <p><strong>Admit Mode:</strong> ${admitModeMapping[lotData.admit_mode] || 'Unknown'}</p>
+  <p><strong>Owner:</strong> 
+    <span class="sim-name" data-simname="${ownerName}" onclick="openSimModal(event)" style="color: #FFA502;">
+      ${getDisplayName(ownerName)}
+    </span>
+  </p>
+  <p><strong>Roommates:</strong> ${
+    roommateNames.length > 0
+      ? roommateNames.map(name => `
+          <span class="sim-name" data-simname="${name}" onclick="openSimModal(event)" style="color: #DDA0DD;">
+            ${getDisplayName(name)}
+          </span>
+        `).join(', ')
+      : 'None'
+  }</p>
+  <p><strong>Currently Active:</strong> ${activeStatus}</p>
+  ${knownSimsHTML}
 `;
 
-	document.getElementById('console-container')?.scrollIntoView({
-    	behavior: 'smooth',
-   	block: 'start'
-	});
-		
-        } catch (error) {
-            console.error('Failed to fetch lot details:', error);
-            document.getElementById('console-content').innerHTML = 'Lot not found.';
-        }
-    }
-}
+document.getElementById('console-container')?.scrollIntoView({
+  behavior: 'smooth',
+  block: 'start'
+});
+
 
 async function openSimModal(event) {
   const simName = event.target.dataset.simname;
