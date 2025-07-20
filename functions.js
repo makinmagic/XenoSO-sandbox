@@ -164,7 +164,7 @@ const isFavorite = favoriteSims[avatar.avatar_id];
                title="Click to toggle favorite" 
                data-favorite-id="${avatar.avatar_id}" 
                onclick="toggleFavorite('sims', '${avatar.avatar_id}', '${avatar.name}', event)"></i>
-            ${displayName}
+            ${formatDisplayName(avatar.name)}
         </td>
         <td class="hidden">${avatar.avatar_id}</td>
         <td>${ageInDays} days</td>
