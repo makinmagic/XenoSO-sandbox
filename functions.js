@@ -28,6 +28,19 @@ async function loadLotName(lotId) {
     }
 }
 
+// Define emoji rules
+function formatDisplayName(name) {
+  const adminNames = ["Sorta", "Savaki", "Daat", "Xeno", "Eric", "Sneaky", "Nyx"];
+  const emojiMap = {
+    "Mr Teddy": "🐻"
+  };
+
+  let display = name;
+  if (emojiMap[name]) display += ` ${emojiMap[name]}`;
+  if (adminNames.includes(name)) display += ` <span title="Admin">🛡️</span>`;
+  return display;
+}
+
 async function loadOnlinePlayers() {
     try {
 
@@ -143,20 +156,7 @@ if (isJobLot && playerDetails.current_job) {
 
 // Check if this Sim is a favorite
 const isFavorite = favoriteSims[avatar.avatar_id];
-			
-// Define emoji rules
-function formatDisplayName(name) {
-  const adminNames = ["Sorta", "Savaki", "Daat", "Xeno", "Eric", "Sneaky", "Nyx"];
-  const emojiMap = {
-    "Mr Teddy": "🐻"
-  };
-
-  let display = name;
-  if (emojiMap[name]) display += ` ${emojiMap[name]}`;
-  if (adminNames.includes(name)) display += ` <span title="Admin">🛡️</span>`;
-  return display;
-}
-		
+					
             tableHtml += `
             <tr data-avatar-id="${avatar.avatar_id}">
         <td>
