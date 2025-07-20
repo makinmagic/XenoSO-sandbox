@@ -1303,10 +1303,23 @@ const formTimestamp = new Date(Date.UTC(
       modal.style.display = "block";
     };
 
-    // Event listener for closing modal
-    document.querySelector(".modal .close").onclick = () => {
+    // Close modals when clicking the X
+document.querySelectorAll(".modal .close").forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    const modal = e.target.closest(".modal");
+    if (modal) modal.style.display = "none";
+  });
+});
+
+// Close modals when clicking outside the modal content
+window.addEventListener("click", (e) => {
+  const modals = document.querySelectorAll(".modal");
+  modals.forEach((modal) => {
+    if (e.target === modal) {
       modal.style.display = "none";
-    };
+    }
+  });
+});
 
     window.onclick = (e) => {
       if (e.target == modal) modal.style.display = "none";
