@@ -452,43 +452,45 @@ if (appendedHiddenHost) {
         const isFavorite = favorites.lots && favorites.lots[lotId];
 
         // Display lot information in Console
-        consoleContent.innerHTML = `
-            <div class="console-title">
-                ${lotData.name}
-                <i class="${isFavorite ? 'fa-solid fa-star' : 'fa-regular fa-star'}" 
-                   title="Click to toggle favorite" 
-                   onclick="toggleFavorite('lots', '${lotId}', '${lotData.name}', event)"></i>
-            </div>
-            <img src="https://api.xenoso.space/userapi/city/1/${lotId}.png" 
-                 alt="${lotData.name}" 
-                 class="console-img">
-            <div class="description-container">${formattedDescription}</div>
-            <p><strong>Lot Type:</strong> ${categoryMapping[lotData.category] || 'Unknown'}</p>
-            <p><strong>Admit Mode:</strong> ${admitModeMapping[lotData.admit_mode] || 'Unknown'}</p>
-            <p><strong>Owner:</strong> <span style="color: #FFA502;">${ownerName}</span></p>
-            <p><strong>Roommates:</strong> ${
-  		roommateNames.length > 0
-    		? roommateNames.map(name => `<span style="color: #dda0dd;">${name}</span>`).join(', ')
- 		   : 'None'
-		}</p>
-            <p><strong>Known Sims Inside:</strong> ${
-  fullKnownSimsList.length > 0
-    ? fullKnownSimsList.map(name => {
-        const trimmed = name.trim().replace(' (hidden)', '');
-        const isHidden = name.includes('(hidden)');
-        if (trimmed === ownerName) {
-          return `<span style="color: #FFA502;">${trimmed}${isHidden ? ' (hidden)' : ''}</span>`;
-        } else if (roommateNames.includes(trimmed)) {
-          return `<span style="color: #DDA0DD;">${trimmed}${isHidden ? ' (hidden)' : ''}</span>`;
-        } else {
-          return `${trimmed}${isHidden ? ' (hidden)' : ''}`;
-        }
-      }).join(', ')
-    : 'None'
-}
-</p>
-            ${showHiddenNote ? `<p><em>There are sims inside with their location hidden.</em></p>` : ''}
-        `;
+consoleContent.innerHTML = `
+    <div class="console-title">
+        ${lotData.name}
+        <i class="${isFavorite ? 'fa-solid fa-star' : 'fa-regular fa-star'}" 
+           title="Click to toggle favorite" 
+           onclick="toggleFavorite('lots', '${lotId}', '${lotData.name}', event)"></i>
+    </div>
+    <img src="https://api.xenoso.space/userapi/city/1/${lotId}.png" 
+         alt="${lotData.name}" 
+         class="console-img">
+    <div class="description-container">${formattedDescription}</div>
+    <p><strong>Lot Type:</strong> ${categoryMapping[lotData.category] || 'Unknown'}</p>
+    <p><strong>Admit Mode:</strong> ${admitModeMapping[lotData.admit_mode] || 'Unknown'}</p>
+    <p><strong>Owner:</strong> <span class="sim-name" data-simname="${ownerName}" onclick="openSimModal(event)" style="color: #FFA502;">${ownerName}</span></p>
+    <p><strong>Roommates:</strong> ${
+        roommateNames.length > 0
+        ? roommateNames.map(name => `
+            <span class="sim-name" data-simname="${name}" onclick="openSimModal(event)" style="color: #DDA0DD;">${name}</span>
+        `).join(', ')
+        : 'None'
+    }</p>
+    <p><strong>Known Sims Inside:</strong> ${
+        fullKnownSimsList.length > 0
+        ? fullKnownSimsList.map(name => {
+            const trimmed = name.trim().replace(' (hidden)', '');
+            const isHidden = name.includes('(hidden)');
+            const isOwner = trimmed === ownerName;
+            const isRoommate = roommateNames.includes(trimmed);
+            const color = isOwner ? '#FFA502' : isRoommate ? '#DDA0DD' : '#FFF';
+            return `
+                <span class="sim-name" data-simname="${trimmed}" onclick="openSimModal(event)" style="color: ${color};">
+                    ${trimmed}${isHidden ? ' (hidden)' : ''}
+                </span>
+            `;
+        }).join(', ')
+        : 'None'
+    }</p>
+    ${showHiddenNote ? `<p><em>There are sims inside with their location hidden.</em></p>` : ''}
+`;
 
 	    document.getElementById('console-container')?.scrollIntoView({
     	behavior: 'smooth',
@@ -891,28 +893,42 @@ if (appendedHiddenHost) {
                 <div class="description-container">${formattedDescription}</div>
                 <p><strong>Lot Type:</strong> ${categoryMapping[lotData.category] || 'Unknown'}</p>
                 <p><strong>Admit Mode:</strong> ${admitModeMapping[lotData.admit_mode] || 'Unknown'}</p>
-                <p><strong>Owner:</strong> <span style="color: #FFA502;">${ownerName}</span></p>
-                <p><strong>Roommates:</strong> ${
+                <p><strong>Owner:</strong> 
+  <span class="sim-name" data-simname="${ownerName}" onclick="openSimModal(event)" style="color: #FFA502;">
+    ${ownerName}
+  </span>
+</p>
+
+<p><strong>Roommates:</strong> ${
   roommateNames.length > 0
-    ? roommateNames.map(name => `<span style="color: #dda0dd;">${name}</span>`).join(', ')
+    ? roommateNames.map(name => `
+        <span class="sim-name" data-simname="${name}" onclick="openSimModal(event)" style="color: #DDA0DD;">
+          ${name}
+        </span>
+      `).join(', ')
     : 'None'
 }</p>
-                <p><strong>Currently Active:</strong> ${activeStatus}</p>
-                ${activeStatus === 'Yes' ? `
-    <p><strong>Known Sims Inside:</strong> ${fullKnownSimsList.length > 0
-    ? fullKnownSimsList.map(name => {
-    const trimmed = name.trim().replace(' (hidden)', '');
-    if (trimmed === ownerName) {
-      return `<span style="color: #FFA502;">${name}</span>`;
-    } else if (roommateNames.includes(trimmed)) {
-      return `<span style="color: #DDA0DD;">${name}</span>`;
-    } else {
-      return name;
-    }
-  }).join(', ')
-    : 'None'
-}</p>
-    ${showHiddenNote ? `<p><em>There are sims inside with their location hidden.</em></p>` : ''}
+
+<p><strong>Currently Active:</strong> ${activeStatus}</p>
+
+${activeStatus === 'Yes' ? `
+  <p><strong>Known Sims Inside:</strong> ${
+    fullKnownSimsList.length > 0
+      ? fullKnownSimsList.map(name => {
+          const trimmed = name.trim().replace(' (hidden)', '');
+          const isHidden = name.includes('(hidden)');
+          const isOwner = trimmed === ownerName;
+          const isRoommate = roommateNames.includes(trimmed);
+          const color = isOwner ? '#FFA502' : isRoommate ? '#DDA0DD' : '#FFF';
+          return `
+            <span class="sim-name" data-simname="${trimmed}" onclick="openSimModal(event)" style="color: ${color};">
+              ${trimmed}${isHidden ? ' (hidden)' : ''}
+            </span>
+          `;
+        }).join(', ')
+      : 'None'
+  }</p>
+  ${showHiddenNote ? `<p><em>There are sims inside with their location hidden.</em></p>` : ''}
 ` : ''}
 `;
 
@@ -926,6 +942,81 @@ if (appendedHiddenHost) {
             document.getElementById('console-content').innerHTML = 'Lot not found.';
         }
     }
+}
+
+async function openSimModal(event) {
+  const simName = event.target.dataset.simname;
+  const modal = document.getElementById('sim-modal');
+  const content = document.getElementById('sim-modal-content');
+  content.innerHTML = 'Loading...';
+  modal.style.display = 'block';
+
+  try {
+    const url = `https://api.xenoso.space/userapi/city/1/avatars/name/${simName}`;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Sim not found');
+    const playerData = await response.json();
+
+    const playerImages = await fetchPlayerImages();
+    const playerImage = playerImages[playerData.name] || 'https://makinmagic.github.io/XenoSO/images/pfp-placeholder.png';
+
+    const creationDate = new Date(playerData.date * 1000);
+    const currentDate = new Date();
+    const ageInDays = Math.floor((currentDate - creationDate) / (1000 * 60 * 60 * 24));
+
+    // Check if the player is online
+    const playersContainer = document.getElementById('players');
+    const onlineRow = Array.from(playersContainer.querySelectorAll('tr')).find(row => {
+      const firstCell = row.querySelector('td');
+      return firstCell && firstCell.textContent.trim().toLowerCase() === playerData.name.trim().toLowerCase();
+    });
+
+    const isOnline = Boolean(onlineRow);
+    const playerLocation = isOnline
+      ? onlineRow.querySelector('td:nth-child(5)')?.textContent.trim() || 'Unknown'
+      : 'Offline';
+
+    const nameToIdMap = JSON.parse(localStorage.getItem('nameToIdMap')) || {};
+    const idFromName = nameToIdMap[simName] || playerData.avatar_id;
+    nameToIdMap[simName] = idFromName;
+    localStorage.setItem('nameToIdMap', JSON.stringify(nameToIdMap));
+
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || {};
+    const isFavorite = favorites.sims && favorites.sims[idFromName];
+
+    const jobMap = {
+      1: 'Factory',
+      2: 'Diner',
+      4: 'Club',
+      5: 'Club'
+    };
+    const jobName = jobMap[playerData.current_job];
+
+    content.innerHTML = `
+      <div class="console-title">
+        ${playerData.name}
+        <i class="${isFavorite ? 'fa-solid fa-star' : 'fa-regular fa-star'}" 
+           title="Click to toggle favorite" 
+           onclick="toggleFavorite('sims', '${playerData.avatar_id}', '${playerData.name}', event)"></i>
+      </div>
+      <img src="${playerImage}" alt="Profile Picture" class="console-img">
+      <p style="text-align: center; margin-top: -9px;">
+        <a href="https://forms.gle/p7DTPGDpiztywdsM9" target="_blank" style="text-decoration: underline;">Submit/Change Profile Picture</a>
+      </p>
+      <div class="description-container">${(playerData.description || 'No description available.').replace(/(\r\n|\n|\r)/g, '<br>')}</div>
+      <p><strong>Age:</strong> ${ageInDays} days old</p>
+      ${isOnline ? `<p><strong>Location:</strong> ${playerLocation}</p>` : ''}
+      ${jobName ? `<p><strong>Job:</strong> ${jobName}</p>` : ''}
+      <p><strong>Currently Online:</strong> ${isOnline ? 'Yes' : 'No'}</p>
+    `;
+  } catch (error) {
+    console.error('Failed to fetch sim details:', error);
+    content.innerHTML = '<p>Failed to load Sim info.</p>';
+  }
+}
+
+function closeSimModal() {
+  document.getElementById('sim-modal').style.display = 'none';
 }
 
 const eventsUrl = 'https://opensheet.elk.sh/1xWQc2P86fisaRSdxyGWwTddX_a4ZGmWYaWRK0ZfXb_4/Events';
