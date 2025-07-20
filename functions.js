@@ -143,24 +143,26 @@ if (isJobLot && playerDetails.current_job) {
 
 // Check if this Sim is a favorite
 const isFavorite = favoriteSims[avatar.avatar_id];
+
+// Emoji Rules
 			
-// Define emoji rules
-const adminNames = ["Sorta", "Savaki", "Daat", "Xeno", "Eric", "Sneaky", "Nyx"];
-const emojiMap = {
+function getDisplayName(name) {
+  const emojiMap = {
     "Mr Teddy": "🐻"
-};
+  };
+  const adminNames = ["Sorta", "Savaki", "Daat", "Xeno", "Eric", "Sneaky", "Nyx"];
 
-// Display name
-let displayName = avatar.name;
+  let displayName = name;
 
-if (emojiMap[avatar.name]) {
-    displayName += ` ${emojiMap[avatar.name]}`;
-}
+  if (emojiMap[name]) {
+    displayName += ` ${emojiMap[name]}`;
+  }
 
-// Add shield for admins
-
-if (adminNames.includes(avatar.name)) {
+  if (adminNames.includes(name)) {
     displayName += ` <span title="Admin">🛡️</span>`;
+  }
+
+  return displayName;
 }
 
 
@@ -482,7 +484,7 @@ consoleContent.innerHTML = `
             const isRoommate = roommateNames.includes(trimmed);
             const color = isOwner ? '#FFA502' : isRoommate ? '#DDA0DD' : '#FFF';
             return `
-                <span class="sim-name" data-simname="${trimmed}" onclick="openSimModal(event)" style="color: ${color};">
+                return `<span class="sim-name" data-simname="${trimmed}" onclick="openSimModal(event)" style="color: ${color};">${getDisplayName(trimmed)}${isHidden ? ' (hidden)' : ''}</span>`;
                     ${trimmed}${isHidden ? ' (hidden)' : ''}
                 </span>
             `;
@@ -921,7 +923,7 @@ ${activeStatus === 'Yes' ? `
           const isRoommate = roommateNames.includes(trimmed);
           const color = isOwner ? '#FFA502' : isRoommate ? '#DDA0DD' : '#FFF';
           return `
-            <span class="sim-name" data-simname="${trimmed}" onclick="openSimModal(event)" style="color: ${color};">
+            return `<span class="sim-name" data-simname="${trimmed}" onclick="openSimModal(event)" style="color: ${color};">${getDisplayName(trimmed)}${isHidden ? ' (hidden)' : ''}</span>`;
               ${trimmed}${isHidden ? ' (hidden)' : ''}
             </span>
           `;
