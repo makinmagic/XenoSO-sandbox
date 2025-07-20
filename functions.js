@@ -911,23 +911,18 @@ if (appendedHiddenHost) {
 
 ${activeStatus === 'Yes' ? `
   <p><strong>Known Sims Inside:</strong> ${
-    fullKnownSimsList.length > 0
-      ? fullKnownSimsList.map(name => {
-          const trimmed = name.trim().replace(' (hidden)', '');
-          const isHidden = name.includes('(hidden)');
-          const isOwner = trimmed === ownerName;
-          const isRoommate = roommateNames.includes(trimmed);
-          const color = isOwner ? '#FFA502' : isRoommate ? '#DDA0DD' : '#FFF';
-          return `
-            return `<span class="sim-name" data-simname="${trimmed}" onclick="openSimModal(event)" style="color: ${color};">${getDisplayName(trimmed)}${isHidden ? ' (hidden)' : ''}</span>`;
-              ${trimmed}${isHidden ? ' (hidden)' : ''}
-            </span>
-          `;
-        }).join(', ')
-      : 'None'
-  }</p>
-  ${showHiddenNote ? `<p><em>There are sims inside with their location hidden.</em></p>` : ''}
-` : ''}
+  fullKnownSimsList.length > 0
+    ? fullKnownSimsList.map(name => {
+        const trimmed = name.trim().replace(' (hidden)', '');
+        const isHidden = name.includes('(hidden)');
+        const isOwner = trimmed === ownerName;
+        const isRoommate = roommateNames.includes(trimmed);
+        const color = isOwner ? '#FFA502' : isRoommate ? '#DDA0DD' : '#FFF';
+        return `<span class="sim-name" data-simname="${trimmed}" onclick="openSimModal(event)" style="color: ${color};">${getDisplayName(trimmed)}${isHidden ? ' (hidden)' : ''}</span>`;
+      }).join(', ')
+    : 'None'
+}</p>
+${showHiddenNote ? `<p><em>There are sims inside with their location hidden.</em></p>` : ''}
 `;
 
 	document.getElementById('console-container')?.scrollIntoView({
