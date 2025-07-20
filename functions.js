@@ -1313,9 +1313,9 @@ document.querySelectorAll(".modal .close").forEach((btn) => {
 
 // Close modals when clicking outside the modal content
 window.addEventListener("click", (e) => {
-  const modals = document.querySelectorAll(".modal");
-  modals.forEach((modal) => {
-    if (e.target === modal) {
+  document.querySelectorAll(".modal").forEach((modal) => {
+    const content = modal.querySelector(".modal-content");
+    if (modal.style.display === "block" && !content.contains(e.target)) {
       modal.style.display = "none";
     }
   });
