@@ -360,7 +360,7 @@ body.dark-mode #console-content a {
   text-decoration: underline;
 }
 
-#sim-modal .close-btn {
+#sim-modal .close {
   color: #ffffff;
   background-color: #9215e6;
   border-radius: 50%;
