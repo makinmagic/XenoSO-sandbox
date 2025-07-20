@@ -475,10 +475,10 @@ consoleContent.innerHTML = `
             const isRoommate = roommateNames.includes(trimmed);
             const color = isOwner ? '#FFA502' : isRoommate ? '#DDA0DD' : '#FFF';
             return `
-                <span class="sim-name" data-simname="${trimmed}" onclick="openSimModal(event)" style="color: ${color};">
-  ${formatDisplayName(trimmed)}${isHidden ? ' (hidden)' : ''}
-</span>
-            `;
+  <span class="sim-name" data-simname="${trimmed}" onclick="openSimModal(event)" style="color: ${color};">
+    ${formatDisplayName(trimmed)}${isHidden ? ' (hidden)' : ''}
+  </span>
+`;
         }).join(', ')
         : 'None'
     }</p>
@@ -914,10 +914,10 @@ ${activeStatus === 'Yes' ? `
           const isRoommate = roommateNames.includes(trimmed);
           const color = isOwner ? '#FFA502' : isRoommate ? '#DDA0DD' : '#FFF';
           return `
-            <span class="sim-name" data-simname="${trimmed}" onclick="openSimModal(event)" style="color: ${color};">
-  ${formatDisplayName(trimmed)}${isHidden ? ' (hidden)' : ''}
-</span>
-          `;
+  <span class="sim-name" data-simname="${trimmed}" onclick="openSimModal(event)" style="color: ${color};">
+    ${formatDisplayName(trimmed)}${isHidden ? ' (hidden)' : ''}
+  </span>
+`;
         }).join(', ')
       : 'None'
   }</p>
