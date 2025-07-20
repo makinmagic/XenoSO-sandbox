@@ -159,7 +159,7 @@ const isFavorite = favoriteSims[avatar.avatar_id];
 					
             tableHtml += `
             <tr data-avatar-id="${avatar.avatar_id}">
-        <td>
+        <td data-simname="${avatar.name}">
             <i class="${isFavorite ? 'fa-solid fa-star' : 'fa-regular fa-star'}" 
                title="Click to toggle favorite" 
                data-favorite-id="${avatar.avatar_id}" 
@@ -391,7 +391,7 @@ async function displayLotInfo(lotId) {
                 const locationCell = row.querySelector('.hidden:nth-child(4)');
                 return locationCell && locationCell.textContent === lotId.toString();
             })
-            .map(row => row.querySelector('td').textContent.trim()); // Trim each Sim's name
+            .map(row => row.querySelector('td')?.dataset.simname?.trim() || '');
 
 	// Identify a single host with location = Unknown
 let appendedHiddenHost = null;
@@ -834,7 +834,8 @@ async function searchLot(event) {
                     const locationCell = row.querySelector('.hidden:nth-child(4)');
                     return locationCell && locationCell.textContent == lotData.location;
                 })
-                .map(row => row.querySelector('td').textContent);
+		.map(row => row.querySelector('td')?.dataset.simname?.trim() || '');
+
 
 		let appendedHiddenHost = null;
 const allHosts = [ownerName, ...roommateNames];
