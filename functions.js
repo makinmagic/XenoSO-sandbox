@@ -1315,18 +1315,16 @@ document.querySelectorAll(".modal .close").forEach((btn) => {
 window.addEventListener("click", (e) => {
   document.querySelectorAll(".modal").forEach((modal) => {
     const content = modal.querySelector(".modal-content");
-    if (modal.style.display === "block" && !content.contains(e.target)) {
+    if (
+      modal.style.display === "block" &&
+      !content.contains(e.target) &&
+      modal.contains(e.target)
+    ) {
       modal.style.display = "none";
     }
   });
 });
-
-    window.onclick = (e) => {
-      if (e.target == modal) modal.style.display = "none";
-    };
-
-    container.style.display = "block";
-
+	  
 	    // Move guideLink back to bottom
   const bottomContainer = document.getElementById("bottom-container");
   const footerNote = document.getElementById("footer-note");
