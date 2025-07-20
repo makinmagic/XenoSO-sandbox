@@ -461,7 +461,7 @@ consoleContent.innerHTML = `
     <p><strong>Owner:</strong> <span class="sim-name" data-simname="${ownerName}" onclick="openSimModal(event)" style="color: #FFA502;">${ownerName}</span></p>
     <p><strong>Roommates:</strong> ${
         roommateNames.length > 0
-        ? roommateNames.map(name => `
+        ? roommateNames.map(name =>
             `<span class="sim-name" data-simname="${name}" onclick="openSimModal(event)" style="color: #DDA0DD;">${name}</span>`
       ).join(', ')
     : 'None'
@@ -891,7 +891,7 @@ if (appendedHiddenHost) {
 
 <p><strong>Roommates:</strong> ${
   roommateNames.length > 0
-    ? roommateNames.map(name => `
+    ? roommateNames.map(name =>
         `<span class="sim-name" data-simname="${name}" onclick="openSimModal(event)" style="color: #DDA0DD;">${name}</span>`
       ).join(', ')
     : 'None'
