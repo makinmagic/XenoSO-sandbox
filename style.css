@@ -322,7 +322,7 @@ body.dark-mode #events-container a {
     color: #f1f1f1;
 }
 
-#console-content a {
+#console-content a, #sim-modal a {
     color: #c169ff;
     text-decoration: underline;
     font-size: 14px;
