@@ -721,6 +721,12 @@ async function searchSim(event) {
 		${jobName ? `<p><strong>Job:</strong> ${jobName}</p>` : ''}
                 <p><strong>Currently Online:</strong> ${isOnline ? 'Yes' : 'No'}</p>
             `;
+
+		document.getElementById('console-container')?.scrollIntoView({
+    	behavior: 'smooth',
+   	block: 'start'
+	});
+		
         } catch (error) {
             console.error('Failed to fetch sim details:', error);
             consoleContent.innerHTML = 'Sim not found.';
@@ -896,6 +902,12 @@ if (appendedHiddenHost) {
     ${showHiddenNote ? `<p><em>There are sims inside with their location hidden.</em></p>` : ''}
 ` : ''}
 `;
+
+	document.getElementById('console-container')?.scrollIntoView({
+    	behavior: 'smooth',
+   	block: 'start'
+	});
+			
         } catch (error) {
             console.error('Failed to fetch lot details:', error);
             document.getElementById('console-content').innerHTML = 'Lot not found.';
