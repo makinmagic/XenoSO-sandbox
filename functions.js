@@ -1225,6 +1225,8 @@ const emojiMap = {
   Gnomes: "⚒️"
 };
 
+let percentChart = null;
+
 async function loadTopPayingMOs() {
   const url = 'https://opensheet.elk.sh/1DJHQ0f5X9NUuAouEf5osJgLV2r2nuzsGLIyjLkm-0NM/MOs';
 
@@ -1292,6 +1294,57 @@ const formTimestamp = new Date(Date.UTC(
       e.preventDefault();
       modal.style.display = "block";
     };
+
+	// Create Percentage Chart
+const ctx = document.getElementById("percentChart").getContext("2d");
+const labels = sorted.map(([key]) => `${emojiMap[key] || ''} ${key}`);
+const dataPoints = sorted.map(([, val]) => parseInt(val));
+
+if (percentChart) {
+  percentChart.destroy();
+}
+
+percentChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: labels,
+    datasets: [{
+      label: '% Multiplier',
+      data: dataPoints,
+      backgroundColor: '#8e44ad'
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    scales: {
+      x: {
+        beginAtZero: true,
+        max: 160,
+        ticks: {
+          callback: value => value + '%'
+        }
+      }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => `${ctx.raw}%`
+        }
+      }
+    }
+  }
+});
+
+	  document.querySelectorAll(".tab-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(tab => tab.style.display = "none");
+
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).style.display = "block";
+  });
+});
 
     // Close modals when clicking the X
 document.querySelectorAll(".modal .close").forEach((btn) => {
