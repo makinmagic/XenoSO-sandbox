@@ -1354,8 +1354,6 @@ percentChart = new Chart(ctx, {
     size: 16
   },
   formatter: value => `${value}%`
-},
-        formatter: value => `${value}%`
       }
     }
   },
