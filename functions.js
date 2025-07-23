@@ -1225,6 +1225,17 @@ const emojiMap = {
   Gnomes: "⚒️"
 };
 
+const moPayoutAt150 = {
+  Writers: 529,
+  Boards: 381,
+  Pinatas: 529,
+  Phones: 529,
+  Easels: 529,
+  Gnomes: 576,
+  Jams: 546,
+  Potions: 596
+};
+
 let percentChart = null;
 
 async function loadTopPayingMOs() {
