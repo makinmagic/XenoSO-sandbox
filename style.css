@@ -442,7 +442,7 @@ body.dark-mode #console-content a {
 
 .modal-content {
   background-color: #1c003b;
-  margin: 10% auto;
+  margin-top: 5%;
   padding: 20px;
   border-radius: 10px;
   width: 80%;
