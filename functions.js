@@ -1314,27 +1314,16 @@ percentChart = new Chart(ctx, {
   options: {
     indexAxis: 'y',
     layout: {
-      padding: {
-        left: 20,
-        right: 20,
-        top: 10,
-        bottom: 10
-      }
-    },
+  padding: {
+    left: 10,
+    right: 10,
+    top: 5,
+    bottom: 5
+  }
+},
     scales: {
       x: {
-        beginAtZero: true,
-        max: 150,
-        ticks: {
-          color: '#ccc',
-          font: {
-            size: 14
-          },
-          callback: value => value + '%'
-        },
-        grid: {
-          color: '#333'
-        }
+        display: false
       },
       y: {
         ticks: {
@@ -1360,6 +1349,7 @@ percentChart = new Chart(ctx, {
         anchor: 'end',
         align: 'right',
         color: '#fff',
+	offset: -4,
         font: {
           weight: 'bold',
           size: 14
