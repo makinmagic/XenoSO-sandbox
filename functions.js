@@ -1258,7 +1258,6 @@ const formTimestamp = new Date(Date.UTC(
 
     const container = document.getElementById("money-object");
     const viewAllLink = document.getElementById("viewAllLink");
-    const allMOList = document.getElementById("all-mo-list");
     const modal = document.getElementById("moModal");
     const guideLink = document.getElementById("guideLink");
 
@@ -1283,11 +1282,6 @@ const formTimestamp = new Date(Date.UTC(
 
     // Populate modal list
     const sorted = entries.sort((a, b) => parseInt(b[1]) - parseInt(a[1]));
-
-	allMOList.innerHTML = sorted.map(([key, val]) => {
-  const emoji = emojiMap[key];
-  return `<p style="font-size: 1.2em;">${emoji} <strong>${key}</strong>: ${parseInt(val)}%</p>`;
-	}).join('');
 
     // Event listener for opening modal
     viewAllLink.onclick = (e) => {
