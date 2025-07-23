@@ -1289,7 +1289,7 @@ const formTimestamp = new Date(Date.UTC(
       modal.style.display = "block";
     };
 
-	// Create Percentage Chart
+// Create Percentage Chart
 const ctx = document.getElementById("percentChart").getContext("2d");
 const labels = sorted.map(([key]) => `${emojiMap[key] || ''} ${key}`);
 const dataPoints = sorted.map(([, val]) => parseInt(val));
@@ -1306,56 +1306,69 @@ percentChart = new Chart(ctx, {
       label: '% Multiplier',
       borderRadius: 6,
       data: dataPoints,
-      backgroundColor: '#8e44ad'
+      backgroundColor: dataPoints.map(val =>
+        val >= 130 ? '#8e44ad' : val >= 100 ? '#9b59b6' : '#c0392b'
+      )
     }]
   },
   options: {
-  indexAxis: 'y',
-  layout: {
-    padding: {
-      left: 20,
-      right: 20,
-      top: 10,
-      bottom: 10
-    }
-  },
-  scales: {
-    x: {
-      beginAtZero: true,
-      max: 150,
-      ticks: {
-        color: '#ccc',
-        font: {
-          size: 14
-        },
-        callback: value => value + '%'
-      },
-      grid: {
-        color: '#333'
+    indexAxis: 'y',
+    layout: {
+      padding: {
+        left: 20,
+        right: 20,
+        top: 10,
+        bottom: 10
       }
     },
-    y: {
-      ticks: {
-        color: '#eee',
-        font: {
-          size: 16,
-          weight: 'bold'
+    scales: {
+      x: {
+        beginAtZero: true,
+        max: 150,
+        ticks: {
+          color: '#ccc',
+          font: {
+            size: 14
+          },
+          callback: value => value + '%'
+        },
+        grid: {
+          color: '#333'
         }
       },
-      grid: {
-        display: false
+      y: {
+        ticks: {
+          color: '#eee',
+          font: {
+            size: 16,
+            weight: 'bold'
+          }
+        },
+        grid: {
+          color: '#333'
+        }
+      }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => `${ctx.raw}%`
+        }
+      },
+      datalabels: {
+        anchor: 'end',
+        align: 'right',
+        color: '#fff',
+        font: {
+          weight: 'bold',
+          size: 14
+        },
+        formatter: value => `${value}%`
       }
     }
   },
-  plugins: {
-    legend: { display: false },
-    tooltip: {
-      callbacks: {
-        label: ctx => `${ctx.raw}%`
-      }
-    }
-  }
-}
+  plugins: [ChartDataLabels]
 });
 
 	  document.querySelectorAll(".tab-btn").forEach((btn) => {
