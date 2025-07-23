@@ -1346,14 +1346,15 @@ percentChart = new Chart(ctx, {
         }
       },
       datalabels: {
-        anchor: 'end',
-        align: 'right',
-        color: '#fff',
-	offset: -4,
-        font: {
-          weight: 'bold',
-          size: 14
-        },
+  anchor: 'center',
+  align: 'center',
+  color: '#fff',
+  font: {
+    weight: 'bold',
+    size: 16
+  },
+  formatter: value => `${value}%`
+},
         formatter: value => `${value}%`
       }
     }
