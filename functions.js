@@ -1304,30 +1304,58 @@ percentChart = new Chart(ctx, {
     labels: labels,
     datasets: [{
       label: '% Multiplier',
+      borderRadius: 6,
       data: dataPoints,
       backgroundColor: '#8e44ad'
     }]
   },
   options: {
-    indexAxis: 'y',
-    scales: {
-      x: {
-        beginAtZero: true,
-        max: 160,
-        ticks: {
-          callback: value => value + '%'
-        }
+  indexAxis: 'y',
+  layout: {
+    padding: {
+      left: 20,
+      right: 20,
+      top: 10,
+      bottom: 10
+    }
+  },
+  scales: {
+    x: {
+      beginAtZero: true,
+      max: 150,
+      ticks: {
+        color: '#ccc',
+        font: {
+          size: 14
+        },
+        callback: value => value + '%'
+      },
+      grid: {
+        color: '#333'
       }
     },
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: ctx => `${ctx.raw}%`
+    y: {
+      ticks: {
+        color: '#eee',
+        font: {
+          size: 16,
+          weight: 'bold'
         }
+      },
+      grid: {
+        display: false
+      }
+    }
+  },
+  plugins: {
+    legend: { display: false },
+    tooltip: {
+      callbacks: {
+        label: ctx => `${ctx.raw}%`
       }
     }
   }
+}
 });
 
 	  document.querySelectorAll(".tab-btn").forEach((btn) => {
