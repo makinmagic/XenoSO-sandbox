@@ -1360,6 +1360,76 @@ percentChart = new Chart(ctx, {
   plugins: [ChartDataLabels]
 });
 
+const payoutCtx = document.getElementById("payoutChart").getContext("2d");
+
+const entriesWithPayout = entries.map(([key, val]) => {
+  const pct = parseInt(val);
+  const payout150 = moPayoutAt150[key];
+  const base = payout150 / 1.5;
+  const actual = Math.round(base * (pct / 100));
+  return { key, pct, actual };
+}).sort((a, b) => b.actual - a.actual);  // Sort by payout
+
+const payoutLabels = entriesWithPayout.map(entry => `${emojiMap[entry.key] || ''} ${entry.key}`);
+const payoutValues = entriesWithPayout.map(entry => entry.actual);
+
+const payoutColors = payoutValues.map(val =>
+  val >= 500 ? '#27ae60' : val >= 300 ? '#f39c12' : '#c0392b'
+);
+
+new Chart(payoutCtx, {
+  type: 'bar',
+  data: {
+    labels: payoutLabels,
+    datasets: [{
+      label: 'Total Payout ($)',
+      borderRadius: 6,
+      data: payoutValues,
+      backgroundColor: payoutColors
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    layout: {
+      padding: { left: 10, right: 10, top: 5, bottom: 5 }
+    },
+    scales: {
+      x: {
+        display: false
+      },
+      y: {
+        ticks: {
+          color: '#eee',
+          font: {
+            size: 16,
+            weight: 'bold'
+          }
+        },
+        grid: { color: '#333' }
+      }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => `$${ctx.raw}`
+        }
+      },
+      datalabels: {
+        anchor: 'center',
+        align: 'center',
+        color: '#fff',
+        font: {
+          weight: 'bold',
+          size: 16
+        },
+        formatter: value => `$${value}`
+      }
+    }
+  },
+  plugins: [ChartDataLabels]
+});
+	  
 	  document.querySelectorAll(".tab-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
