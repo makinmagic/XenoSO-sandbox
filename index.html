@@ -32,45 +32,51 @@
     <div id="currentEvent" style="text-align: center; font-weight: bold;"></div>
     <div id="main-layout">
   <div id="top-row" style="display: flex; align-items: flex-start; justify-content: center; gap: 20px;">
+
     <div id="left-column" style="width: 66%; display: flex; flex-direction: column; gap: 20px;">
-      <div class="container players">
-        <div style="display: flex; align-items: center;">
-          <h3 id="players-title" style="flex-grow: 1; text-align: center;">
-            <span class="sims-online-icon"></span> Sims Online: 0 <span class="sims-online-icon"></span>
-          </h3>
-          <i class="fa-solid fa-search search-icon" onclick="toggleSearch('sim')"></i>
-          <input type="text" id="sim-search" placeholder="Search any Sim" autocomplete="off" style="display: none; margin-left: 10px;" onkeyup="searchSim(event)">
-        </div>
-        <div style="display: flex; align-items: center; justify-content: center; margin-top: 8px; margin-bottom: 12px;">
-          <div class="current-job-summary" style="text-align: center; margin: 0;">
-            <strong>💼 Current Job: <span id="current-job-label">Loading...</span></strong> |
-            <a href="#" class="job-link" onclick="openJobSchedulerModal()">View Schedule</a>
+
+      <div style="display: flex; gap: 20px;">
+
+        <div class="container players" style="flex: 1;">
+          <div style="display: flex; align-items: center;">
+            <h3 id="players-title" style="flex-grow: 1; text-align: center;">
+              <span class="sims-online-icon"></span> Sims Online: 0 <span class="sims-online-icon"></span>
+            </h3>
+            <i class="fa-solid fa-search search-icon" onclick="toggleSearch('sim')"></i>
+            <input type="text" id="sim-search" placeholder="Search any Sim" autocomplete="off" style="display: none; margin-left: 10px;" onkeyup="searchSim(event)">
           </div>
+          <div style="display: flex; align-items: center; justify-content: center; margin-top: 8px; margin-bottom: 12px;">
+            <div class="current-job-summary" style="text-align: center; margin: 0;">
+              <strong>💼 Current Job: <span id="current-job-label">Loading...</span></strong> |
+              <a href="#" class="job-link" onclick="openJobSchedulerModal()">View Schedule</a>
+            </div>
+          </div>
+          <div class="scrollable" id="players"></div>
         </div>
-        <div class="scrollable" id="players"></div>
-      </div>
-      <div class="container lots">
-        <div style="display: flex; align-items: center;">
-          <h3 id="lots-title" style="flex-grow: 1; text-align: center;">
-            <span class="active-lots-icon"></span> Active Lots <span class="active-lots-icon"></span>
-          </h3>
-          <i class="fa-solid fa-search search-icon" onclick="toggleSearch('lot')"></i>
-          <input type="text" id="lot-search" placeholder="Search any Lot" autocomplete="off" style="display:none; margin-left: 10px;" onkeyup="searchLot(event)">
+
+        <div class="container lots" style="flex: 1;">
+          <div style="display: flex; align-items: center;">
+            <h3 id="lots-title" style="flex-grow: 1; text-align: center;">
+              <span class="active-lots-icon"></span> Active Lots <span class="active-lots-icon"></span>
+            </h3>
+            <i class="fa-solid fa-search search-icon" onclick="toggleSearch('lot')"></i>
+            <input type="text" id="lot-search" placeholder="Search any Lot" autocomplete="off" style="display:none; margin-left: 10px;" onkeyup="searchLot(event)">
+          </div>
+          <div id="lot-filter">
+            <i class="fa-solid fa-mug-hot" title="Service" onclick="filterLots('Service')"></i>
+            <i class="fa-solid fa-hammer" title="Skills" onclick="filterLots('Skills')"></i>
+            <i class="fa-solid fa-dollar-sign" title="Money" onclick="filterLots('Money')"></i>
+            <i class="fa-solid fa-handshake" title="Welcome" onclick="filterLots('Welcome')"></i>
+            <i class="fa-solid fa-masks-theater" title="Entertainment" onclick="filterLots('Entertainment')"></i>
+            <i class="fa-solid fa-gift" title="Store" onclick="filterLots('Store')"></i>
+            <i class="fa-solid fa-heart" title="Romance" onclick="filterLots('Romance')"></i>
+            <i class="fa-solid fa-house-chimney" title="Residential" onclick="filterLots('Residential')"></i>
+            <i class="fa-solid fa-dice-three" title="Games" onclick="filterLots('Games')"></i>
+            <i class="fa-solid fa-building" title="Community" onclick="filterLots('Community')"></i>
+            <i class="fa-solid fa-arrow-rotate-left" title="Show All" onclick="filterLots('')"></i>
+          </div>
+          <div class="scrollable" id="lots"></div>
         </div>
-        <div id="lot-filter">
-          <i class="fa-solid fa-mug-hot" title="Service" onclick="filterLots('Service')"></i>
-          <i class="fa-solid fa-hammer" title="Skills" onclick="filterLots('Skills')"></i>
-          <i class="fa-solid fa-dollar-sign" title="Money" onclick="filterLots('Money')"></i>
-          <i class="fa-solid fa-handshake" title="Welcome" onclick="filterLots('Welcome')"></i>
-          <i class="fa-solid fa-masks-theater" title="Entertainment" onclick="filterLots('Entertainment')"></i>
-          <i class="fa-solid fa-gift" title="Store" onclick="filterLots('Store')"></i>
-          <i class="fa-solid fa-heart" title="Romance" onclick="filterLots('Romance')"></i>
-          <i class="fa-solid fa-house-chimney" title="Residential" onclick="filterLots('Residential')"></i>
-          <i class="fa-solid fa-dice-three" title="Games" onclick="filterLots('Games')"></i>
-          <i class="fa-solid fa-building" title="Community" onclick="filterLots('Community')"></i>
-          <i class="fa-solid fa-arrow-rotate-left" title="Show All" onclick="filterLots('')"></i>
-        </div>
-        <div class="scrollable" id="lots"></div>
       </div>
       <div id="events-wrapper" style="display: flex; justify-content: center;">
         <div id="events-container" class="container" style="width: 80%;">
@@ -98,14 +104,16 @@
           </div>
         </div>
       </div>
+
     </div>
-    <div id="console-container" class="container console" style="width: 32%; flex-shrink: 0;">
+
+    <div id="console-container" class="container console" style="width: 32%; flex-shrink: 0; align-self: flex-start;">
       <h3><span class="console-icon"></span> Console <span class="console-icon"></span></h3>
       <div id="console-content">
         <p style="text-align: center; color: #black;">Select or search for a Sim or Lot to see more information, or click on an Event to view details.</p>
-        <!-- Content for Console will go here -->
       </div>
     </div>
+
   </div>
 </div>
 	<button id="backToTopBtn" title="Back to Top">⬆️</button>
