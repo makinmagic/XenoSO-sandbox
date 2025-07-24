@@ -219,41 +219,22 @@ body {
     }
         
 @media (max-width: 768px) {
-  #left-column > div {
-    flex-direction: column !important;
-  }
-}
-
-  #top-row {
+  #main-container, #bottom-container {
     flex-direction: column;
     align-items: center;
-  }
-
-  #left-column {
-    width: 100%;
-  }
-
-  #left-column > div {
-    flex-direction: column;
-    gap: 20px;
   }
 
   .container {
     width: 95% !important;
     margin: 0 auto 20px auto;
   }
-
-  #console-container {
-    width: 95% !important;
-  }
-
-  #events-wrapper {
-    width: 100%;
-    justify-content: center;
-  }
-
-  #events-container {
-    width: 95% !important;
+        
+  #left-column,
+  #left-column > div {
+    flex-direction: column !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center;
   }
 }
 
