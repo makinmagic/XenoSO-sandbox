@@ -219,10 +219,10 @@ body {
     }
         
 @media (max-width: 768px) {
-  #main-layout {
-    flex-direction: column;
-    align-items: center;
+  #left-column > div {
+    flex-direction: column !important;
   }
+}
 
   #top-row {
     flex-direction: column;
