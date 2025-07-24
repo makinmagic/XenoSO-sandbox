@@ -8,7 +8,7 @@
     <title>XenoSO Dashboard</title>
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css">
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-solid.css">
-    <script src="https://makinmagic.github.io/XenoSO-sandbox/functions.js"></script>
+    <script src="https://makinmagic.github.io/XenoSO/functions/functions.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
     <!-- <script src="https://makinmagic.github.io/XenoSO/functions/functions-nye.js"></script> -->
@@ -70,6 +70,13 @@
             </div>
             <div class="scrollable" id="lots"></div>
         </div>
+	    <div id="console-container" class="container">
+        <h3><span class="console-icon"></span> Console <span class="console-icon"></span></h3>
+        <div id="console-content">
+            <p style="text-align: center; color: #black;">Select or search for a Sim or Lot to see more information, or click on an Event to view details.</p>
+            <!-- Content for Console will go here -->
+        </div>
+    </div>
     </div>
 
     <div id="bottom-container" style="display: flex; justify-content: space-between; gap: 1%;">
@@ -95,20 +102,13 @@
         </table>
                 </div>
     </div>
-    <div id="console-container" class="container">
-        <h3><span class="console-icon"></span> Console <span class="console-icon"></span></h3>
-        <div id="console-content">
-            <p style="text-align: center; color: #black;">Select or search for a Sim or Lot to see more information, or click on an Event to view details.</p>
-            <!-- Content for Console will go here -->
-        </div>
-    </div>
 </div>
 	<button id="backToTopBtn" title="Back to Top">⬆️</button>
 	<div id="guideLink" style="text-align: center; font-weight: bold;">
     <a href="https://xenoso.space/" target="_blank">Main Website</a> |
   <a href="https://xenoso.fandom.com/" target="_blank">Wiki</a> |
 <a href="https://makinmagic.github.io/timer/" target="_blank">SMO Timer</a> |
-  <!-- <a href="https://makinmagic.github.io/pizza/" target="_blank">Pizza Helper</a> | -->
+  <a href="https://makinmagic.github.io/pizza/" target="_blank">Pizza Helper</a> |
   <a href="https://makinmagic.github.io/puzzle/" target="_blank">Tomb Puzzle Helper</a>
 </div>
 <div id="footer-note" style="text-align: center; margin-bottom: 0px; font-size: 16px;">
@@ -208,10 +208,10 @@ window.onload = () => {
 <div id="moModal" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
-    <h3 style="margin-top: 15px;">All MO Percentages</h3>
+    <h3 style="margin-top: 15px; margin-bottom: 20px;">All MO Data</h3>
     <div id="moTabs">
   <div class="tab-header">
-    <button class="tab-btn active" data-tab="percentTab">📈 By % Multiplier</button>
+    <button class="tab-btn active" data-tab="percentTab">📈 By %</button>
     <button class="tab-btn" data-tab="payoutTab">💵 By Payout</button>
   </div>
 
