@@ -53,21 +53,26 @@ body {
 
 #top-row {
   display: flex;
-  align-items: flex-start; /* Ensures containers align at top */
-  gap: 1%;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+#left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 66%;
 }
 
 .container.players,
 .container.lots {
-  width: 33%;
-  max-height: 400px;
+  min-height: 400px;
   overflow-y: auto;
 }
 
 .container.console {
-  width: 33%;
+  width: 34%;
   flex-grow: 1;
-  /* No height restrictions so it can grow */
 }
 
 #events-wrapper {
