@@ -46,13 +46,38 @@ body {
         margin-bottom: 20px; /* Add spacing between rows */
     }
 
-.container.players, .container.lots {
-  width: 32%;
+#main-layout {
+  display: flex;
+  flex-direction: column;
+}
+
+#top-row {
+  display: flex;
+  align-items: flex-start; /* Ensures containers align at top */
+  gap: 1%;
+}
+
+.container.players,
+.container.lots {
+  width: 33%;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 .container.console {
-  width: 34%;
-  max-width: 400px;
+  width: 33%;
+  flex-grow: 1;
+  /* No height restrictions so it can grow */
+}
+
+#events-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+#events-container {
+  width: 66%;
 }
 
     table {
