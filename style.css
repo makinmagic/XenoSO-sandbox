@@ -29,12 +29,13 @@ body {
     #main-container {
         display: flex;
         justify-content: space-between;
+        align-items: flex-start;
         gap: 1%;
         margin-top: 30px;
     }
 
     .container {
-        width: 49%;
+        width: 32%;
         border-radius: 8px;
         border: 2px solid #9215e6;
         box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
@@ -173,6 +174,7 @@ body {
         padding: 15px;
         background-color: rgba(180, 100, 255, 0.25);
         border-radius: 10px;
+        text-align: left;
     }
         
 @media (max-width: 768px) {
@@ -366,31 +368,6 @@ body.dark-mode #console-content a {
   font-weight: bold;
 }
 
-.tab-header {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1em;
-  gap: 1em;
-}
-
-.tab-btn {
-  padding: 8px 16px;
-  font-size: 1em;
-  background: #333;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 6px;
-}
-
-.tab-btn.active {
-  background: #6600cc;
-}
-
-.tab-content {
-  display: none;
-}
-
 .sims-online-icon::before {
     font: var(--fa-font-solid);
     content: "\f500";
@@ -464,6 +441,31 @@ body.dark-mode #console-content a {
 }
 .close:hover {
   color: #fff;
+}
+
+.tab-header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1em;
+  gap: 1em;
+}
+
+.tab-btn {
+  padding: 8px 16px;
+  font-size: 1em;
+  background: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.tab-btn.active {
+  background: #6600cc;
+}
+
+.tab-content {
+  display: none;
 }
 
 /* Job Scheduler Modal */
