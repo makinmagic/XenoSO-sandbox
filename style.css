@@ -72,6 +72,7 @@ body {
 
 #console-container {
   min-height: 400px;
+  overflow-y: auto;
 }
 
 .container.console {
