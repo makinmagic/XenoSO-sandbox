@@ -219,22 +219,39 @@ body {
     }
         
 @media (max-width: 768px) {
-  #main-container, #bottom-container {
-    flex-direction: column;
+  #top-row {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  #left-column {
+    width: 100% !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  #left-column > div:first-child {
+    flex-direction: column !important;
+    display: flex !important;
+    gap: 20px !important;
+    width: 100% !important;
     align-items: center;
+  }
+
+  #events-wrapper {
+    width: 100% !important;
+    justify-content: center !important;
+    display: flex !important;
+  }
+
+  #console-container {
+    width: 95% !important;
+    align-self: center !important;
   }
 
   .container {
     width: 95% !important;
-    margin: 0 auto 20px auto;
-  }
-        
-  #left-column,
-  #left-column > div {
-    flex-direction: column !important;
-    width: 100% !important;
-    display: flex !important;
-    align-items: center;
+    margin: 0 auto 20px auto !important;
   }
 }
 
