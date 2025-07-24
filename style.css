@@ -70,6 +70,10 @@ body {
   overflow-y: auto;
 }
 
+#console-container {
+  min-height: 400px;
+}
+
 .container.console {
   width: 34%;
   flex-grow: 1;
@@ -220,11 +224,23 @@ body {
         align-items: center;
     }
 
+    #top-row {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #left-column {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     .container {
         width: 95%;
         margin: 0 auto 20px auto;
     }
-    
+
     #bottom-container {
         display: flex;
         flex-direction: column;
@@ -233,11 +249,15 @@ body {
 
     /* Adjust order on mobile */
     #console-container {
-        order: 1; /* Console first in mobile view */
+        order: 1;
+        width: 95%;
+        margin-bottom: 20px;
+        min-height: auto;
     }
 
     #rewards-container {
-        order: 2; /* Rewards after Console in mobile view */
+        order: 2;
+        width: 95%;
     }
 }
 
