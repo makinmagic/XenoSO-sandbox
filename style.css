@@ -53,15 +53,9 @@ body {
 
 #top-row {
   display: flex;
-  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
-}
-
-#left-column {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 66%;
 }
 
 .container.players,
@@ -70,12 +64,25 @@ body {
   overflow-y: auto;
 }
 
-#console-container {
+@media (min-width: 900px) {
+  #top-row.tall-console + #events-wrapper {
+    justify-content: flex-start;
+    padding-left: 10px;
+  }
+}
+
+#left-column {
+  width: 66%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  flex-grow: 1;
-  min-height: 400px;
+  gap: 0px;
+}
+
+#console-container {
+  width: 32%;
+  flex-shrink: 0;
+  align-self: flex-start;
+  min-height: 508px;
 }
 
 .container.console {
