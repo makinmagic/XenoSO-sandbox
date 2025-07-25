@@ -87,10 +87,15 @@ body {
     clear: both;
   }
 
-  #top-row:has(#console-container:has(.console-content:only-child)) + #events-wrapper {
-    justify-content: flex-start;
-    padding-left: 10px;
-  }
+#events-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+        
+#main-layout.shift-events #events-wrapper {
+  justify-content: flex-start;
+  padding-left: 10px;
 }
 
 #left-column {
