@@ -71,10 +71,11 @@ body {
 }
 
 #console-container {
-  min-height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  flex-grow: 1;
+  min-height: 400px;
 }
 
 .container.console {
