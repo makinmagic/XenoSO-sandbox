@@ -58,24 +58,36 @@ body {
   gap: 20px;
 }
 
-#main-layout .tall-console ~ #events-wrapper {
-  justify-content: flex-start !important;
-  padding-left: 10px;
-}
-
-#top-row.tall-console + #events-wrapper {
-  justify-content: flex-start !important;
-  padding-left: 10px;
-}
-
 .container.players,
 .container.lots {
   min-height: 400px;
   overflow-y: auto;
 }
 
-@media (min-width: 900px) {
-  #top-row.tall-console + #events-wrapper {
+@media (min-width: 768px) {
+  #top-row {
+    align-items: stretch;
+  }
+
+  #console-container {
+    align-self: stretch;
+    flex-basis: 32%;
+    max-width: 32%;
+  }
+
+  #left-column {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  #top-row::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  #top-row:has(#console-container:has(.console-content:only-child)) + #events-wrapper {
     justify-content: flex-start;
     padding-left: 10px;
   }
