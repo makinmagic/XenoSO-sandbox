@@ -72,7 +72,9 @@ body {
 
 #console-container {
   min-height: 400px;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .container.console {
