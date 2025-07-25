@@ -176,21 +176,6 @@ window.onload = () => {
   init();
   setInterval(displayCurrentEvent, 60000);
 };
-
-function adjustEventsPosition() {
-  const topRow = document.getElementById('top-row');
-  const leftCol = document.getElementById('left-column');
-  const consoleBox = document.getElementById('console-container');
-
-  if (leftCol.offsetHeight < consoleBox.offsetHeight) {
-    topRow.classList.add('tall-console');
-  } else {
-    topRow.classList.remove('tall-console');
-  }
-}
-
-window.addEventListener('load', adjustEventsPosition);
-window.addEventListener('resize', adjustEventsPosition);
 	
 </script>
 
