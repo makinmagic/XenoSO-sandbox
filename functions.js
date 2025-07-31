@@ -205,17 +205,17 @@ const isFavorite = favoriteSims[avatar.avatar_id];
 
        // Mapping for lot categories
         const categoryMapping = {
-            1: 'Money',
-            2: 'Money',
-            3: 'Romance',
+            1: '<i class="fa-solid fa-dollar-sign"></i> Money',
+            2: '<i class="fa-solid fa-dollar-sign"></i> Money',
+            3: '<i class="fa-solid fa-heart"></i> Romance',
             4: '<i class="fa-solid fa-mug-hot"></i> Service',
-            5: 'Store',
+            5: '<i class="fa-solid fa-gift"></i> Store',
             6: '<i class="fa-solid fa-hammer"></i> Skills',
-            7: 'Welcome',
-            8: 'Games',
-            9: 'Entertainment',
-            10: 'Residential',
-            11: 'Community'
+            7: '<i class="fa-solid fa-handshake"></i> Welcome',
+            8: '<i class="fa-solid fa-dice-three"></i> Games',
+            9: '<i class="fa-solid fa-masks-theater"></i> Entertainment',
+            10: '<i class="fa-solid fa-house-chimney"></i> Residential',
+            11: '<i class="fa-solid fa-building"></i> Community'
         };
 
 let currentFilter = ''; // Track the current filter
