@@ -381,7 +381,15 @@ async function displayLotInfo(lotId) {
         );
 
         // Replace \r\n with <br> in description
-        const formattedDescription = (lotData.description || 'No description available.').replace(/(\r\n|\n|\r)/g, '<br>');
+        const formattedDescription = ((lotData.description || 'No description available.')
+  .split(/\r?\n/)
+  .map(line => {
+    if (/^-{5,}$/.test(line.trim())) {
+      return `<span style="font-family: monospace;">${line}</span>`;
+    }
+    return line;
+  }).join('<br>')
+);
 
         // Find known Sims inside the lot (from the Sims Online table)
         const playersContainer = document.getElementById('players');
@@ -776,7 +784,15 @@ async function searchLot(event) {
             };
 
             // Format description and creation date
-            const formattedDescription = (lotData.description || 'No description available.').replace(/(\r\n|\n|\r)/g, '<br>');
+            const formattedDescription = ((lotData.description || 'No description available.')
+  .split(/\r?\n/)
+  .map(line => {
+    if (/^-{5,}$/.test(line.trim())) {
+      return `<span style="font-family: monospace;">${line}</span>`;
+    }
+    return line;
+  }).join('<br>')
+);
             const creationDate = new Date(lotData.created_date * 1000).toLocaleDateString();
 			
 			// Check for favorites in localStorage
