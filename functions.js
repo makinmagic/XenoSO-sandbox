@@ -210,7 +210,7 @@ const isFavorite = favoriteSims[avatar.avatar_id];
             3: 'Romance',
             4: '<i class="fa-solid fa-mug-hot"></i> Service',
             5: 'Store',
-            6: 'Skills',
+            6: '<i class="fa-solid fa-hammer"></i> Skills',
             7: 'Welcome',
             8: 'Games',
             9: 'Entertainment',
