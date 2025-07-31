@@ -391,6 +391,13 @@ async function displayLotInfo(lotId) {
   }).join('<br>')
 );
 
+	    const creationDate = new Date(lotData.created_date * 1000).toLocaleDateString(undefined, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+});
+
+
         // Find known Sims inside the lot (from the Sims Online table)
         const playersContainer = document.getElementById('players');
         const playersRows = Array.from(playersContainer.querySelectorAll('tr'));
@@ -466,6 +473,7 @@ consoleContent.innerHTML = `
     <div class="description-container">${formattedDescription}</div>
     <p><strong>Lot Type:</strong> ${categoryMapping[lotData.category] || 'Unknown'}</p>
     <p><strong>Admit Mode:</strong> ${admitModeMapping[lotData.admit_mode] || 'Unknown'}</p>
+    <p><strong>Established on:</strong> ${creationDate}</p>
     <p><strong>Owner:</strong> <span class="sim-name" data-simname="${ownerName}" onclick="openSimModal(event)" style="color: #FFA502;">${ownerName}</span></p>
     <p><strong>Roommates:</strong> ${
         roommateNames.length > 0
@@ -793,7 +801,11 @@ async function searchLot(event) {
     return line;
   }).join('<br>')
 );
-            const creationDate = new Date(lotData.created_date * 1000).toLocaleDateString();
+            const creationDate = new Date(lotData.created_date * 1000).toLocaleDateString(undefined, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+});
 			
 			// Check for favorites in localStorage
             const favorites = JSON.parse(localStorage.getItem('favorites')) || {};
