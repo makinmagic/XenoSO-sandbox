@@ -338,6 +338,34 @@ body {
     color: #c169ff;
 }
 
+.event-label {
+  display: inline-block;
+  background: linear-gradient(to right, #facc15, #f472b6);
+  color: #1a1a1a;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  margin-bottom: 8px;
+}
+
+.event-divider {
+  border: none;
+  height: 2px;
+  background: linear-gradient(to right, #ec4899, #facc15, #ec4899);
+  margin: 10px 0;
+}
+
+.event-card {
+  background: rgba(90, 30, 120, 0.6);
+  border: 1px solid #a855f7;
+  border-radius: 12px;
+  padding: 14px 18px;
+  box-shadow: 0 0 10px #a855f750;
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+
 #dark-mode-toggle i {
     font-size: 24px;
 }
