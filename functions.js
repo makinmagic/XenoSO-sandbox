@@ -1066,11 +1066,8 @@ function displayEventInfo(event) {
     const formattedTime = `${eventStartDate.toLocaleTimeString(undefined, { hour: 'numeric', minute: 'numeric', hour12: true })} to ${eventEndDate.toLocaleTimeString(undefined, { hour: 'numeric', minute: 'numeric', hour12: true })} (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
 
     consoleContent.innerHTML = `
-        <div class="event-label">🎉 EVENT</div>
         <div class="console-title">${event.name}</div>
-        <hr class="event-divider" />
-        <div class="event-card">
-            <p><strong>📖 Description:</strong><br> ${event.description.replace(/(\r\n|\n|\r)/g, "<br>")}</p>
+            <p><strong>📖 Description:</strong><br><div class="event-card"> ${event.description.replace(/(\r\n|\n|\r)/g, "<br>")}</p>
             <p><strong>📅 Date:</strong> ${formattedDate}</p>
             <p><strong>🕓 Time:</strong> ${formattedTime}</p>
             <p><strong>📍 Location:</strong> ${event.location}</p>
