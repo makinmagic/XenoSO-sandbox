@@ -140,10 +140,10 @@ if (isJobLot && playerDetails.current_job) {
         }
     }
 
-    lotName = `At ${jobName} Job 💼`;
-    if (jobLevel !== null && !isNaN(jobLevel)) {
-        lotName += ` (Lv. ${jobLevel})`;
-    }
+    lotName = `At ${jobName} 💼`;
+if (jobLevel !== null && !isNaN(jobLevel)) {
+    lotName += ` (Lv. ${jobLevel})`;
+}
 
 } else {
     lotName = lotMapping[avatar.location] || 'Unknown';
@@ -164,12 +164,12 @@ const isFavorite = favoriteSims[avatar.avatar_id];
                title="Click to toggle favorite" 
                data-favorite-id="${avatar.avatar_id}" 
                onclick="toggleFavorite('sims', '${avatar.avatar_id}', '${avatar.name}', event)"></i>
-            ${formatDisplayName(avatar.name)}
+            ${formatDisplayName(avatar.name)}${/join me at/i.test(playerDetails.description || '') ? ' <span class="join-label" title="This sim is looking for others to join them at work!">✨ Join me at work!</span>' : ''}
         </td>
         <td class="hidden">${avatar.avatar_id}</td>
         <td>${ageInDays} days</td>
-        <td class="hidden">${avatar.location}</td> <!-- This should be the Location ID (hidden) -->
-        <td>${lotName}</td> <!-- This should be the visible Location name -->
+        <td class="hidden">${avatar.location}</td>
+        <td>${lotName}</td>
     </tr>`;
         });
 
@@ -203,19 +203,18 @@ const isFavorite = favoriteSims[avatar.avatar_id];
     }
 }
 
-       // Mapping for lot categories
         const categoryMapping = {
-            1: '<i class="fa-solid fa-dollar-sign"></i> Money',
-            2: '<i class="fa-solid fa-dollar-sign"></i> Money',
-            3: '<i class="fa-solid fa-heart"></i> Romance',
-            4: '<i class="fa-solid fa-mug-hot"></i> Service',
-            5: '<i class="fa-solid fa-gift"></i> Store',
-            6: '<i class="fa-solid fa-hammer"></i> Skills',
-            7: '<i class="fa-solid fa-handshake"></i> Welcome',
-            8: '<i class="fa-solid fa-dice-three"></i> Games',
-            9: '<i class="fa-solid fa-masks-theater"></i> Entertainment',
-            10: '<i class="fa-solid fa-house-chimney"></i> Residential',
-            11: '<i class="fa-solid fa-building"></i> Community'
+                1: 'Money',
+                2: 'Money',
+                3: 'Romance',
+                4: 'Service',
+                5: 'Store',
+                6: 'Skills',
+                7: 'Welcome',
+                8: 'Games',
+                9: 'Entertainment',
+                10: 'Residential',
+                11: 'Community'
         };
 
 let currentFilter = ''; // Track the current filter
@@ -273,7 +272,10 @@ function filterLots(type) {
             if (b.isFavorite !== a.isFavorite) {
                 return b.isFavorite - a.isFavorite; // Favorites come first
             }
-            return b.count - a.count; // Then sort by Sims Inside
+            if (b.count !== a.count) {
+    	return b.count - a.count;
+	}
+	return a.name.localeCompare(b.name);
         });
 
         const fetchLotDetailsPromises = lotsData.map(lot =>
@@ -380,7 +382,7 @@ async function displayLotInfo(lotId) {
             })
         );
 
-        // Replace \r\n with <br> in description
+        // Format description and creation date
         const formattedDescription = ((lotData.description || 'No description available.')
   .split(/\r?\n/)
   .map(line => {
@@ -391,12 +393,11 @@ async function displayLotInfo(lotId) {
   }).join('<br>')
 );
 
-	    const creationDate = new Date(lotData.created_date * 1000).toLocaleDateString(undefined, {
+	const creationDate = new Date(lotData.created_date * 1000).toLocaleDateString(undefined, {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
 });
-
 
         // Find known Sims inside the lot (from the Sims Online table)
         const playersContainer = document.getElementById('players');
@@ -571,8 +572,8 @@ async function displayPlayerInfo(avatarId) {
             .find(row => row.querySelector('.hidden:nth-child(2)').textContent === avatarId.toString()); // Match avatar ID
         const playerLocation = locationRow ? locationRow.querySelector('td:nth-child(5)').textContent : 'Unknown'; // Get location name
 
-        // Replace \r\n with <br> in description
-        const formattedDescription = (playerData.description || 'No description available.').replace(/(\r\n|\n|\r)/g, '<br>');
+        // Format description
+	const formattedDescription = (playerData.description || 'No description available.').replace(/(\r\n|\n|\r)/g, '<br>');
 
         // Check for favorites in localStorage
         const favorites = JSON.parse(localStorage.getItem('favorites')) || {};
@@ -580,10 +581,10 @@ async function displayPlayerInfo(avatarId) {
 
 	// Job mapping
 	const jobMap = {
-   	 1: 'Factory',
- 	 2: 'Diner',
-	 4: 'Club',
-	 5: 'Club'
+   	 1: 'Factory 🏭',
+ 	 2: 'Diner 🍽️',
+	 4: 'Club 🪩',
+	 5: 'Club 🪩'
 	};
 	const jobName = jobMap[playerData.current_job];
 
@@ -714,10 +715,10 @@ async function searchSim(event) {
 
 	    // Job mapping
 	   const jobMap = {
- 	   1: 'Factory',
-    	   2: 'Diner',
-	   4: 'Club',
-    	   5: 'Club'
+ 	   1: 'Factory 🏭',
+    	   2: 'Diner 🍽️',
+	   4: 'Club 🪩',
+    	   5: 'Club 🪩'
 	    };
 	   const jobName = jobMap[playerData.current_job];
 
@@ -739,7 +740,7 @@ async function searchSim(event) {
                 <p><strong>Age:</strong> ${ageInDays} days old</p>
                 ${isOnline ? `<p><strong>Location:</strong> ${playerLocation}</p>` : ''}
 		${jobName ? `<p><strong>Job:</strong> ${jobName}</p>` : ''}
-                <p><strong>Currently Online:</strong> ${isOnline ? 'Yes' : 'No'}</p>
+                <p><strong>Currently Online:</strong> ${isOnline ? 'Yes 🟢' : 'No 🔴'}</p>
             `;
 		
 	document.getElementById('console-container')?.scrollIntoView({
@@ -778,17 +779,17 @@ async function searchLot(event) {
 
             // Mapping for lot categories
             const categoryMapping = {
-                1: 'Money',
-                2: 'Money',
-                3: 'Romance',
-                4: '<i class="fa-solid fa-mug-hot"></i> Service',
-                5: 'Store',
-                6: 'Skills',
-                7: 'Welcome',
-                8: 'Games',
-                9: 'Entertainment',
-                10: 'Residential',
-                11: 'Community'
+                1: '💲 Money',
+                2: '💲 Money',
+                3: '❤️ Romance',
+                4: '🍵 Service',
+                5: '🎁 Store',
+                6: '🔨 Skills',
+                7: '🤝 Welcome',
+                8: '🎲 Games',
+                9: '🎭 Entertainment',
+                10: '🏠 Residential',
+                11: '🏨 Community'
             };
 
             // Format description and creation date
@@ -818,7 +819,7 @@ async function searchLot(event) {
     return firstCell && firstCell.textContent.trim().toLowerCase() === lotData.name.trim().toLowerCase();
 });
 
-            const activeStatus = isActive ? 'Yes' : 'No';
+            const activeStatus = isActive ? 'Yes 🟢' : 'No 🔴';
             
             const lotRow = Array.from(lotsContainer.querySelectorAll('tr')).find(row =>
     row.querySelector('td')?.textContent.trim().toLowerCase() === lotData.name.trim().toLowerCase()
@@ -910,8 +911,8 @@ if (appendedHiddenHost) {
                    class="console-img">
                 <div class="description-container">${formattedDescription}</div>
                 <p><strong>Lot Type:</strong> ${categoryMapping[lotData.category] || 'Unknown'}</p>
-                <p><strong>Admit Mode:</strong> ${admitModeMapping[lotData.admit_mode] || 'Unknown'}</p>
 		<p><strong>Established on:</strong> ${creationDate}</p>
+                <p><strong>Admit Mode:</strong> ${admitModeMapping[lotData.admit_mode] || 'Unknown'}</p>
                 <p><strong>Owner:</strong> 
   <span class="sim-name" data-simname="${ownerName}" onclick="openSimModal(event)" style="color: #FFA502;">
     ${ownerName}
@@ -998,10 +999,10 @@ async function openSimModal(event) {
     const isFavorite = favorites.sims && favorites.sims[idFromName];
 
     const jobMap = {
-      1: 'Factory',
-      2: 'Diner',
-      4: 'Club',
-      5: 'Club'
+      1: 'Factory 🏭',
+      2: 'Diner 🍽️',
+      4: 'Club 🪩',
+      5: 'Club 🪩'
     };
     const jobName = jobMap[playerData.current_job];
 
@@ -1021,7 +1022,7 @@ async function openSimModal(event) {
   	<p><strong>Age:</strong> ${ageInDays} days old</p>
   	${isOnline ? `<p><strong>Location:</strong> ${playerLocation}</p>` : ''}
   	${jobName ? `<p><strong>Job:</strong> ${jobName}</p>` : ''}
-  	<p><strong>Currently Online:</strong> ${isOnline ? 'Yes' : 'No'}</p>
+  	<p><strong>Currently Online:</strong> ${isOnline ? 'Yes 🟢' : 'No 🔴'}</p>
 	</div>
     `;
   } catch (error) {
@@ -1077,6 +1078,10 @@ async function fetchEvents() {
                 `;
                 row.addEventListener('click', () => {
                     displayEventInfo(event); // Show details in the Console when clicked
+			document.getElementById('console-container')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    });
                 });
             });
         }
@@ -1095,11 +1100,13 @@ function displayEventInfo(event) {
     const formattedTime = `${eventStartDate.toLocaleTimeString(undefined, { hour: 'numeric', minute: 'numeric', hour12: true })} to ${eventEndDate.toLocaleTimeString(undefined, { hour: 'numeric', minute: 'numeric', hour12: true })} (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
 
     consoleContent.innerHTML = `
-        <div class="console-title">${event.name}</div>
-            <p><strong>📖 Description:</strong><br><div class="event-card"> ${event.description.replace(/(\r\n|\n|\r)/g, "<br>")}</p></div>
-            <p><strong>📅 Date:</strong> ${formattedDate}</p>
-            <p><strong>🕓 Time:</strong> ${formattedTime}</p>
-            <p><strong>📍 Location:</strong> ${event.location}</p>
+        <div class="console-title">
+            ${event.name}
+        </div>
+        <p><strong>ℹ️ Description:</strong><br><div class="event-card"> ${event.description.replace(/(\r\n|\n|\r)/g, "<br>")}</p></div>
+        <p><strong>📅 Date:</strong> ${formattedDate}</p>
+        <p><strong>🕐 Time:</strong> ${formattedTime}</p>
+        <p><strong>📍 Location:</strong> ${event.location}</p>
     `;
 }
 
@@ -1258,7 +1265,7 @@ const moPayoutAt150 = {
   Pinatas: 529,
   Phones: 529,
   Easels: 529,
-  Gnomes: 576,
+  Gnomes: 529,
   Jams: 546,
   Potions: 596
 };
