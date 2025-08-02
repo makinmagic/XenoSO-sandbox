@@ -41,6 +41,13 @@ function formatDisplayName(name) {
   return display;
 }
 
+let jobFilterEnabled = false;
+
+function toggleJobFilter() {
+    jobFilterEnabled = !jobFilterEnabled;
+    loadOnlinePlayers();
+}
+
 async function loadOnlinePlayers() {
     try {
 
@@ -102,21 +109,26 @@ async function loadOnlinePlayers() {
         </th>
         <th class="hidden">Location ID</th>
         <th>
-            Location 
-            <i class="fa-solid fa-arrow-up-arrow-down" 
-               style="cursor: pointer;" 
-               onclick="sortTable(4, 'text')"></i>
-        </th>
+    Location 
+    <i class="fa-solid fa-arrow-up-arrow-down" 
+       style="cursor: pointer;" 
+       onclick="sortTable(4, 'text')"></i>
+    <i class="fa-solid fa-briefcase" 
+       style="cursor: pointer; margin-left: 6px;" 
+       title="Toggle job location filter"
+       onclick="toggleJobFilter()"></i>
+</th>
     </tr>
 </thead>
                 <tbody>`;
 
         // Process sorted online players
         sortedAvatars.forEach((avatar, index) => {
-            const playerDetails = playerDetailsArray[index]; // Get the corresponding player details
+    const playerDetails = playerDetailsArray[index];
 
-// Determine if this is a job lot
-const isJobLot = avatar.location.toString().length === 10;
+    const isJobLot = avatar.location.toString().length === 10;
+
+    if (jobFilterEnabled && !isJobLot) return; // Skip non-job Sims when filter is on
 
 // Map job ID to name
 const jobMap = {
@@ -134,7 +146,7 @@ if (isJobLot && playerDetails.current_job) {
     // Attempt to extract job level from description
     let jobLevel = null;
     if (typeof playerDetails.description === 'string') {
-        const levelMatch = playerDetails.description.match(/level\s*(\b(?:[0-9]|10))\b/i);
+        const levelMatch = playerDetails.description.match(/\b(?:level|lvl)\s*(\b(?:[0-9]|10))\b/i);
         if (levelMatch) {
             jobLevel = parseInt(levelMatch[1]);
         }
