@@ -1147,7 +1147,7 @@ async function displayCurrentEvent() {
         // Display all overlapping events
         if (currentEvents.length > 0) {
             currentEventContainer.innerHTML = currentEvents
-                .map(event => `<i class="fa-solid fa-balloons"></i> Current Event: ${event.name} at ${event.location}!`)
+                .map(event => `🎉 Current Event: ${event.name} at ${event.location}!`)
                 .join('<br>'); // Join with line breaks for multiple events
 
             currentEvents.forEach(event => addEventIconToLocation(event.location)); // Add balloon icon for each location
@@ -1168,9 +1168,9 @@ function addEventIconToLocation(locationName) {
         const locationCell = row.querySelector("td:first-child");
         if (locationCell && locationCell.textContent.trim().toLowerCase() === locationName.trim().toLowerCase()) {
             // Check if the balloon icon is already present to avoid duplicates
-            if (!locationCell.querySelector(".fa-balloons")) {
-                locationCell.innerHTML += ' <i class="fa-solid fa-balloons" title="Event is ongoing!"></i>';
-            }
+            if (!locationCell.textContent.includes("🎈")) {
+    locationCell.innerHTML += ' <span title="Event is ongoing!">🎈</span>';
+}
         }
     });
 }
