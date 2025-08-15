@@ -30,10 +30,7 @@ async function loadLotName(lotId) {
 
 // Twemoji
 const observer = new MutationObserver(() => {
-    twemoji.parse(document.body, {
-        folder: 'svg',
-        ext: '.svg'
-    });
+    twemoji.parse(document.body, { folder: 'svg', ext: '.svg' });
 });
 
 observer.observe(document.body, {
@@ -41,6 +38,8 @@ observer.observe(document.body, {
     subtree: true,
     characterData: true
 });
+
+twemoji.parse(document.body, { folder: 'svg', ext: '.svg' });
 
 // Define emoji rules
 function formatDisplayName(name) {
