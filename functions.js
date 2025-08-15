@@ -28,6 +28,20 @@ async function loadLotName(lotId) {
     }
 }
 
+// Twemoji
+const observer = new MutationObserver(() => {
+    twemoji.parse(document.body, {
+        folder: 'svg',
+        ext: '.svg'
+    });
+});
+
+observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    characterData: true
+});
+
 // Define emoji rules
 function formatDisplayName(name) {
   const adminNames = ["Sorta", "Savaki", "Daat", "Xeno", "Eric", "Sneaky", "Nyx"];
