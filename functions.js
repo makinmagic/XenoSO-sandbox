@@ -1299,6 +1299,15 @@ const moPayoutAt150 = {
 
 let percentChart = null;
 
+// Preload Twemoji images
+const emojiImages = {};
+Object.entries(emojiMap).forEach(([key, emoji]) => {
+  const url = twemoji.parse(emoji, { folder: 'svg', ext: 'svg' });
+  const img = new Image();
+  img.src = url.match(/src="([^"]+)"/)[1]; // extract SVG URL
+  emojiImages[key] = img;
+});
+
 async function loadTopPayingMOs() {
   const url = 'https://opensheet.elk.sh/1DJHQ0f5X9NUuAouEf5osJgLV2r2nuzsGLIyjLkm-0NM/MOs';
 
@@ -1309,14 +1318,14 @@ async function loadTopPayingMOs() {
 
     const latest = data[data.length - 1];
     const local = new Date(latest.Timestamp);
-const formTimestamp = new Date(Date.UTC(
-  local.getFullYear(),
-  local.getMonth(),
-  local.getDate(),
-  local.getHours(),
-  local.getMinutes(),
-  local.getSeconds()
-));
+    const formTimestamp = new Date(Date.UTC(
+      local.getFullYear(),
+      local.getMonth(),
+      local.getDate(),
+      local.getHours(),
+      local.getMinutes(),
+      local.getSeconds()
+    ));
     const utcNow = new Date();
 
     const startTime = new Date(Date.UTC(
@@ -1335,10 +1344,10 @@ const formTimestamp = new Date(Date.UTC(
 
     if (utcNow < startTime || utcNow >= endTime) {
       container.style.display = "none";
-  const tempoSim = document.getElementById("tempoSim");
-  if (guideLink && tempoSim) {
-    tempoSim.parentNode.insertBefore(guideLink, tempoSim);
-  }
+      const tempoSim = document.getElementById("tempoSim");
+      if (guideLink && tempoSim) {
+        tempoSim.parentNode.insertBefore(guideLink, tempoSim);
+      }
       return;
     }
 
@@ -1352,155 +1361,137 @@ const formTimestamp = new Date(Date.UTC(
     container.firstChild.textContent = `Today's top-paying MOs are: ${topMOs.join(', ')}`;
     viewAllLink.style.display = "inline";
 
-    // Populate modal list
     const sorted = entries.sort((a, b) => parseInt(b[1]) - parseInt(a[1]));
 
-    // Event listener for opening modal
     viewAllLink.onclick = (e) => {
       e.preventDefault();
       modal.style.display = "block";
     };
 
-// Create Percentage Chart
-const ctx = document.getElementById("percentChart").getContext("2d");
-const labels = sorted.map(([key]) => `${emojiMap[key] || ''} ${key}`);
-const dataPoints = sorted.map(([, val]) => parseInt(val));
+    // ---- Chart Plugin to Draw Emoji Images ----
+    const emojiLabelPlugin = {
+      id: 'emojiLabels',
+      afterDraw: (chart) => {
+        const ctx = chart.ctx;
+        const yAxis = chart.scales.y;
 
-if (percentChart) {
-  percentChart.destroy();
-}
+        yAxis.ticks.forEach((label, index) => {
+          const entryLabel = chart.data.labels[index];
+          const key = Object.keys(emojiMap).find(k => entryLabel.includes(k));
+          if (!key) return;
 
-percentChart = new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: labels,
-    datasets: [{
-      label: '% Multiplier',
-      borderRadius: 6,
-      data: dataPoints,
-      backgroundColor: dataPoints.map(val =>
-        val >= 130 ? '#8e44ad' : val >= 100 ? '#9b59b6' : '#c0392b'
-      )
-    }]
-  },
-  options: {
-    indexAxis: 'y',
-    layout: {
-  padding: {
-    left: 10,
-    right: 10,
-    top: 5,
-    bottom: 5
-  }
-},
-    scales: {
-      x: {
-        display: false
+          const img = emojiImages[key];
+          if (!img.complete) return;
+
+          const y = yAxis.getPixelForTick(index);
+          ctx.drawImage(img, yAxis.left - 30, y - 10, 20, 20); // x, y, width, height
+        });
+      }
+    };
+
+    // Create Percentage Chart
+    const ctx = document.getElementById("percentChart").getContext("2d");
+    const labels = sorted.map(([key]) => key); // plain text for plugin
+    const dataPoints = sorted.map(([, val]) => parseInt(val));
+
+    if (percentChart) percentChart.destroy();
+
+    percentChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: '% Multiplier',
+          borderRadius: 6,
+          data: dataPoints,
+          backgroundColor: dataPoints.map(val =>
+            val >= 130 ? '#8e44ad' : val >= 100 ? '#9b59b6' : '#c0392b'
+          )
+        }]
       },
-      y: {
-        ticks: {
-          color: '#eee',
-          font: {
-            size: 16,
-            weight: 'bold'
+      options: {
+        indexAxis: 'y',
+        layout: {
+          padding: { left: 10, right: 10, top: 5, bottom: 5 }
+        },
+        scales: {
+          x: { display: false },
+          y: {
+            ticks: {
+              color: '#eee',
+              font: { size: 16, weight: 'bold' }
+            },
+            grid: { color: '#333' }
           }
         },
-        grid: {
-          color: '#333'
-        }
-      }
-    },
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: ctx => `${ctx.raw}%`
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: { label: ctx => `${ctx.raw}%` }
+          },
+          datalabels: {
+            anchor: 'center',
+            align: 'center',
+            color: '#fff',
+            font: { weight: 'bold', size: 16 },
+            formatter: value => `${value}%`
+          }
         }
       },
-      datalabels: {
-  anchor: 'center',
-  align: 'center',
-  color: '#fff',
-  font: {
-    weight: 'bold',
-    size: 16
-  },
-  formatter: value => `${value}%`
-      }
-    }
-  },
-  plugins: [ChartDataLabels]
-});
+      plugins: [ChartDataLabels, emojiLabelPlugin]
+    });
 
-const payoutCtx = document.getElementById("payoutChart").getContext("2d");
+    // Create Payout Chart
+    const payoutCtx = document.getElementById("payoutChart").getContext("2d");
+    const entriesWithPayout = entries.map(([key, val]) => {
+      const pct = parseInt(val);
+      const payout150 = moPayoutAt150[key];
+      const base = payout150 / 1.5;
+      const actual = Math.round(base * (pct / 100));
+      return { key, pct, actual };
+    }).sort((a, b) => b.actual - a.actual);
 
-const entriesWithPayout = entries.map(([key, val]) => {
-  const pct = parseInt(val);
-  const payout150 = moPayoutAt150[key];
-  const base = payout150 / 1.5;
-  const actual = Math.round(base * (pct / 100));
-  return { key, pct, actual };
-}).sort((a, b) => b.actual - a.actual);  // Sort by payout
+    const payoutLabels = entriesWithPayout.map(entry => entry.key);
+    const payoutValues = entriesWithPayout.map(entry => entry.actual);
+    const payoutColors = payoutValues.map(val =>
+      val >= 500 ? '#27ae60' : val >= 300 ? '#f39c12' : '#c0392b'
+    );
 
-const payoutLabels = entriesWithPayout.map(entry => `${emojiMap[entry.key] || ''} ${entry.key}`);
-const payoutValues = entriesWithPayout.map(entry => entry.actual);
-
-const payoutColors = payoutValues.map(val =>
-  val >= 500 ? '#27ae60' : val >= 300 ? '#f39c12' : '#c0392b'
-);
-
-new Chart(payoutCtx, {
-  type: 'bar',
-  data: {
-    labels: payoutLabels,
-    datasets: [{
-      label: 'Total Payout ($)',
-      borderRadius: 6,
-      data: payoutValues,
-      backgroundColor: payoutColors
-    }]
-  },
-  options: {
-    indexAxis: 'y',
-    layout: {
-      padding: { left: 10, right: 10, top: 5, bottom: 5 }
-    },
-    scales: {
-      x: {
-        display: false
+    new Chart(payoutCtx, {
+      type: 'bar',
+      data: {
+        labels: payoutLabels,
+        datasets: [{
+          label: 'Total Payout ($)',
+          borderRadius: 6,
+          data: payoutValues,
+          backgroundColor: payoutColors
+        }]
       },
-      y: {
-        ticks: {
-          color: '#eee',
-          font: {
-            size: 16,
-            weight: 'bold'
+      options: {
+        indexAxis: 'y',
+        layout: { padding: { left: 10, right: 10, top: 5, bottom: 5 } },
+        scales: {
+          x: { display: false },
+          y: {
+            ticks: { color: '#eee', font: { size: 16, weight: 'bold' } },
+            grid: { color: '#333' }
           }
         },
-        grid: { color: '#333' }
-      }
-    },
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: ctx => `$${ctx.raw}`
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => `$${ctx.raw}` } },
+          datalabels: {
+            anchor: 'center',
+            align: 'center',
+            color: '#fff',
+            font: { weight: 'bold', size: 16 },
+            formatter: value => `$${value}`
+          }
         }
       },
-      datalabels: {
-        anchor: 'center',
-        align: 'center',
-        color: '#fff',
-        font: {
-          weight: 'bold',
-          size: 16
-        },
-        formatter: value => `$${value}`
-      }
-    }
-  },
-  plugins: [ChartDataLabels]
-});
+      plugins: [ChartDataLabels, emojiLabelPlugin]
+    });
 	  
 	  document.querySelectorAll(".tab-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
