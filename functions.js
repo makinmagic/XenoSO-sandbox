@@ -1279,7 +1279,7 @@ const emojiImages = {};
 Object.entries(emojiMap).forEach(([key, emoji]) => {
   const url = twemoji.parse(emoji, { folder: '72x72', ext: '.png' });
   const img = new Image();
-  img.src = url.match(/src="([^"]+)"/)[1]; // Extract PNG URL
+  img.src = url.match(/src="([^"]+)"/)[1];
   emojiImages[key] = img;
 });
 
@@ -1306,15 +1306,6 @@ const moPayoutAt150 = {
 };
 
 let percentChart = null;
-
-// Preload Twemoji images
-const emojiImages = {};
-Object.entries(emojiMap).forEach(([key, emoji]) => {
-  const url = twemoji.parse(emoji, { folder: 'svg', ext: 'svg' });
-  const img = new Image();
-  img.src = url.match(/src="([^"]+)"/)[1]; // extract SVG URL
-  emojiImages[key] = img;
-});
 
 async function loadTopPayingMOs() {
   const url = 'https://opensheet.elk.sh/1DJHQ0f5X9NUuAouEf5osJgLV2r2nuzsGLIyjLkm-0NM/MOs';
