@@ -1307,6 +1307,32 @@ const moPayoutAt150 = {
 
 let percentChart = null;
 
+//Top-paying MOs
+
+const emojiMap = {
+  Pinatas: "🪅",
+  Writers: "📝",
+  Boards: "🧑‍🏫",
+  Easels: "🖌️",
+  Jams: "🍓",
+  Potions: "🧑‍🔬",
+  Phones: "☎️",
+  Gnomes: "⚒️"
+};
+
+const moPayoutAt150 = {
+  Writers: 529,
+  Boards: 381,
+  Pinatas: 529,
+  Phones: 529,
+  Easels: 529,
+  Gnomes: 529,
+  Jams: 546,
+  Potions: 596
+};
+
+let percentChart = null;
+
 async function loadTopPayingMOs() {
   const url = 'https://opensheet.elk.sh/1DJHQ0f5X9NUuAouEf5osJgLV2r2nuzsGLIyjLkm-0NM/MOs';
 
@@ -1367,15 +1393,7 @@ async function loadTopPayingMOs() {
       modal.style.display = "block";
     };
 
-    // ----- Preload Emoji Images -----
-    Object.entries(emojiMap).forEach(([key, emoji]) => {
-      const img = new Image();
-      img.onload = () => emojiImages[key] = img;
-      img.onerror = () => emojiImages[key] = null; // fallback to text
-      img.src = `https://twemoji.maxcdn.com/v/latest/72x72/${twemoji.convert.toCodePoint(emoji)}.png`;
-    });
-
-    // ----- Chart Plugin to Draw Emojis -----
+    // ---- Plugin to draw emoji characters on y-axis ----
     const emojiLabelPlugin = {
       id: 'emojiLabels',
       afterDraw: (chart) => {
@@ -1387,24 +1405,17 @@ async function loadTopPayingMOs() {
           const key = Object.keys(emojiMap).find(k => entryLabel.includes(k));
           if (!key) return;
 
-          const img = emojiImages[key];
           const y = yAxis.getPixelForTick(index);
-
-          if (img) {
-            ctx.drawImage(img, yAxis.left - 30, y - 10, 20, 20);
-          } else {
-            // fallback: draw the emoji character
-            ctx.font = '16px sans-serif';
-            ctx.fillStyle = '#eee';
-            ctx.fillText(emojiMap[key], yAxis.left - 20, y + 5);
-          }
+          ctx.font = '16px sans-serif';
+          ctx.fillStyle = '#eee';
+          ctx.fillText(emojiMap[key], yAxis.left - 25, y + 5); // tweak x/y if needed
         });
       }
     };
 
-    // ----- Create Percentage Chart -----
+    // Create Percentage Chart
     const ctx = document.getElementById("percentChart").getContext("2d");
-    const labels = sorted.map(([key]) => key);
+    const labels = sorted.map(([key]) => key); // plain text for plugin
     const dataPoints = sorted.map(([, val]) => parseInt(val));
 
     if (percentChart) percentChart.destroy();
@@ -1424,21 +1435,35 @@ async function loadTopPayingMOs() {
       },
       options: {
         indexAxis: 'y',
-        layout: { padding: { left: 10, right: 10, top: 5, bottom: 5 } },
+        layout: {
+          padding: { left: 10, right: 10, top: 5, bottom: 5 }
+        },
         scales: {
           x: { display: false },
-          y: { ticks: { color: '#eee', font: { size: 16, weight: 'bold' } }, grid: { color: '#333' } }
+          y: {
+            ticks: {
+              color: '#eee',
+              font: { size: 16, weight: 'bold' }
+            },
+            grid: { color: '#333' }
+          }
         },
         plugins: {
           legend: { display: false },
           tooltip: { callbacks: { label: ctx => `${ctx.raw}%` } },
-          datalabels: { anchor: 'center', align: 'center', color: '#fff', font: { weight: 'bold', size: 16 }, formatter: value => `${value}%` }
+          datalabels: {
+            anchor: 'center',
+            align: 'center',
+            color: '#fff',
+            font: { weight: 'bold', size: 16 },
+            formatter: value => `${value}%`
+          }
         }
       },
       plugins: [ChartDataLabels, emojiLabelPlugin]
     });
 
-    // ----- Create Payout Chart -----
+    // Create Payout Chart
     const payoutCtx = document.getElementById("payoutChart").getContext("2d");
     const entriesWithPayout = entries.map(([key, val]) => {
       const pct = parseInt(val);
@@ -1448,49 +1473,76 @@ async function loadTopPayingMOs() {
       return { key, pct, actual };
     }).sort((a, b) => b.actual - a.actual);
 
-    const payoutLabels = entriesWithPayout.map(e => e.key);
-    const payoutValues = entriesWithPayout.map(e => e.actual);
-    const payoutColors = payoutValues.map(v => v >= 500 ? '#27ae60' : v >= 300 ? '#f39c12' : '#c0392b');
+    const payoutLabels = entriesWithPayout.map(entry => entry.key);
+    const payoutValues = entriesWithPayout.map(entry => entry.actual);
+    const payoutColors = payoutValues.map(val =>
+      val >= 500 ? '#27ae60' : val >= 300 ? '#f39c12' : '#c0392b'
+    );
 
     new Chart(payoutCtx, {
       type: 'bar',
-      data: { labels: payoutLabels, datasets: [{ label: 'Total Payout ($)', borderRadius: 6, data: payoutValues, backgroundColor: payoutColors }] },
+      data: {
+        labels: payoutLabels,
+        datasets: [{
+          label: 'Total Payout ($)',
+          borderRadius: 6,
+          data: payoutValues,
+          backgroundColor: payoutColors
+        }]
+      },
       options: {
         indexAxis: 'y',
         layout: { padding: { left: 10, right: 10, top: 5, bottom: 5 } },
-        scales: { x: { display: false }, y: { ticks: { color: '#eee', font: { size: 16, weight: 'bold' } }, grid: { color: '#333' } } },
+        scales: {
+          x: { display: false },
+          y: {
+            ticks: { color: '#eee', font: { size: 16, weight: 'bold' } },
+            grid: { color: '#333' }
+          }
+        },
         plugins: {
           legend: { display: false },
           tooltip: { callbacks: { label: ctx => `$${ctx.raw}` } },
-          datalabels: { anchor: 'center', align: 'center', color: '#fff', font: { weight: 'bold', size: 16 }, formatter: v => `$${v}` }
+          datalabels: {
+            anchor: 'center',
+            align: 'center',
+            color: '#fff',
+            font: { weight: 'bold', size: 16 },
+            formatter: value => `$${value}`
+          }
         }
       },
       plugins: [ChartDataLabels, emojiLabelPlugin]
     });
 
-    // ----- Tabs -----
+    // Tab buttons
     document.querySelectorAll(".tab-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
         document.querySelectorAll(".tab-content").forEach(tab => tab.style.display = "none");
+
         btn.classList.add("active");
         document.getElementById(btn.dataset.tab).style.display = "block";
       });
     });
 
-    // ----- Modals -----
+    // Close modals when clicking the X
     document.querySelectorAll(".modal .close").forEach((btn) => {
       btn.addEventListener("click", (e) => {
         const modal = e.target.closest(".modal");
         if (modal) modal.style.display = "none";
       });
     });
+
+    // Close modals when clicking outside the modal content
     window.addEventListener("click", (e) => {
-      document.querySelectorAll(".modal").forEach((modal) => {
-        if (e.target === modal) modal.style.display = "none";
+      const modals = document.querySelectorAll(".modal");
+      modals.forEach((modal) => {
+        if (e.target === modal) {
+          modal.style.display = "none";
+        }
       });
     });
-    window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; };
 
     container.style.display = "block";
 
