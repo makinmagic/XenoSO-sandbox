@@ -1376,7 +1376,7 @@ async function loadTopPayingMOs() {
         scales: {
           x: { display: false },
           y: {
-            ticks: { color: '#eee', font: { size: 16, weight: 'bold' } },
+            ticks: { color: '#eee', font: { size: 18, weight: 'bold' } },
             grid: { color: '#333' }
           }
         },
@@ -1387,7 +1387,7 @@ async function loadTopPayingMOs() {
             anchor: 'center',
             align: 'center',
             color: '#fff',
-            font: { weight: 'bold', size: 16 },
+            font: { weight: 'bold', size: 18 },
             formatter: value => `${value}%`
           }
         }
@@ -1428,7 +1428,7 @@ async function loadTopPayingMOs() {
         scales: {
           x: { display: false },
           y: {
-            ticks: { color: '#eee', font: { size: 16, weight: 'bold' } },
+            ticks: { color: '#eee', font: { size: 18, weight: 'bold' } },
             grid: { color: '#333' }
           }
         },
@@ -1439,7 +1439,7 @@ async function loadTopPayingMOs() {
             anchor: 'center',
             align: 'center',
             color: '#fff',
-            font: { weight: 'bold', size: 16 },
+            font: { weight: 'bold', size: 18 },
             formatter: value => `$${value}`
           }
         }
