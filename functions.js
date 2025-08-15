@@ -1286,40 +1286,6 @@ const emojiMap = {
   Gnomes: "⚒️"
 };
 
-const emojiImages = {};
-Object.entries(emojiMap).forEach(([key, emoji]) => {
-  const url = twemoji.parse(emoji, { folder: '72x72', ext: '.png' });
-  const img = new Image();
-  img.src = url.match(/src="([^"]+)"/)[1];
-  emojiImages[key] = img;
-});
-
-const moPayoutAt150 = {
-  Writers: 529,
-  Boards: 381,
-  Pinatas: 529,
-  Phones: 529,
-  Easels: 529,
-  Gnomes: 529,
-  Jams: 546,
-  Potions: 596
-};
-
-let percentChart = null;
-
-//Top-paying MOs
-
-const emojiMap = {
-  Pinatas: "🪅",
-  Writers: "📝",
-  Boards: "🧑‍🏫",
-  Easels: "🖌️",
-  Jams: "🍓",
-  Potions: "🧑‍🔬",
-  Phones: "☎️",
-  Gnomes: "⚒️"
-};
-
 const moPayoutAt150 = {
   Writers: 529,
   Boards: 381,
