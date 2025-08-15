@@ -1275,6 +1275,14 @@ function addFavoriteStar(type, id, name) {
 
 //Top-paying MOs
 
+const emojiImages = {};
+Object.entries(emojiMap).forEach(([key, emoji]) => {
+  const url = twemoji.parse(emoji, { folder: '72x72', ext: '.png' });
+  const img = new Image();
+  img.src = url.match(/src="([^"]+)"/)[1]; // Extract PNG URL
+  emojiImages[key] = img;
+});
+
 const emojiMap = {
   Pinatas: "🪅",
   Writers: "📝",
@@ -1388,6 +1396,27 @@ async function loadTopPayingMOs() {
         });
       }
     };
+
+	// Plugin to draw emoji images on y-axis
+const emojiLabelPlugin = {
+  id: 'emojiLabels',
+  afterDraw: (chart) => {
+    const ctx = chart.ctx;
+    const yAxis = chart.scales.y;
+
+    yAxis.ticks.forEach((label, index) => {
+      const entryLabel = chart.data.labels[index];
+      const key = Object.keys(emojiMap).find(k => entryLabel.includes(k));
+      if (!key) return;
+
+      const img = emojiImages[key];
+      if (!img || !img.complete) return;
+
+      const y = yAxis.getPixelForTick(index);
+      ctx.drawImage(img, yAxis.left - 30, y - 10, 20, 20);
+    });
+  }
+};
 
     // Create Percentage Chart
     const ctx = document.getElementById("percentChart").getContext("2d");
