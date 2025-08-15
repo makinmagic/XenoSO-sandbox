@@ -265,6 +265,13 @@ window.onload = () => {
     <div id="sim-modal-content">Loading...</div>
   </div>
 </div>
+
+<script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    twemoji.parse(document.body, { folder: 'svg', ext: '.svg' });
+  });
+</script>
 	
 </body>
 </html>
