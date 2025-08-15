@@ -1367,7 +1367,7 @@ async function loadTopPayingMOs() {
           data: dataPoints,
           backgroundColor: dataPoints.map(val =>
             val === 150 ? '#f39c12' :
-        val >= 130 ? '#27ae60' :
+        val >= 140 ? '#27ae60' :
         val >= 100 ? '#8e44ad' :
         '#c0392b'
           )
