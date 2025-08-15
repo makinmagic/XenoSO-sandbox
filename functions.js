@@ -1275,14 +1275,6 @@ function addFavoriteStar(type, id, name) {
 
 //Top-paying MOs
 
-const emojiImages = {};
-Object.entries(emojiMap).forEach(([key, emoji]) => {
-  const url = twemoji.parse(emoji, { folder: '72x72', ext: '.png' });
-  const img = new Image();
-  img.src = url.match(/src="([^"]+)"/)[1];
-  emojiImages[key] = img;
-});
-
 const emojiMap = {
   Pinatas: "🪅",
   Writers: "📝",
@@ -1293,6 +1285,14 @@ const emojiMap = {
   Phones: "☎️",
   Gnomes: "⚒️"
 };
+
+const emojiImages = {};
+Object.entries(emojiMap).forEach(([key, emoji]) => {
+  const url = twemoji.parse(emoji, { folder: '72x72', ext: '.png' });
+  const img = new Image();
+  img.src = url.match(/src="([^"]+)"/)[1];
+  emojiImages[key] = img;
+});
 
 const moPayoutAt150 = {
   Writers: 529,
@@ -1365,27 +1365,6 @@ async function loadTopPayingMOs() {
     viewAllLink.onclick = (e) => {
       e.preventDefault();
       modal.style.display = "block";
-    };
-
-    // ---- Chart Plugin to Draw Emoji Images ----
-    const emojiLabelPlugin = {
-      id: 'emojiLabels',
-      afterDraw: (chart) => {
-        const ctx = chart.ctx;
-        const yAxis = chart.scales.y;
-
-        yAxis.ticks.forEach((label, index) => {
-          const entryLabel = chart.data.labels[index];
-          const key = Object.keys(emojiMap).find(k => entryLabel.includes(k));
-          if (!key) return;
-
-          const img = emojiImages[key];
-          if (!img.complete) return;
-
-          const y = yAxis.getPixelForTick(index);
-          ctx.drawImage(img, yAxis.left - 30, y - 10, 20, 20); // x, y, width, height
-        });
-      }
     };
 
 	// Plugin to draw emoji images on y-axis
