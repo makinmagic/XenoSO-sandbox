@@ -1275,17 +1275,6 @@ function addFavoriteStar(type, id, name) {
 
 //Top-paying MOs
 
-const emojiMap = {
-  Pinatas: "🪅",
-  Writers: "📝",
-  Boards: "🧑‍🏫",
-  Easels: "🖌️",
-  Jams: "🍓",
-  Potions: "🧑‍🔬",
-  Phones: "☎️",
-  Gnomes: "⚒️"
-};
-
 const moPayoutAt150 = {
   Writers: 529,
   Boards: 381,
@@ -1359,32 +1348,14 @@ async function loadTopPayingMOs() {
       modal.style.display = "block";
     };
 
-    // ---- Plugin to draw emoji characters on y-axis ----
-    const emojiLabelPlugin = {
-      id: 'emojiLabels',
-      afterDraw: (chart) => {
-        const ctx = chart.ctx;
-        const yAxis = chart.scales.y;
-
-        yAxis.ticks.forEach((label, index) => {
-          const entryLabel = chart.data.labels[index];
-          const key = Object.keys(emojiMap).find(k => entryLabel.includes(k));
-          if (!key) return;
-
-          const y = yAxis.getPixelForTick(index);
-          ctx.font = '16px sans-serif';
-          ctx.fillStyle = '#eee';
-          ctx.fillText(emojiMap[key], yAxis.left - 25, y + 5); // tweak x/y if needed
-        });
-      }
-    };
-
     // Create Percentage Chart
     const ctx = document.getElementById("percentChart").getContext("2d");
-    const labels = sorted.map(([key]) => key); // plain text for plugin
+    const labels = sorted.map(([key]) => key); // TEXT ONLY
     const dataPoints = sorted.map(([, val]) => parseInt(val));
 
-    if (percentChart) percentChart.destroy();
+    if (percentChart) {
+      percentChart.destroy();
+    }
 
     percentChart = new Chart(ctx, {
       type: 'bar',
@@ -1401,16 +1372,11 @@ async function loadTopPayingMOs() {
       },
       options: {
         indexAxis: 'y',
-        layout: {
-          padding: { left: 10, right: 10, top: 5, bottom: 5 }
-        },
+        layout: { padding: { left: 10, right: 10, top: 5, bottom: 5 } },
         scales: {
           x: { display: false },
           y: {
-            ticks: {
-              color: '#eee',
-              font: { size: 16, weight: 'bold' }
-            },
+            ticks: { color: '#eee', font: { size: 16, weight: 'bold' } },
             grid: { color: '#333' }
           }
         },
@@ -1426,7 +1392,7 @@ async function loadTopPayingMOs() {
           }
         }
       },
-      plugins: [ChartDataLabels, emojiLabelPlugin]
+      plugins: [ChartDataLabels]
     });
 
     // Create Payout Chart
@@ -1439,7 +1405,7 @@ async function loadTopPayingMOs() {
       return { key, pct, actual };
     }).sort((a, b) => b.actual - a.actual);
 
-    const payoutLabels = entriesWithPayout.map(entry => entry.key);
+    const payoutLabels = entriesWithPayout.map(entry => entry.key); // TEXT ONLY
     const payoutValues = entriesWithPayout.map(entry => entry.actual);
     const payoutColors = payoutValues.map(val =>
       val >= 500 ? '#27ae60' : val >= 300 ? '#f39c12' : '#c0392b'
@@ -1478,10 +1444,9 @@ async function loadTopPayingMOs() {
           }
         }
       },
-      plugins: [ChartDataLabels, emojiLabelPlugin]
+      plugins: [ChartDataLabels]
     });
 
-    // Tab buttons
     document.querySelectorAll(".tab-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
@@ -1492,7 +1457,6 @@ async function loadTopPayingMOs() {
       });
     });
 
-    // Close modals when clicking the X
     document.querySelectorAll(".modal .close").forEach((btn) => {
       btn.addEventListener("click", (e) => {
         const modal = e.target.closest(".modal");
@@ -1500,19 +1464,19 @@ async function loadTopPayingMOs() {
       });
     });
 
-    // Close modals when clicking outside the modal content
     window.addEventListener("click", (e) => {
       const modals = document.querySelectorAll(".modal");
       modals.forEach((modal) => {
-        if (e.target === modal) {
-          modal.style.display = "none";
-        }
+        if (e.target === modal) modal.style.display = "none";
       });
     });
 
+    window.onclick = (e) => {
+      if (e.target == modal) modal.style.display = "none";
+    };
+
     container.style.display = "block";
 
-    // Move guideLink back to bottom
     const bottomContainer = document.getElementById("bottom-container");
     const footerNote = document.getElementById("footer-note");
     if (bottomContainer && footerNote && guideLink) {
