@@ -130,7 +130,7 @@ async function loadOnlinePlayers() {
        onclick="sortTable(4, 'text')"></i>
     <i class="fa-solid fa-briefcase" 
        style="cursor: pointer; margin-left: 6px;" 
-       title="Toggle job location filter"
+       title="Show sims at work"
        onclick="toggleJobFilter()"></i>
 </th>
     </tr>
@@ -141,16 +141,17 @@ async function loadOnlinePlayers() {
         sortedAvatars.forEach((avatar, index) => {
     const playerDetails = playerDetailsArray[index];
 
+	//Determine if sim is at a job lot
     const isJobLot = avatar.location.toString().length === 10;
 
-    if (jobFilterEnabled && !isJobLot) return; // Skip non-job Sims when filter is on
+    if (jobFilterEnabled && !isJobLot) return;
 
 // Map job ID to name
 const jobMap = {
     1: "Factory",
     2: "Diner",
-    4: "Club",
-    5: "Club"
+    4: "Club Job",
+    5: "Club Job"
 };
 
 let lotName;
@@ -191,7 +192,9 @@ const isFavorite = favoriteSims[avatar.avatar_id];
                title="Click to toggle favorite" 
                data-favorite-id="${avatar.avatar_id}" 
                onclick="toggleFavorite('sims', '${avatar.avatar_id}', '${avatar.name}', event)"></i>
-            ${formatDisplayName(avatar.name)}${/join me at/i.test(playerDetails.description || '') ? ' <span class="join-label" title="This sim is looking for others to join them at work!">✨ Join me at work!</span>' : ''}
+            ${formatDisplayName(avatar.name)}${(isJobLot && /join me at/i.test(playerDetails.description || '')) 
+  ? ' <span class="join-label" title="This sim is looking for others to join them at work!">Join me at work!</span>' 
+  : ''}
         </td>
         <td class="hidden">${avatar.avatar_id}</td>
         <td>${ageInDays} days</td>
@@ -232,7 +235,7 @@ const isFavorite = favoriteSims[avatar.avatar_id];
 
         const categoryMapping = {
                 1: 'Money',
-                2: 'Money',
+                2: 'Offbeat',
                 3: 'Romance',
                 4: 'Service',
                 5: 'Store',
@@ -807,7 +810,7 @@ async function searchLot(event) {
             // Mapping for lot categories
             const categoryMapping = {
                 1: '💲 Money',
-                2: '💲 Money',
+                2: '🦆 Offbeat',
                 3: '❤️ Romance',
                 4: '🍵 Service',
                 5: '🎁 Store',
@@ -1077,8 +1080,10 @@ async function fetchEvents() {
 
         const now = new Date();
 
-        // Filter upcoming events
-        const upcomingEvents = events.filter(event => new Date(event.startTime) > now);
+        // Filter upcoming events and sort them by startTime
+	const upcomingEvents = events
+    .filter(event => new Date(event.startTime) > now)
+    .sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
 
         if (upcomingEvents.length === 0) {
             // Add a single row if there are no upcoming events
@@ -1130,7 +1135,7 @@ function displayEventInfo(event) {
         <div class="console-title">
             ${event.name}
         </div>
-        <p><strong>ℹ️ Description:</strong><br><div class="event-card"> ${event.description.replace(/(\r\n|\n|\r)/g, "<br>")}</p></div>
+        <p><strong>ℹ️ Description:</strong></p><div class="event-card">${event.description.replace(/(\r\n|\n|\r)/g, "<br>")}</div>
         <p><strong>📅 Date:</strong> ${formattedDate}</p>
         <p><strong>🕐 Time:</strong> ${formattedTime}</p>
         <p><strong>📍 Location:</strong> ${event.location}</p>
@@ -1162,7 +1167,7 @@ async function displayCurrentEvent() {
         // Display all overlapping events
         if (currentEvents.length > 0) {
             currentEventContainer.innerHTML = currentEvents
-                .map(event => `🎉 Current Event: ${event.name} at ${event.location}!`)
+                .map(event => `🔥 Current Event: ${event.name} at ${event.location}!`)
                 .join('<br>'); // Join with line breaks for multiple events
 
             currentEvents.forEach(event => addEventIconToLocation(event.location)); // Add balloon icon for each location
@@ -1182,9 +1187,12 @@ function addEventIconToLocation(locationName) {
     rows.forEach(row => {
         const locationCell = row.querySelector("td:first-child");
         if (locationCell && locationCell.textContent.trim().toLowerCase() === locationName.trim().toLowerCase()) {
-            // Check if the balloon icon is already present to avoid duplicates
-            if (!locationCell.textContent.includes("🎉")) {
-    locationCell.innerHTML += ' <span title="Event is ongoing!">🎉</span>';
+            // Check if the fire icon is already present to avoid duplicates
+if (!locationCell.querySelector('.event-icon')) {
+    locationCell.insertAdjacentHTML(
+        'beforeend',
+        ' <span class="event-icon" title="Event is ongoing!">🔥</span>'
+    );
 }
         }
     });
@@ -1348,7 +1356,7 @@ async function loadTopPayingMOs() {
       modal.style.display = "block";
     };
 
-    // Create Percentage Chart
+    // Percentage Chart
     const ctx = document.getElementById("percentChart").getContext("2d");
     const labels = sorted.map(([key]) => key); // TEXT ONLY
     const dataPoints = sorted.map(([, val]) => parseInt(val));
@@ -1366,10 +1374,7 @@ async function loadTopPayingMOs() {
           borderRadius: 6,
           data: dataPoints,
           backgroundColor: dataPoints.map(val =>
-            val === 150 ? '#f39c12' :
-        val >= 140 ? '#27ae60' :
-        val >= 100 ? '#8e44ad' :
-        '#c0392b'
+            val === 150 ? '#f39c12' : val >= 140 ? '#27ae60' : val >= 100 ? '#8e44ad' : '#c0392b'
           )
         }]
       },
@@ -1398,7 +1403,7 @@ async function loadTopPayingMOs() {
       plugins: [ChartDataLabels]
     });
 
-    // Create Payout Chart
+    // Payout Chart
     const payoutCtx = document.getElementById("payoutChart").getContext("2d");
     const entriesWithPayout = entries.map(([key, val]) => {
       const pct = parseInt(val);
@@ -1408,7 +1413,7 @@ async function loadTopPayingMOs() {
       return { key, pct, actual };
     }).sort((a, b) => b.actual - a.actual);
 
-    const payoutLabels = entriesWithPayout.map(entry => entry.key); // TEXT ONLY
+    const payoutLabels = entriesWithPayout.map(entry => entry.key);
     const payoutValues = entriesWithPayout.map(entry => entry.actual);
     const payoutColors = payoutValues.map(val =>
       val >= 500 ? '#f39c12' : val >= 300 ? '#27ae60' : '#c0392b'
@@ -1602,23 +1607,25 @@ function sortByFavorites() {
       }
     }
 
-// One-off announcements
 document.addEventListener("DOMContentLoaded", function () {
   const now = new Date();
 
-  const expiry = new Date(Date.UTC(2025, 6, 7, 4, 0, 0));
+  const start = new Date(Date.UTC(2025, 8, 1, 4, 0, 0)); // Sep 1 midnight EST
+  const expiry = new Date(Date.UTC(2025, 8, 2, 4, 0, 0)); // Sep 2 midnight EST
 
-  const timeUntilExpire = expiry - now;
+  const msg = document.getElementById('event-message');
+  if (!msg) return;
 
-  if (timeUntilExpire > 0) {
+  if (now >= start && now < expiry) {
+	  
+    msg.style.display = '';
+    setTimeout(() => msg.style.display = 'none', expiry - now);
+  } else if (now < start) {
+
     setTimeout(() => {
-      const msg = document.getElementById('event-message');
-      if (msg) msg.style.display = 'none';
-    }, timeUntilExpire);
-  } else {
-    
-    const msg = document.getElementById('event-message');
-    if (msg) msg.style.display = 'none';
+      msg.style.display = '';
+      setTimeout(() => msg.style.display = 'none', expiry - start);
+    }, start - now);
   }
 });
 
