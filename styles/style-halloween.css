@@ -28,12 +28,13 @@ body {
 
     #main-container {
         display: flex;
+        justify-content: space-between;
         gap: 1%;
         margin-top: 30px;
     }
 
     .container {
-        width: 32%;
+        width: 49%;
         border-radius: 8px;
         border: 2px solid #9215e6;
         box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
@@ -43,95 +44,8 @@ body {
         padding: 10px;
         display: flex;
         flex-direction: column;
-        margin-bottom: 10px;
+        margin-bottom: 20px; /* Add spacing between rows */
     }
-
-#main-layout {
-  display: flex;
-  flex-direction: column;
-}
-
-#top-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-}
-
-.container.players,
-.container.lots {
-  min-height: 400px;
-  overflow-y: auto;
-}
-
-@media (min-width: 768px) {
-  #top-row {
-    align-items: stretch;
-  }
-
-  #console-container {
-    align-self: stretch;
-    flex-basis: 32%;
-    max-width: 32%;
-  }
-
-  #left-column {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-  }
-
-  #top-row::after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-
-#events-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-        
-#main-layout.shift-events #events-wrapper {
-  justify-content: flex-start;
-  padding-left: 10px;
-}
-
-#left-column {
-  width: 66%;
-  display: flex;
-  flex-direction: column;
-  gap: 0px;
-}
-
-#console-container {
-  width: 32%;
-  flex-shrink: 0;
-  align-self: flex-start;
-  min-height: 508px;
-}
-
-.container.console {
-  width: 34%;
-  flex-grow: 1;
-}
-
-.emoji {
-  height: 1em;
-  width: 1em;
-  vertical-align: -0.1em;
-}
-
-#events-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-#events-container {
-  width: 66%;
-}
 
     table {
         width: 100%;
@@ -213,18 +127,6 @@ body {
     transition: color 0.2s ease;
 }
 
-.join-label {
-  display: inline-block;
-  background: linear-gradient(to right, #facc15, #f472b6);
-  color: #1a1a1a;
-  font-weight: bold;
-  padding: 2px 8px;
-  border-radius: 16px;
-  font-size: 0.75em;
-  margin-left: 8px;
-  vertical-align: middle;
-}
-
     #rewards {
         margin-top: 30px;
         text-align: center;
@@ -263,52 +165,62 @@ body {
     display: none;
 }
 
+.emoji {
+  height: 1em;
+  width: 1em;
+  vertical-align: -0.1em;
+}
+
+.join-label {
+  display: inline-block;
+  background: linear-gradient(to right, #facc15, #f472b6);
+  color: #1a1a1a;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 16px;
+  font-size: 0.75em;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
     .description-container {
         max-width: 260px; 
         word-wrap: break-word; 
         white-space: pre-wrap; 
         margin: 0 auto;
         padding: 15px;
+        border: 1px solid #a855f7;
         background-color: rgba(180, 100, 255, 0.25);
         border-radius: 10px;
+        box-shadow: 0 0 10px #a855f750;
         text-align: left;
     }
         
 @media (max-width: 768px) {
-  #top-row {
-    flex-direction: column !important;
-    align-items: center !important;
-  }
+    #main-container, #bottom-container {
+        flex-direction: column;
+        align-items: center;
+    }
 
-  #left-column {
-    width: 100% !important;
-    flex-direction: column !important;
-    align-items: center !important;
-  }
+    .container {
+        width: 95%;
+        margin: 0 auto 20px auto;
+    }
+    
+    #bottom-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-  #left-column > div:first-child {
-    flex-direction: column !important;
-    display: flex !important;
-    gap: 20px !important;
-    width: 100% !important;
-    align-items: center;
-  }
+    /* Adjust order on mobile */
+    #console-container {
+        order: 1; /* Console first in mobile view */
+    }
 
-  #events-wrapper {
-    width: 100% !important;
-    justify-content: center !important;
-    display: flex !important;
-  }
-
-  #console-container {
-    width: 95% !important;
-    align-self: center !important;
-  }
-
-  .container {
-    width: 95% !important;
-    margin: 0 auto 20px auto !important;
-  }
+    #rewards-container {
+        order: 2; /* Rewards after Console in mobile view */
+    }
 }
 
     /* Show icon on row hover */
@@ -375,13 +287,14 @@ body {
 }
 
 .event-card {
-  background: rgba(90, 30, 120, 0.6);
+  background: rgba(180, 100, 255, 0.25);
   border: 1px solid #a855f7;
   border-radius: 12px;
   padding: 14px 18px;
   box-shadow: 0 0 10px #a855f750;
-  font-size: 0.95em;
   line-height: 1.5;
+  max-width: 600px;
+  margin: auto;
 }
 
 #dark-mode-toggle i {
