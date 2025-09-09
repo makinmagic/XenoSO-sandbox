@@ -1,0 +1,746 @@
+body {
+        font-family: Arial, sans-serif;
+        background-color: #0d0221;
+        color: #f0f0f0;
+        margin: 0;
+        padding: 20px;
+        overflow-x: hidden;
+    }
+
+    h1 {
+    text-align: center;
+    color: #C169FF; 
+    font-size: 32px;
+    text-shadow: 0 0 32px rgba(146, 21, 230, 0.8), 0 0 30px rgba(193, 105, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 8px;
+    white-space: nowrap;
+}
+    
+    h3 {
+        text-align: center;
+        color: #f0f0f0; 
+        font-size: 32px;
+    }
+
+    #main-container {
+        display: flex;
+        gap: 1%;
+        margin-top: 30px;
+    }
+
+    .container {
+        width: 32%;
+        border-radius: 8px;
+        border: 2px solid #9215e6;
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        background: rgba(55, 0, 110, 0.4);
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+    }
+
+#main-layout {
+  display: flex;
+  flex-direction: column;
+}
+
+#top-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.container.players,
+.container.lots {
+  min-height: 400px;
+  overflow-y: auto;
+}
+
+@media (min-width: 768px) {
+  #top-row {
+    align-items: stretch;
+  }
+
+  #console-container {
+    align-self: stretch;
+    flex-basis: 32%;
+    max-width: 32%;
+  }
+
+  #left-column {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  #top-row::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+#events-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+        
+#main-layout.shift-events #events-wrapper {
+  justify-content: flex-start;
+  padding-left: 10px;
+}
+
+#left-column {
+  width: 66%;
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+
+#console-container {
+  width: 32%;
+  flex-shrink: 0;
+  align-self: flex-start;
+  min-height: 508px;
+}
+
+.container.console {
+  width: 34%;
+  flex-grow: 1;
+}
+
+.emoji {
+  height: 1em;
+  width: 1em;
+  vertical-align: -0.1em;
+}
+
+#events-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+#events-container {
+  width: 66%;
+}
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    th, td {
+        padding: 10px;
+        border-bottom: 1px solid #f0f0f0; 
+        text-align: left;
+    }
+
+    th {
+        background-color: #9215e6; 
+        color: #f0f0f0;
+    }
+
+    tr:hover {
+        background-color: #9215e6cc; 
+        color: #f0f0f0; 
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .scrollable {
+        height: 400px;
+        overflow-y: auto;
+        flex-grow: 1;
+    }
+
+    #tempoSim, #currentEvent, #guideLink, #countdown, #footer-note, #money-object {
+        text-align: center;
+        font-size: 18px;
+        margin-bottom: 20px;
+        color: #f0f0f0; 
+    }
+
+    #guideLink {
+    margin-bottom: 20px;
+}
+
+    #guideLink a {
+    color: #c169ff; 
+    text-decoration: none; 
+    font-weight: bold; 
+}
+
+#guideLink a:hover {
+  text-decoration: underline;
+}
+
+#countdown a { 
+    color: #c169ff; 
+    text-decoration: none; 
+    font-weight: bold; 
+}
+
+#countdown a:hover { 
+  text-decoration: underline;
+}
+
+#viewAllLink {
+  display: none;
+  margin-left: 10px;
+  color: #c169ff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#viewAllLink:hover {
+  text-decoration: underline;
+}
+
+.search-icon {
+    color: #f0f0f0;
+    cursor: pointer;
+    font-size: 20px;
+    margin-left: 10px;
+    transition: color 0.2s ease;
+}
+
+.join-label {
+  display: inline-block;
+  background: linear-gradient(to right, #facc15, #f472b6);
+  color: #1a1a1a;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 16px;
+  font-size: 0.75em;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+    #rewards {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    #rewards-dropdown {
+        background: #white; 
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        overflow-y: auto;
+        max-height: 400px;
+        width: 80%;
+        margin: 0 auto;
+    }
+
+.console-img {
+    width: 200px;
+    height: 200px;
+    border-radius: 8px;
+    border: 3px solid #9215e6;
+    display: block;
+    margin: 10px auto;
+    background: #f2f5f5;
+}
+
+.console-title {
+    background-color: #9215e6;
+    color: #f0f0f0;
+    padding: 10px;
+    text-align: center;
+    font-size: 20px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+    .hidden {
+    display: none;
+}
+
+    .description-container {
+        max-width: 260px; 
+        word-wrap: break-word; 
+        white-space: pre-wrap; 
+        margin: 0 auto;
+        padding: 15px;
+        background-color: rgba(180, 100, 255, 0.25);
+        border-radius: 10px;
+        text-align: left;
+    }
+        
+@media (max-width: 768px) {
+  #top-row {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  #left-column {
+    width: 100% !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  #left-column > div:first-child {
+    flex-direction: column !important;
+    display: flex !important;
+    gap: 20px !important;
+    width: 100% !important;
+    align-items: center;
+  }
+
+  #events-wrapper {
+    width: 100% !important;
+    justify-content: center !important;
+    display: flex !important;
+  }
+
+  #console-container {
+    width: 95% !important;
+    align-self: center !important;
+  }
+
+  .container {
+    width: 95% !important;
+    margin: 0 auto 20px auto !important;
+  }
+}
+
+    /* Show icon on row hover */
+    table tr {
+        position: relative;
+    }
+
+    table tr:hover::after {
+        content: '';
+        position: absolute;
+        width: 20px; 
+        height: 20px; 
+        background-image: url('https://www.pngmart.com/files/23/Plumbob-Download-PNG-Image.png'); 
+        background-size: contain;
+        background-repeat: no-repeat;
+        right: 10px; 
+        top: 10px; 
+        animation: fade-in 0.3s; 
+    }
+
+    /* Fade-in animation */
+    @keyframes fade-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+#lots-title, #players-title {
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+    #lot-filter {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px;
+    color: #c169ff;
+}
+#lot-filter i {
+    cursor: pointer;
+    font-size: 20px;
+    transition: transform 0.2s ease;
+}
+#lot-filter i:hover {
+    transform: scale(1.2);
+    color: #c169ff;
+}
+
+.event-label {
+  display: inline-block;
+  background: linear-gradient(to right, #facc15, #f472b6);
+  color: #1a1a1a;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  margin-bottom: 8px;
+}
+
+.event-divider {
+  border: none;
+  height: 2px;
+  background: linear-gradient(to right, #ec4899, #facc15, #ec4899);
+  margin: 10px 0;
+}
+
+.event-card {
+  background: rgba(90, 30, 120, 0.6);
+  border: 1px solid #a855f7;
+  border-radius: 12px;
+  padding: 14px 18px;
+  box-shadow: 0 0 10px #a855f750;
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+
+#dark-mode-toggle i {
+    font-size: 24px;
+}
+
+body.dark-mode {
+    background-color: #1c1c1c;
+    color: #f1f1f1;
+}
+
+.dark-mode .container {
+    background-color: #333;
+    color: #f1f1f1;
+    border: #888;
+}
+
+.dark-mode th {
+    background-color: #444;
+    color: white;
+}
+
+.dark-mode tr:hover {
+    background-color: #555;
+}
+
+.dark-mode h1, 
+.dark-mode h3, 
+.dark-mode #tempoSim, 
+.dark-mode #currentEvent, 
+.dark-mode #guideLink, 
+.dark-mode #guideLink a,
+.dark-mode #countdown,
+.dark-mode #footer-note,
+.dark-mode #money-object,
+.dark-mode .search-icon {
+    color: #f1f1f1;
+}
+
+.dark-mode #lot-filter i {
+    color: #f1f1f1; 
+}
+
+.dark-mode #lot-filter i:hover {
+    color: #f1f1f1; 
+}
+
+.dark-mode tr:hover {
+    background-color: #444; 
+    color: #f1f1f1; 
+}
+
+.dark-mode .console-title {
+    background-color: #444;
+    color: #ffffff;
+    border-bottom: 1px solid #eee;
+}
+
+.dark-mode .description-container {
+    background-color: transparent; 
+    color: #f1f1f1;
+}
+
+.dark-mode .console-img {
+    border-color: #888 !important;
+}
+
+#events-container a {
+    color: #c169ff;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+body.dark-mode #events-container a {
+    color: #f1f1f1;
+}
+
+#console-content a, #sim-modal a {
+    color: #c169ff;
+    text-decoration: underline;
+    font-size: 14px;
+    display: inline-block;
+    margin-top: 3px;
+    text-align: center;
+}
+
+body.dark-mode #console-content a {
+    color: #f1f1f1;
+}
+
+.dashboard-icon {
+    width: 40px; 
+    height: auto; 
+    vertical-align: middle; 
+}
+
+.mirrored {
+    transform: scaleX(-1); 
+}
+
+.icon::before {
+  display: inline-block;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+.sim-name {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.sim-name:hover {
+  text-decoration: underline;
+}
+
+#sim-modal .close {
+  color: #ffffff;
+  padding: 4px 10px;
+  font-weight: bold;
+}
+
+.sims-online-icon::before {
+    font: var(--fa-font-solid);
+    content: "\f500";
+}
+
+.active-lots-icon::before {
+    font: var(--fa-font-solid);
+    content: "\f015";
+}
+
+.upcoming-events-icon::before {
+    font: var(--fa-font-solid);
+    content: "\f073";
+}
+
+#backToTopBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+  background-color: #9215e6;
+  color: white;
+  border: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 22px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+#backToTopBtn:hover {
+  background-color: #a29bfe;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+  background-color: #1c003b;
+  margin: 4% auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  color: #fff;
+  max-width: 600px;
+  text-align: center;
+  border: 2px solid #9215e6;
+}
+
+#sim-modal .modal-content {
+  margin-top: 5% !important;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  cursor: pointer;
+}
+.close:hover {
+  color: #fff;
+}
+
+.tab-header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1em;
+  gap: 1em;
+}
+
+.tab-btn {
+  padding: 8px 16px;
+  font-size: 1em;
+  background: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.tab-btn.active {
+  background: #6600cc;
+}
+
+.tab-content {
+  display: none;
+}
+
+/* Job Scheduler Modal */
+#jobSchedulerModal .modal-content {
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #1c003b;
+  border: 2px solid #9215e6;
+  max-width: 600px;
+  width: 80%;
+  text-align: center;
+  font-size: 16px;
+}
+
+#job-scheduler-container {
+  font-family: inherit;
+  font-size: inherit;
+  color: #fff;
+}
+
+#job-scheduler-container .panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 1.6em;
+  font-weight: bold;
+  color: #dda0dd;
+  margin-bottom: 20px;
+}
+
+#job-scheduler-container .panel-header span:first-child {
+  display: flex;
+  align-items: center;
+  font-size: inherit;
+  line-height: 1;
+}
+
+.job-selector {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.job-btn {
+  padding: 8px 16px;
+  font-size: 1em;
+  font-weight: 600;
+  border-radius: 8px;
+  background-color: rgba(146, 21, 230, 0.2);
+  color: #dda0dd;
+  border: 1px solid rgba(146, 21, 230, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 80px;
+}
+
+.job-btn:hover {
+  background-color: rgba(146, 21, 230, 0.5);
+  color: white;
+}
+
+.job-btn.active {
+  background-color: #9215e6;
+  color: white;
+  border-color: #9215e6;
+  box-shadow: 0 0 10px rgba(146, 21, 230, 0.5);
+}
+
+.job-info {
+  border-top: 1px solid rgba(146, 21, 230, 0.3);
+  padding-top: 15px;
+  font-size: 1.125em;
+  line-height: 1.6;
+  color: white;
+  text-align: center;
+}
+
+.job-countdown {
+  color: #ffa502;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  font-size: 1.125em;
+}
+
+@media (max-width: 500px) {
+  .job-btn {
+    font-size: 11px;
+    padding: 6px 8px;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.job-credit {
+  margin-top: 20px;
+  font-size: 0.9em;
+  color: #aaa;
+  text-align: center;
+}
+
+.job-link {
+  color: #c169ff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.job-link:hover {
+  text-decoration: underline;
+}
+
+    /* Stars background - used with permission from Sorta */
+    .stars {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+    }
+    
+    .star {
+      position: absolute;
+      background-color: white;
+      border-radius: 50%;
+      opacity: 0.8;
+    }
+    
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+
+.console-icon::before {
+    font: var(--fa-font-solid);
+    content: "\f05a";
+}
