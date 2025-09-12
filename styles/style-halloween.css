@@ -189,7 +189,7 @@ body {
         white-space: pre-wrap; 
         margin: 0 auto;
         padding: 15px;
-        border: 1px solid #a855f7;
+        border: 1px solid #FF7518;
         background-color: rgba(180, 100, 255, 0.25);
         border-radius: 10px;
         box-shadow: 0 0 10px #a855f750;
@@ -288,7 +288,7 @@ body {
 
 .event-card {
   background: rgba(180, 100, 255, 0.25);
-  border: 1px solid #a855f7;
+  border: 1px solid #FF7518;
   border-radius: 12px;
   padding: 14px 18px;
   box-shadow: 0 0 10px #a855f750;
@@ -436,7 +436,7 @@ body.dark-mode #console-content a {
   bottom: 20px;
   right: 20px;
   z-index: 999;
-  background-color: #9215e6;
+  background-color: #FF7518;
   color: white;
   border: none;
   width: 48px;
@@ -452,7 +452,7 @@ body.dark-mode #console-content a {
 }
 
 #backToTopBtn:hover {
-  background-color: #a29bfe;
+  background-color: #FF944D;
 }
 
 .modal {
@@ -621,7 +621,7 @@ body.dark-mode #console-content a {
 }
 
 .job-link {
-  color: #c169ff;
+  color: #FF7518;
   text-decoration: none;
   font-weight: bold;
 }
