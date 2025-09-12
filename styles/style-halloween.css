@@ -36,7 +36,7 @@ body {
     .container {
         width: 49%;
         border-radius: 8px;
-        border: 2px solid #333;
+        border: 2px solid #FF7518;
         box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
         background: rgba(55, 0, 110, 0.4);
         border-radius: 8px;
@@ -55,7 +55,7 @@ body {
 
     th, td {
         padding: 10px;
-        border-bottom: 1px solid #555; 
+        border-bottom: 1px solid #f0f0f0; 
         text-align: left;
     }
 
@@ -363,7 +363,7 @@ body.dark-mode {
 }
 
 #events-container a {
-    color: #c169ff;
+    color: #FF7518;
     text-decoration: underline;
     font-weight: bold;
 }
@@ -373,7 +373,7 @@ body.dark-mode #events-container a {
 }
 
 #console-content a, #sim-modal a {
-    color: #c169ff;
+    color: #FF7518;
     text-decoration: underline;
     font-size: 14px;
     display: inline-block;
