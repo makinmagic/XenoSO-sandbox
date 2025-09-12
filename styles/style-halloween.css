@@ -1,7 +1,7 @@
 body {
         font-family: Arial, sans-serif;
-        background-color: #0d0221;
-        color: #f0f0f0;
+        background-color: #1b1b1b;
+        color: #f4f4f4;
         margin: 0;
         padding: 20px;
         overflow-x: hidden;
@@ -9,7 +9,7 @@ body {
 
     h1 {
     text-align: center;
-    color: #C169FF; 
+    color: #ff7518; 
     font-size: 32px;
     text-shadow: 0 0 32px rgba(146, 21, 230, 0.8), 0 0 30px rgba(193, 105, 255, 0.8);
     display: flex;
@@ -22,7 +22,7 @@ body {
     
     h3 {
         text-align: center;
-        color: #f0f0f0; 
+        color: #ff7518; 
         font-size: 32px;
     }
 
@@ -36,7 +36,7 @@ body {
     .container {
         width: 49%;
         border-radius: 8px;
-        border: 2px solid #9215e6;
+        border: 2px solid #333;
         box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
         background: rgba(55, 0, 110, 0.4);
         border-radius: 8px;
@@ -55,18 +55,18 @@ body {
 
     th, td {
         padding: 10px;
-        border-bottom: 1px solid #f0f0f0; 
+        border-bottom: 1px solid #555; 
         text-align: left;
     }
 
     th {
-        background-color: #9215e6; 
-        color: #f0f0f0;
+        background-color: #ff7518; 
+        color: white;
     }
 
     tr:hover {
-        background-color: #9215e6cc; 
-        color: #f0f0f0; 
+        background-color: #444; 
+        color: #ff7518; 
         transition: background-color 0.3s ease, color 0.3s ease;
     }
 
@@ -80,7 +80,7 @@ body {
         text-align: center;
         font-size: 18px;
         margin-bottom: 20px;
-        color: #f0f0f0; 
+        color: #ff7518; 
     }
 
     #guideLink {
