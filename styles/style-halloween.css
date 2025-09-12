@@ -22,7 +22,7 @@ body {
     
     h3 {
         text-align: center;
-        color: #ff7518; 
+        color: #F4F4F4; 
         font-size: 32px;
     }
 
@@ -80,7 +80,7 @@ body {
         text-align: center;
         font-size: 18px;
         margin-bottom: 20px;
-        color: #ff7518; 
+        color: #F4F4F4; 
     }
 
     #guideLink {
@@ -88,7 +88,7 @@ body {
 }
 
     #guideLink a {
-    color: #c169ff; 
+    color: #FF7518; 
     text-decoration: none; 
     font-weight: bold; 
 }
@@ -98,7 +98,7 @@ body {
 }
 
 #countdown a { 
-    color: #c169ff; 
+    color: #FF7518; 
     text-decoration: none; 
     font-weight: bold; 
 }
@@ -110,7 +110,7 @@ body {
 #viewAllLink {
   display: none;
   margin-left: 10px;
-  color: #c169ff;
+  color: #FF7518;
   text-decoration: none;
   font-weight: bold;
 }
@@ -256,7 +256,7 @@ body {
     display: flex;
     justify-content: space-around;
     margin: 10px;
-    color: #c169ff;
+    color: #FF7518;
 }
 #lot-filter i {
     cursor: pointer;
@@ -265,7 +265,7 @@ body {
 }
 #lot-filter i:hover {
     transform: scale(1.2);
-    color: #c169ff;
+    color: #FF7518;
 }
 
 .event-label {
