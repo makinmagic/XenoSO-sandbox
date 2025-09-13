@@ -1,15 +1,10 @@
 body {
         font-family: Arial, sans-serif;
-        background-color: #1b1b1b;
+        background-color: #000000;
         color: #f4f4f4;
         margin: 0;
         padding: 20px;
         overflow-x: hidden;
-    background-image: url('https://media.istockphoto.com/id/1173280294/vector/minimal-halloween-vector-seamless-pattern-with-white-spider-web-on-black-background.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed;
     }
 
     h1 {
