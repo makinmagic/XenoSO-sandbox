@@ -65,8 +65,8 @@ body {
     }
 
     tr:hover {
-        background-color: rgba(255, 117, 24, 0.15); 
-        color: #ff7518; 
+        background-color: rgba(255, 117, 24, 0.45); 
+        color: #f4f4f4; 
         transition: background-color 0.3s ease, color 0.3s ease;
     }
 
@@ -190,7 +190,7 @@ body {
         margin: 0 auto;
         padding: 15px;
         border: 1px solid #FF7518;
-        background-color: rgba(180, 100, 255, 0.25);
+        background-color: rgba(255, 117, 24, 0.45);
         border-radius: 10px;
         box-shadow: 0 0 10px #a855f750;
         text-align: left;
@@ -287,7 +287,7 @@ body {
 }
 
 .event-card {
-  background: rgba(180, 100, 255, 0.25);
+  background: rgba(255, 117, 24, 0.45);
   border: 1px solid #FF7518;
   border-radius: 12px;
   padding: 14px 18px;
