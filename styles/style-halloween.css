@@ -65,7 +65,7 @@ body {
     }
 
     tr:hover {
-        background-color: rgba(20, 10, 0, 0.6); 
+        background-color: rgba(75, 0, 130, 0.25); 
         color: #ff7518; 
         transition: background-color 0.3s ease, color 0.3s ease;
     }
