@@ -418,17 +418,17 @@ body.dark-mode #console-content a {
 
 .sims-online-icon::before {
     font: var(--fa-font-solid);
-    content: "\f500";
+    content: "\f6e7";
 }
 
 .active-lots-icon::before {
     font: var(--fa-font-solid);
-    content: "\f015";
+    content: "\e0de";
 }
 
 .upcoming-events-icon::before {
     font: var(--fa-font-solid);
-    content: "\f073";
+    content: "\f6bf";
 }
 
 #backToTopBtn {
@@ -657,5 +657,5 @@ body.dark-mode #console-content a {
 
 .console-icon::before {
     font: var(--fa-font-solid);
-    content: "\f05a";
+    content: "\f717";
 }
