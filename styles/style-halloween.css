@@ -11,7 +11,7 @@ body {
     text-align: center;
     color: #ff7518; 
     font-size: 32px;
-    text-shadow: 0 0 32px rgba(146, 21, 230, 0.8), 0 0 30px rgba(193, 105, 255, 0.8);
+    text-shadow: 0 0 32px rgba(255, 117, 24, 1);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -474,7 +474,7 @@ body.dark-mode #console-content a {
   color: #fff;
   max-width: 600px;
   text-align: center;
-  border: 2px solid #9215e6;
+  border: 2px solid #FF7518;
 }
 
 #sim-modal .modal-content {
@@ -509,7 +509,7 @@ body.dark-mode #console-content a {
 }
 
 .tab-btn.active {
-  background: #6600cc;
+  background: #FF7518;
 }
 
 .tab-content {
@@ -522,7 +522,7 @@ body.dark-mode #console-content a {
   padding: 20px;
   border-radius: 10px;
   background-color: #1c003b;
-  border: 2px solid #9215e6;
+  border: 2px solid #FF7518;
   max-width: 600px;
   width: 80%;
   text-align: center;
@@ -542,7 +542,7 @@ body.dark-mode #console-content a {
   gap: 8px;
   font-size: 1.6em;
   font-weight: bold;
-  color: #dda0dd;
+  color: #FF7518;
   margin-bottom: 20px;
 }
 
@@ -579,7 +579,7 @@ body.dark-mode #console-content a {
 }
 
 .job-btn.active {
-  background-color: #9215e6;
+  background-color: #FF7518;
   color: white;
   border-color: #9215e6;
   box-shadow: 0 0 10px rgba(146, 21, 230, 0.5);
