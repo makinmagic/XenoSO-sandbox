@@ -5,6 +5,11 @@ body {
         margin: 0;
         padding: 20px;
         overflow-x: hidden;
+    background-image: url('https://media.istockphoto.com/id/1173280294/vector/minimal-halloween-vector-seamless-pattern-with-white-spider-web-on-black-background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
     }
 
     h1 {
