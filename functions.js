@@ -1854,29 +1854,34 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.showSimNoteInline = function(simId, isModal = false) {
-    const notesData = JSON.parse(localStorage.getItem('simNotes')) || {};
-    const note = notesData[simId];
-    const target = isModal
-      ? document.getElementById('sim-modal-content')
-      : document.getElementById('console-content');
+  const notesData = JSON.parse(localStorage.getItem('simNotes')) || {};
+  const note = notesData[simId];
+  const target = isModal
+    ? document.getElementById('sim-modal-content')
+    : document.getElementById('console-content');
 
-    if (!target) return;
+  if (!target) return;
 
-    let existingNoteDiv = target.querySelector('.sim-note');
-    if (existingNoteDiv) existingNoteDiv.remove();
+  const existingNoteDiv = target.querySelector('.sim-note');
+  if (existingNoteDiv) existingNoteDiv.remove();
 
+  if (note) {
     const noteDiv = document.createElement('div');
     noteDiv.className = 'sim-note';
-    noteDiv.style.marginTop = '10px';
+    noteDiv.style.marginTop = '6px';
+    noteDiv.style.fontSize = '0.95em';
+    noteDiv.style.opacity = '0.9';
+
     noteDiv.innerHTML = `
-      <hr>
-      <p><strong>Your Note:</strong> ${note ? note.replace(/\n/g, '<br>') : '<em>No note added yet.</em>'}</p>
-      <button onclick="openNotesModal('${simId}', '${target.querySelector('.console-title')?.textContent.trim() || 'Sim'}')">
-        ${note ? '✏️ Edit Note' : '📝 Add Note'}
+      <p><strong>Your Note:</strong> ${note.replace(/\n/g, '<br>')}</p>
+      <button style="margin-top:4px;" onclick="openNotesModal('${simId}', '${target.querySelector('.console-title')?.textContent.trim() || 'Sim'}')">
+        ✏️ Edit Note
       </button>
     `;
+
     target.appendChild(noteDiv);
-  };
+  }
+};
 
 });
         
