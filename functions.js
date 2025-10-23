@@ -1865,22 +1865,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const existingNoteDiv = target.querySelector('.sim-note');
   if (existingNoteDiv) existingNoteDiv.remove();
 
-  if (note) {
-    const noteDiv = document.createElement('div');
-    noteDiv.className = 'sim-note';
-    noteDiv.style.marginTop = '6px';
-    noteDiv.style.fontSize = '0.95em';
-    noteDiv.style.opacity = '0.9';
+  const noteDiv = document.createElement('div');
+  noteDiv.className = 'sim-note';
+  noteDiv.style.marginTop = '6px';
+  noteDiv.style.fontSize = '0.95em';
+  noteDiv.style.opacity = '0.9';
 
+  if (note) {
     noteDiv.innerHTML = `
       <p><strong>Your Note:</strong> ${note.replace(/\n/g, '<br>')}</p>
       <button style="margin-top:4px;" onclick="openNotesModal('${simId}', '${target.querySelector('.console-title')?.textContent.trim() || 'Sim'}')">
         ✏️ Edit Note
       </button>
     `;
-
-    target.appendChild(noteDiv);
+  } else {
+    noteDiv.innerHTML = `
+      <button style="margin-top:4px;" onclick="openNotesModal('${simId}', '${target.querySelector('.console-title')?.textContent.trim() || 'Sim'}')">
+        📝 Add Note
+      </button>
+    `;
   }
+
+  target.appendChild(noteDiv);
 };
 
 });
