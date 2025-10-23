@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
     <!-- <script src="https://makinmagic.github.io/XenoSO/functions/functions-nye.js"></script> -->
-    <link rel="stylesheet" href="https://makinmagic.github.io/XenoSO-sandbox/styles/style-halloween.css">
+    <link rel="stylesheet" href="https://makinmagic.github.io/XenoSO/styles/halloween.css">
 </head>
 <body>
    <!-- Stars background - used with permission from Sorta -->
@@ -110,7 +110,8 @@
   <a href="https://xenoso.fandom.com/" target="_blank">Wiki</a> |
 <a href="https://makinmagic.github.io/timer/" target="_blank">SMO Timer</a> |
   <a href="https://makinmagic.github.io/pizza/" target="_blank">Pizza Helper</a> |
-  <a href="https://makinmagic.github.io/puzzle/" target="_blank">Tomb Puzzle Helper</a>
+  <a href="https://makinmagic.github.io/puzzle/" target="_blank">Tomb Puzzle Helper</a> |
+	<a href="https://www.somethingmysterious.space/candytimer.html" target="_blank">Candy Clock</a>	
 </div>
 <div id="footer-note" style="text-align: center; margin-bottom: 0px; font-size: 16px;">
         <i class="fa-regular fa-star"></i> Click on the star next to a Sim or a Lot to favourite them. This will make them show up at the top of the list when they're online!<br><br>
@@ -246,6 +247,24 @@ window.onload = () => {
     <div id="sim-modal-content">Loading...</div>
   </div>
 </div>
+
+<!-- Sim Notes Modal -->
+<div id="notes-modal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close" onclick="closeNotesModal()">&times;</span>
+    <div id="notes-modal-content">
+      <h3 id="notes-modal-title" style="margin-top:0;">Add/Edit Note</h3>
+      <textarea id="notes-textarea" rows="5" style="width:100%; resize:vertical;"></textarea>
+      <button id="save-note-btn" style="margin-top:10px;">Save Note</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function closeNotesModal() {
+  document.getElementById('notes-modal').style.display = 'none';
+}
+</script>
 	
 </body>
 </html>
