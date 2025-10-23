@@ -1868,19 +1868,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const noteDiv = document.createElement('div');
   noteDiv.className = 'sim-note';
   noteDiv.style.marginTop = '4px';
-  noteDiv.style.fontSize = '0.95em';
-  noteDiv.style.opacity = '0.9';
-  noteDiv.style.fontFamily = 'inherit';
-  noteDiv.style.color = 'inherit';
 
   if (note) {
     noteDiv.innerHTML = `
-      <span><strong>Your Note:</strong> ${note.replace(/\n/g, '<br>')}</span>
-      &nbsp;<a href="#" class="sim-note-link" onclick="openNotesModal('${simId}', '${target.querySelector('.console-title')?.textContent.trim() || 'Sim'}'); return false;">✏️ Edit Note</a>
+      <p><strong>Your Note:</strong> ${note.replace(/\n/g, '<br>')}</p>
+      <p style="margin: 0;">
+        <a href="#" class="sim-note-link" onclick="openNotesModal('${simId}', '${target.querySelector('.console-title')?.textContent.trim() || 'Sim'}'); return false;">
+          ✏️ Edit Note
+        </a>
+      </p>
     `;
   } else {
     noteDiv.innerHTML = `
-      <a href="#" class="sim-note-link" onclick="openNotesModal('${simId}', '${target.querySelector('.console-title')?.textContent.trim() || 'Sim'}'); return false;">📝 Add Note</a>
+      <p style="margin: 0;">
+        <a href="#" class="sim-note-link" onclick="openNotesModal('${simId}', '${target.querySelector('.console-title')?.textContent.trim() || 'Sim'}'); return false;">
+          📝 Add Note
+        </a>
+      </p>
     `;
   }
 
