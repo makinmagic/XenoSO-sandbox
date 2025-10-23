@@ -1815,36 +1815,32 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.style.display = 'block';
   };
 
-  const saveBtn = document.getElementById('save-note-btn');
-  if (saveBtn) {
-    saveBtn.addEventListener('click', () => {
-      const modal = document.getElementById('notes-modal');
-      const textarea = document.getElementById('notes-textarea');
-      const simId = modal.dataset.simId;
-      const noteText = textarea.value.trim();
+const saveBtn = document.getElementById('save-note-btn');
+if (saveBtn) {
+  saveBtn.addEventListener('click', () => {
+    const modal = document.getElementById('notes-modal');
+    const textarea = document.getElementById('notes-textarea');
+    const simId = modal.dataset.simId;
+    const noteText = textarea.value.trim();
 
-      const notesData = JSON.parse(localStorage.getItem('simNotes')) || {};
+    const notesData = JSON.parse(localStorage.getItem('simNotes')) || {};
 
-      if (noteText) {
-        notesData[simId] = noteText;
-      } else {
-        delete notesData[simId];
-      }
+    if (noteText) {
+      notesData[simId] = noteText;
+    } else {
+      delete notesData[simId];
+    }
 
-      localStorage.setItem('simNotes', JSON.stringify(notesData));
-      modal.style.display = 'none';
+    localStorage.setItem('simNotes', JSON.stringify(notesData));
+    modal.style.display = 'none';
 
-      const consoleContent = document.getElementById('console-content');
-      if (consoleContent && consoleContent.dataset.id === simId) {
-        showSimNoteInline(simId);
-      }
-
-      const simModal = document.getElementById('sim-modal');
-      if (simModal && simModal.style.display === 'block') {
-        showSimNoteInline(simId, true);
-      }
-    });
-  }
+    showSimNoteInline(simId);
+    const simModal = document.getElementById('sim-modal');
+    if (simModal && simModal.style.display === 'block') {
+      showSimNoteInline(simId, true);
+    }
+  });
+}
 
   const notesClose = document.querySelector('#notes-modal .close');
   if (notesClose) {
