@@ -1144,7 +1144,7 @@ function displayEventInfo(event) {
         <p><strong>🕐 Time:</strong> ${formattedTime}</p>
         <p><strong>📍 Location:</strong> ${event.location}</p>
 		<p style="margin-top: 10px;">
-            <a href="#" id="addToCalendarLink" style="text-decoration: underline; font-weight: bold;">📆 Add to Calendar</a>
+            <a href="#" id="addToCalendarLink" style="text-decoration: underline; font: inherit;">⏰ Add to Calendar</a>
         </p>
     `;
 
