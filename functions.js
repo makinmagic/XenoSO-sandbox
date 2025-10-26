@@ -1143,7 +1143,48 @@ function displayEventInfo(event) {
         <p><strong>📅 Date:</strong> ${formattedDate}</p>
         <p><strong>🕐 Time:</strong> ${formattedTime}</p>
         <p><strong>📍 Location:</strong> ${event.location}</p>
+		<p style="margin-top: 10px;">
+            <a href="#" id="addToCalendarLink" style="text-decoration: underline; font-weight: bold;">📆 Add to Calendar</a>
+        </p>
     `;
+
+	const addLink = document.getElementById('addToCalendarLink');
+    if (addLink) {
+        addLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            addToCalendar(event);
+        });
+    }
+}
+
+function addToCalendar(event) {
+    const icsContent = `
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//XenoSO Dashboard//EN
+BEGIN:VEVENT
+SUMMARY:${sanitize(event.name)}
+DESCRIPTION:${sanitize(event.description)}
+LOCATION:${sanitize(event.location)}
+DTSTART:${formatICSDate(event.startTime)}
+DTEND:${formatICSDate(event.endTime)}
+END:VEVENT
+END:VCALENDAR
+    `.trim();
+
+    const blob = new Blob([icsContent], { type: 'text/calendar' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `${event.name.replace(/\s+/g, '_')}.ics`;
+    link.click();
+}
+
+function formatICSDate(date) {
+    return new Date(date).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+}
+
+function sanitize(text) {
+    return (text || '').replace(/(\r\n|\n|\r)/g, ' ').replace(/,/g, '\\,');
 }
 
 async function displayCurrentEvent() {
