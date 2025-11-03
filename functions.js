@@ -1974,31 +1974,26 @@ window.addEventListener("load", () => {
     })
     .catch(err => console.error("Failed to load lotnames.json:", err));
 
-  // Sim search events
-  const simInput = document.getElementById("sim-search");
-  if (simInput) {
-    ["input", "change", "keyup"].forEach(evt => {
-      simInput.addEventListener(evt, e => {
-        if ((e.type === "input" || e.key === "Enter" || e.keyCode === 13) && typeof searchSim === "function") {
-          searchSim({ key: "Enter", target: e.target });
-        }
-      });
-    });
-  }
+  const setupSearch = (inputId, searchFn) => {
+    const input = document.getElementById(inputId);
+    if (!input) return;
 
-  // Lot search events
-  const lotInput = document.getElementById("lot-search");
-  if (lotInput) {
-    ["input", "change", "keyup"].forEach(evt => {
-      lotInput.addEventListener(evt, e => {
-        if ((e.type === "input" || e.key === "Enter" || e.keyCode === 13) && typeof searchLot === "function") {
-          searchLot({ key: "Enter", target: e.target });
-        }
-      });
+    input.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.keyCode === 13) {
+        searchFn({ key: "Enter", target: e.target });
+      }
     });
-  }
 
-  console.log("✅ Autocomplete ready and event listeners attached.");
+    input.addEventListener("change", e => {
+      const val = e.target.value.trim();
+      if (val && typeof searchFn === "function") {
+        searchFn({ key: "Enter", target: e.target });
+      }
+    });
+  };
+
+  setupSearch("sim-search", searchSim);
+  setupSearch("lot-search", searchLot);
 });
         
 /* document.addEventListener('DOMContentLoaded', () => {
