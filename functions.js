@@ -811,6 +811,30 @@ async function searchSim(event) {
     }
 }
 
+// Autocomplete setup for Lot search
+async function loadLotNames() {
+  try {
+    const res = await fetch("https://makinmagic.github.io/XenoSO/data/lotnames.json");
+    const names = await res.json();
+
+    const datalist = document.getElementById("lotnames");
+    datalist.innerHTML = names.map(name => `<option value="${name}">`).join("");
+  } catch (err) {
+    console.error("Failed to load lotnames.json:", err);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadLotNames();
+
+  const lotSearch = document.getElementById("lot-search");
+  if (lotSearch) {
+    lotSearch.addEventListener("change", (event) => {
+      searchLot({ key: "Enter", target: event.target });
+    });
+  }
+});
+
 async function searchLot(event) {
     if (event.key === 'Enter' || event.keyCode === 13) {
         const lotName = event.target.value.trim();
@@ -1952,48 +1976,6 @@ if (saveBtn) {
   target.appendChild(noteDiv);
 };
 
-});
-
-// Autocomplete Setup
-window.addEventListener("load", () => {
-  // Load Sim names
-  fetch("https://makinmagic.github.io/XenoSO/data/simnames.json")
-    .then(res => res.json())
-    .then(names => {
-      const list = document.getElementById("simnames");
-      if (list) list.innerHTML = names.map(n => `<option value="${n}">`).join("");
-    })
-    .catch(err => console.error("Failed to load simnames.json:", err));
-
-  // Load Lot names
-  fetch("https://makinmagic.github.io/XenoSO/data/lotnames.json")
-    .then(res => res.json())
-    .then(names => {
-      const list = document.getElementById("lotnames");
-      if (list) list.innerHTML = names.map(n => `<option value="${n}">`).join("");
-    })
-    .catch(err => console.error("Failed to load lotnames.json:", err));
-
-  const setupSearch = (inputId, searchFn) => {
-    const input = document.getElementById(inputId);
-    if (!input) return;
-
-    input.addEventListener("keydown", e => {
-      if (e.key === "Enter" || e.keyCode === 13) {
-        searchFn({ key: "Enter", target: e.target });
-      }
-    });
-
-    input.addEventListener("change", e => {
-      const val = e.target.value.trim();
-      if (val && typeof searchFn === "function") {
-        searchFn({ key: "Enter", target: e.target });
-      }
-    });
-  };
-
-  setupSearch("sim-search", searchSim);
-  setupSearch("lot-search", searchLot);
 });
         
 /* document.addEventListener('DOMContentLoaded', () => {
