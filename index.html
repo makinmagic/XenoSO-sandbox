@@ -54,7 +54,7 @@
             <div style="display: flex; align-items: center;">
     <h3 id="lots-title" style="flex-grow: 1; text-align: center;"><span class="active-lots-icon"></span> Active Lots <span class="active-lots-icon"></span></h3>
     <i class="fa-solid fa-search search-icon" onclick="toggleSearch('lot')"></i>
-    <input type="text" id="lot-search" placeholder="Search any Lot" autocomplete="off" style="display:none; margin-left: 10px;" onkeyup="searchLot(event)">
+    <input type="text" id="lot-search" placeholder="Search any Lot" list="simnames" autocomplete="off" style="display:none; margin-left: 10px;" onkeyup="searchLot(event)">
 </div>
             <div id="lot-filter">
     <i class="fa-solid fa-mug-hot" title="Service" onclick="filterLots('Service')"></i>
