@@ -1953,6 +1953,53 @@ if (saveBtn) {
 };
 
 });
+
+// Autocomplete Setup
+window.addEventListener("load", () => {
+  // Load Sim names
+  fetch("https://makinmagic.github.io/XenoSO/data/simnames.json")
+    .then(res => res.json())
+    .then(names => {
+      const list = document.getElementById("simnames");
+      if (list) list.innerHTML = names.map(n => `<option value="${n}">`).join("");
+    })
+    .catch(err => console.error("Failed to load simnames.json:", err));
+
+  // Load Lot names
+  fetch("https://makinmagic.github.io/XenoSO/data/lotnames.json")
+    .then(res => res.json())
+    .then(names => {
+      const list = document.getElementById("lotnames");
+      if (list) list.innerHTML = names.map(n => `<option value="${n}">`).join("");
+    })
+    .catch(err => console.error("Failed to load lotnames.json:", err));
+
+  // Sim search events
+  const simInput = document.getElementById("sim-search");
+  if (simInput) {
+    ["input", "change", "keyup"].forEach(evt => {
+      simInput.addEventListener(evt, e => {
+        if ((e.type === "input" || e.key === "Enter" || e.keyCode === 13) && typeof searchSim === "function") {
+          searchSim({ key: "Enter", target: e.target });
+        }
+      });
+    });
+  }
+
+  // Lot search events
+  const lotInput = document.getElementById("lot-search");
+  if (lotInput) {
+    ["input", "change", "keyup"].forEach(evt => {
+      lotInput.addEventListener(evt, e => {
+        if ((e.type === "input" || e.key === "Enter" || e.keyCode === 13) && typeof searchLot === "function") {
+          searchLot({ key: "Enter", target: e.target });
+        }
+      });
+    });
+  }
+
+  console.log("✅ Autocomplete ready and event listeners attached.");
+});
         
 /* document.addEventListener('DOMContentLoaded', () => {
     // Check if dark mode was previously enabled
