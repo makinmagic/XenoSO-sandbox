@@ -692,6 +692,21 @@ function toggleSearch(type) {
     }
 }
 
+// Autocomplete setup for Sim search
+async function loadSimNames() {
+  try {
+    const res = await fetch("https://makinmagic.github.io/XenoSO/data/simnames.json");
+    const names = await res.json();
+
+    const datalist = document.getElementById("simnames");
+    datalist.innerHTML = names.map(name => `<option value="${name}">`).join("");
+  } catch (err) {
+    console.error("Failed to load simnames.json:", err);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", loadSimNames);
+
 async function searchSim(event) {
     if (event.key === 'Enter' || event.keyCode === 13) {
         const simName = event.target.value.trim();
