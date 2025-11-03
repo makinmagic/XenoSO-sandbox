@@ -705,7 +705,16 @@ async function loadSimNames() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", loadSimNames);
+document.addEventListener("DOMContentLoaded", () => {
+  loadSimNames();
+
+  const simSearch = document.getElementById("sim-search");
+  if (simSearch) {
+    simSearch.addEventListener("change", (event) => {
+      searchSim({ key: "Enter", target: event.target });
+    });
+  }
+});
 
 async function searchSim(event) {
     if (event.key === 'Enter' || event.keyCode === 13) {
