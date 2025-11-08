@@ -577,21 +577,30 @@ async function fetchPlayerImages() {
     }
 }
 
-function setMemorialMode(isActive, consoleContainer, consoleContent) {
+function setMemorialMode(isActive, container, content) {
+  const isModal = container.id === 'sim-modal-content' || container.closest('#sim-modal');
+
   if (isActive) {
-    consoleContainer.dataset.memorial = 'true';
-    consoleContainer.style.background = '#000';
-    consoleContent.style.background = '#000';
+    if (isModal) {
+      const modal = document.getElementById('sim-modal');
+      modal.style.backgroundColor = 'black';
+      modal.style.backdropFilter = 'blur(2px)';
+      content.style.background = 'black';
+    } else {
+      container.style.background = 'black';
+      content.style.background = 'black';
+    }
 
-    const modal = consoleContainer.closest('.modal');
-    if (modal) modal.style.background = '#000';
-  } else if (consoleContainer.dataset.memorial === 'true') {
-    consoleContainer.removeAttribute('data-memorial');
-    consoleContainer.removeAttribute('style');
-    consoleContent.removeAttribute('style');
+    container.dataset.memorial = 'true';
+  } else if (container.dataset.memorial === 'true') {
+    delete container.dataset.memorial;
+    content.removeAttribute('style');
+    container.removeAttribute('style');
 
-    const modal = consoleContainer.closest('.modal');
-    if (modal) modal.removeAttribute('style');
+    if (isModal) {
+      const modal = document.getElementById('sim-modal');
+      modal.removeAttribute('style');
+    }
   }
 }
 	    
@@ -676,11 +685,8 @@ const memorialEntry = memorialList.find(entry =>
 		showSimNoteInline(avatarId);
 
 const consoleContainer = document.getElementById('console-container');
-
-consoleContainer.removeAttribute('style');
-consoleContent.removeAttribute('style');
-
-setMemorialMode(false, consoleContainer, consoleContent);
+const consoleContent = document.getElementById('console-content');
+setMemorialMode(!!memorialEntry, consoleContainer, consoleContent);
 
 if (memorialEntry) {
   setMemorialMode(!!memorialEntry, consoleContainer, consoleContent);
@@ -876,12 +882,8 @@ async function searchSim(event) {
 		showSimNoteInline(idFromName);
 
 const consoleContainer = document.getElementById('console-container');
-
-// Always reset to the seasonal background first
-consoleContainer.removeAttribute('style');
-consoleContent.removeAttribute('style');
-
-setMemorialMode(false, consoleContainer, consoleContent);
+const consoleContent = document.getElementById('console-content');
+setMemorialMode(!!memorialEntry, consoleContainer, consoleContent);
 
 if (memorialEntry) {
   setMemorialMode(!!memorialEntry, consoleContainer, consoleContent);
