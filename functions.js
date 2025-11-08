@@ -370,6 +370,8 @@ async function displayLotInfo(lotId) {
     consoleContent.dataset.id = lotId; // Set the current Lot ID
     consoleContent.dataset.type = 'lots'; // Set the type to Lots
 
+	setMemorialMode(false, document.getElementById('console-container'), consoleContent);
+
     const url = `https://api.xenoso.space/userapi/city/1/i${lotId}.json`;
 
     try {
@@ -602,11 +604,11 @@ function setMemorialMode(isActive, container, content) {
 }
 	    
 async function displayPlayerInfo(avatarId) {
-    // Remove placeholder text
     const consoleContent = document.getElementById('console-content');
-    consoleContent.innerHTML = ''; // Clear existing content
-    consoleContent.dataset.id = avatarId; // Set the current Sim ID
-    consoleContent.dataset.type = 'sims'; // Set the type to Sims
+    consoleContent.innerHTML = '';
+	setMemorialMode(false, document.getElementById('console-container'), consoleContent);
+    consoleContent.dataset.id = avatarId;
+    consoleContent.dataset.type = 'sims';
 
     const playerImages = await fetchPlayerImages();
     const url = `https://api.xenoso.space/userapi/avatars/${avatarId}`;
@@ -1315,6 +1317,7 @@ async function fetchEvents() {
 
 function displayEventInfo(event) {
     const consoleContent = document.getElementById('console-content');
+	setMemorialMode(false, document.getElementById('console-container'), consoleContent);
     const eventStartDate = new Date(event.startTime);
     const eventEndDate = new Date(event.endTime);
     const formattedDate = eventStartDate.toLocaleDateString(undefined, {
