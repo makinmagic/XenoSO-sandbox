@@ -658,21 +658,15 @@ const memorialEntry = memorialList.find(entry =>
 		showSimNoteInline(avatarId);
 
 if (memorialEntry) {
-  consoleContent.style.background = 'rgba(255, 215, 0, 0.05)';
-  consoleContent.style.border = '1px solid rgba(255, 215, 0, 0.3)';
-  consoleContent.style.boxShadow = '0 0 12px rgba(255, 215, 0, 0.2)';
+  const consoleContainer = document.getElementById('console-container');
+  consoleContent.style.background = '#000';
+  if (consoleContainer) {
+    consoleContainer.style.background = '#000';
+  }
 
   const tribute = document.createElement('div');
   tribute.innerHTML = `
-    <p style="
-      text-align:center;
-      color:#FFD700;
-      font-style:italic;
-      margin-top:-5px;
-      margin-bottom:10px;
-    ">
-      ${memorialEntry.message}
-    </p>
+    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">${memorialEntry.message}</p>
   `;
   const descriptionContainer = consoleContent.querySelector('.description-container');
   if (descriptionContainer) {
@@ -684,10 +678,11 @@ if (memorialEntry) {
     title.innerHTML = `${memorialEntry.symbol} ${title.innerHTML} ${memorialEntry.symbol}`;
   }
 
-  const onlineText = consoleContent.querySelector('p strong');
-  if (onlineText && onlineText.textContent.includes('Currently Online')) {
-    const parentP = onlineText.closest('p');
-    if (parentP) parentP.style.opacity = '0.5';
+  const onlineParagraph = Array.from(consoleContent.querySelectorAll('p')).find(p =>
+    p.textContent.toLowerCase().includes('currently online')
+  );
+  if (onlineParagraph) {
+    onlineParagraph.style.opacity = '0.3';
   }
 }
 
@@ -1192,6 +1187,31 @@ async function openSimModal(event) {
 	</div>
     `;
 	  showSimNoteInline(idFromName, true);
+
+	if (memorialEntry) {
+  content.style.background = '#000';
+
+  const tribute = document.createElement('div');
+  tribute.innerHTML = `
+    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">${memorialEntry.message}</p>
+  `;
+  const descriptionContainer = consoleContent.querySelector('.description-container');
+  if (descriptionContainer) {
+    descriptionContainer.parentNode.insertBefore(tribute, descriptionContainer);
+  }
+
+  const title = consoleContent.querySelector('.console-title');
+  if (title && !title.textContent.includes(memorialEntry.symbol)) {
+    title.innerHTML = `${memorialEntry.symbol} ${title.innerHTML} ${memorialEntry.symbol}`;
+  }
+
+  const onlineParagraph = Array.from(consoleContent.querySelectorAll('p')).find(p =>
+    p.textContent.toLowerCase().includes('currently online')
+  );
+  if (onlineParagraph) {
+    onlineParagraph.style.opacity = '0.3';
+  }
+}
 
   } catch (error) {
     console.error('Failed to fetch sim details:', error);
