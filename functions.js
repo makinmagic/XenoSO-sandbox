@@ -685,8 +685,6 @@ const consoleContainer = document.getElementById('console-container');
 setMemorialMode(!!memorialEntry, consoleContainer, consoleContent);
 
 if (memorialEntry) {
-  setMemorialMode(!!memorialEntry, consoleContainer, consoleContent);
-
   const tribute = document.createElement('div');
   tribute.innerHTML = `
     <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
@@ -881,8 +879,6 @@ const consoleContainer = document.getElementById('console-container');
 setMemorialMode(!!memorialEntry, consoleContainer, consoleContent);
 
 if (memorialEntry) {
-  setMemorialMode(!!memorialEntry, consoleContainer, consoleContent);
-
   const tribute = document.createElement('div');
   tribute.innerHTML = `
     <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
