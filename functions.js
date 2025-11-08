@@ -1188,24 +1188,30 @@ async function openSimModal(event) {
     `;
 	  showSimNoteInline(idFromName, true);
 
-	if (memorialEntry) {
+// Memorial check
+const memorialList = await fetchMemorialList();
+const memorialEntry = memorialList.find(entry =>
+  entry.name.toLowerCase() === playerData.name.toLowerCase()
+);
+
+if (memorialEntry) {
   content.style.background = '#000';
 
   const tribute = document.createElement('div');
   tribute.innerHTML = `
     <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">${memorialEntry.message}</p>
   `;
-  const descriptionContainer = consoleContent.querySelector('.description-container');
+  const descriptionContainer = content.querySelector('.description-container');
   if (descriptionContainer) {
     descriptionContainer.parentNode.insertBefore(tribute, descriptionContainer);
   }
 
-  const title = consoleContent.querySelector('.console-title');
+  const title = content.querySelector('.console-title');
   if (title && !title.textContent.includes(memorialEntry.symbol)) {
     title.innerHTML = `${memorialEntry.symbol} ${title.innerHTML} ${memorialEntry.symbol}`;
   }
 
-  const onlineParagraph = Array.from(consoleContent.querySelectorAll('p')).find(p =>
+  const onlineParagraph = Array.from(content.querySelectorAll('p')).find(p =>
     p.textContent.toLowerCase().includes('currently online')
   );
   if (onlineParagraph) {
