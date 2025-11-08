@@ -658,16 +658,19 @@ const memorialEntry = memorialList.find(entry =>
 		showSimNoteInline(avatarId);
 
 if (memorialEntry) {
-  const consoleContainer = document.getElementById('console-container');
-  consoleContent.style.background = '#000';
-  if (consoleContainer) {
-    consoleContainer.style.background = '#000';
-  }
+  document.body.classList.add('memorial-mode');
+} else {
+  document.body.classList.remove('memorial-mode');
+}
 
+if (memorialEntry) {
   const tribute = document.createElement('div');
   tribute.innerHTML = `
-    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">${memorialEntry.message}</p>
+    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
+      ${memorialEntry.message}
+    </p>
   `;
+
   const descriptionContainer = consoleContent.querySelector('.description-container');
   if (descriptionContainer) {
     descriptionContainer.parentNode.insertBefore(tribute, descriptionContainer);
@@ -852,16 +855,19 @@ async function searchSim(event) {
 		showSimNoteInline(idFromName);
 
 if (memorialEntry) {
-  const consoleContainer = document.getElementById('console-container');
-  consoleContent.style.background = '#000';
-  if (consoleContainer) {
-    consoleContainer.style.background = '#000';
-  }
+  document.body.classList.add('memorial-mode');
+} else {
+  document.body.classList.remove('memorial-mode');
+}
 
+if (memorialEntry) {
   const tribute = document.createElement('div');
   tribute.innerHTML = `
-    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">${memorialEntry.message}</p>
+    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
+      ${memorialEntry.message}
+    </p>
   `;
+
   const descriptionContainer = consoleContent.querySelector('.description-container');
   if (descriptionContainer) {
     descriptionContainer.parentNode.insertBefore(tribute, descriptionContainer);
@@ -1195,12 +1201,19 @@ const memorialEntry = memorialList.find(entry =>
 );
 
 if (memorialEntry) {
-  content.style.background = '#000';
+  document.body.classList.add('memorial-mode');
+} else {
+  document.body.classList.remove('memorial-mode');
+}
 
+if (memorialEntry) {
   const tribute = document.createElement('div');
   tribute.innerHTML = `
-    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">${memorialEntry.message}</p>
+    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
+      ${memorialEntry.message}
+    </p>
   `;
+
   const descriptionContainer = content.querySelector('.description-container');
   if (descriptionContainer) {
     descriptionContainer.parentNode.insertBefore(tribute, descriptionContainer);
