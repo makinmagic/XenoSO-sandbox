@@ -858,24 +858,14 @@ async function searchSim(event) {
 
 if (memorialEntry) {
   const consoleContainer = document.getElementById('console-container');
-  consoleContent.style.background = 'rgba(255, 215, 0, 0.05)';
-  consoleContent.style.border = '1px solid rgba(255, 215, 0, 0.3)';
-  consoleContent.style.boxShadow = '0 0 15px rgba(255, 215, 0, 0.3)';
+  consoleContent.style.background = '#000';
   if (consoleContainer) {
-    consoleContainer.style.background = 'rgba(255, 215, 0, 0.02)';
+    consoleContainer.style.background = '#000';
   }
 
   const tribute = document.createElement('div');
   tribute.innerHTML = `
-    <p style="
-      text-align:center;
-      color:#FFD700;
-      font-style:italic;
-      margin-top:-5px;
-      margin-bottom:10px;
-    ">
-      ${memorialEntry.message}
-    </p>
+    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">${memorialEntry.message}</p>
   `;
   const descriptionContainer = consoleContent.querySelector('.description-container');
   if (descriptionContainer) {
@@ -891,7 +881,7 @@ if (memorialEntry) {
     p.textContent.toLowerCase().includes('currently online')
   );
   if (onlineParagraph) {
-    onlineParagraph.style.opacity = '0.5';
+    onlineParagraph.style.opacity = '0.8';
   }
 }
 
