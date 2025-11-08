@@ -874,14 +874,14 @@ if (memorialEntry) {
 
   const title = consoleContent.querySelector('.console-title');
   if (title && !title.textContent.includes(memorialEntry.symbol)) {
-    title.innerHTML = `${memorialEntry.symbol} ${title.innerHTML}`;
+    title.innerHTML = `${memorialEntry.symbol} ${title.innerHTML} ${memorialEntry.symbol}`;
   }
 
   const onlineParagraph = Array.from(consoleContent.querySelectorAll('p')).find(p =>
     p.textContent.toLowerCase().includes('currently online')
   );
   if (onlineParagraph) {
-    onlineParagraph.style.opacity = '0.8';
+    onlineParagraph.style.opacity = '0.3';
   }
 }
 
