@@ -583,12 +583,11 @@ function setMemorialMode(isActive, container, content) {
   if (isActive) {
     if (isModal) {
       const modal = document.getElementById('sim-modal');
-      modal.style.backgroundColor = 'black';
-      modal.style.backdropFilter = 'blur(2px)';
-      content.style.background = 'black';
+      modal.style.backgroundColor = '#000';
+      content.style.background = '#000';
     } else {
-      container.style.background = 'black';
-      content.style.background = 'black';
+      container.style.background = '#000';
+      content.style.background = '#000';
     }
 
     container.dataset.memorial = 'true';
@@ -685,7 +684,6 @@ const memorialEntry = memorialList.find(entry =>
 		showSimNoteInline(avatarId);
 
 const consoleContainer = document.getElementById('console-container');
-const consoleContent = document.getElementById('console-content');
 setMemorialMode(!!memorialEntry, consoleContainer, consoleContent);
 
 if (memorialEntry) {
@@ -882,7 +880,6 @@ async function searchSim(event) {
 		showSimNoteInline(idFromName);
 
 const consoleContainer = document.getElementById('console-container');
-const consoleContent = document.getElementById('console-content');
 setMemorialMode(!!memorialEntry, consoleContainer, consoleContent);
 
 if (memorialEntry) {
