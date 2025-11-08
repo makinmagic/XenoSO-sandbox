@@ -658,13 +658,15 @@ const memorialEntry = memorialList.find(entry =>
 		showSimNoteInline(avatarId);
 
 const consoleContainer = document.getElementById('console-container');
-if (memorialEntry) {
-  consoleContainer?.classList.add('memorial-active');
-} else {
-  consoleContainer?.classList.remove('memorial-active');
-}
+const consoleContent = document.getElementById('console-content');
+
+consoleContainer.removeAttribute('style');
+consoleContent.removeAttribute('style');
 
 if (memorialEntry) {
+  consoleContainer.style.background = '#000';
+  consoleContent.style.background = '#000';
+
   const tribute = document.createElement('div');
   tribute.innerHTML = `
     <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
@@ -689,7 +691,7 @@ if (memorialEntry) {
     onlineParagraph.style.opacity = '0.3';
   }
 }
-
+	
 	document.getElementById('console-container')?.scrollIntoView({
     	behavior: 'smooth',
    	block: 'start'
@@ -856,13 +858,17 @@ async function searchSim(event) {
 		showSimNoteInline(idFromName);
 
 const consoleContainer = document.getElementById('console-container');
-if (memorialEntry) {
-  consoleContainer?.classList.add('memorial-active');
-} else {
-  consoleContainer?.classList.remove('memorial-active');
-}
+const consoleContent = document.getElementById('console-content');
+
+// Always reset to the seasonal background first
+consoleContainer.removeAttribute('style');
+consoleContent.removeAttribute('style');
 
 if (memorialEntry) {
+  // Apply memorial black background
+  consoleContainer.style.background = '#000';
+  consoleContent.style.background = '#000';
+
   const tribute = document.createElement('div');
   tribute.innerHTML = `
     <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
@@ -887,7 +893,7 @@ if (memorialEntry) {
     onlineParagraph.style.opacity = '0.3';
   }
 }
-
+			
 	document.getElementById('console-container')?.scrollIntoView({
     	behavior: 'smooth',
    	block: 'start'
@@ -1202,14 +1208,13 @@ const memorialEntry = memorialList.find(entry =>
   entry.name.toLowerCase() === playerData.name.toLowerCase()
 );
 
-const consoleContainer = document.getElementById('console-container');
-if (memorialEntry) {
-  consoleContainer?.classList.add('memorial-active');
-} else {
-  consoleContainer?.classList.remove('memorial-active');
-}
+const content = document.getElementById('sim-modal-content');
+
+content.removeAttribute('style');
 
 if (memorialEntry) {
+  content.style.background = '#000';
+
   const tribute = document.createElement('div');
   tribute.innerHTML = `
     <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
