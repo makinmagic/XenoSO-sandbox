@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Define emoji rules
 function formatDisplayName(name) {
-  const adminNames = ["Sorta", "Savaki", "Daat", "Xeno", "Eric", "Sneaky", "Nyx", "Bruglar"];
+  const adminNames = ["Sorta", "Savaki", "Daat", "Xeno", "Eric", "Sneaky", "Nyx", "Bruglar", "Breaker", "Magic Genie"];
   const emojiMap = {
     "Mr Teddy": "🐻"
   };
@@ -225,7 +225,7 @@ const isFavorite = favoriteSims[avatar.avatar_id];
 
 } catch (error) {
         console.error('Failed to load online players:', error);
-        document.getElementById('players').innerHTML = 'Error loading data.';
+        document.getElementById('players').innerHTML = 'Error loading data. Please check again soon.';
         // If there is an error, reset the title to show 0
         if (playersTitle) {
             playersTitle.innerHTML = `<span class="sims-online-icon"></span> Sims Online: 0 <span class="sims-online-icon"></span>`;
@@ -1439,7 +1439,7 @@ async function loadTopPayingMOs() {
       .sort((a, b) => parseInt(b[1]) - parseInt(a[1]))
       .map(([key, val]) => `${key} (${parseInt(val)}%)`);
 
-    container.firstChild.textContent = `Today's top-paying MOs are: ${topMOs.join(', ')}`;
+    container.firstChild.textContent = `Today's top MOs are: ${topMOs.join(', ')}`;
     viewAllLink.style.display = "inline";
 
     const sorted = entries.sort((a, b) => parseInt(b[1]) - parseInt(a[1]));
@@ -1558,26 +1558,26 @@ async function loadTopPayingMOs() {
       });
     });
 
-    document.querySelectorAll(".modal .close").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        const modal = e.target.closest(".modal");
-        if (modal) modal.style.display = "none";
-      });
-    });
+document.addEventListener('click', (e) => {
+  if (e.target.matches('.modal .close')) {
+    e.target.closest('.modal').style.display = 'none';
+    return;
+  }
 
-document.querySelectorAll(".modal .close").forEach((btn) => {
-  btn.addEventListener("click", (e) => {
-    const modal = e.target.closest(".modal");
-    if (modal) modal.style.display = "none";
+  document.querySelectorAll('.modal').forEach(modal => {
+    const content = modal.querySelector('.modal-content');
+    if (modal.style.display === 'block' && !content.contains(e.target)) {
+      modal.style.display = 'none';
+    }
   });
 });
 
-window.addEventListener("click", (e) => {
-  document.querySelectorAll(".modal").forEach((modal) => {
-    if (e.target === modal) {
-      modal.style.display = "none";
-    }
-  });
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.style.display = 'none';
+    });
+  }
 });
 
     container.style.display = "block";
@@ -1709,8 +1709,8 @@ function sortByFavorites() {
 document.addEventListener("DOMContentLoaded", function () {
   const now = new Date();
 
-  const start = new Date(Date.UTC(2025, 8, 19, 4, 0, 0)); // Sep 1 midnight EST
-  const expiry = new Date(Date.UTC(2025, 8, 20, 4, 0, 0)); // Sep 2 midnight EST
+  const start = new Date(Date.UTC(2025, 10, 2, 4, 0, 0)); // Nov 1 midnight EST
+  const expiry = new Date(Date.UTC(2025, 10, 3, 4, 0, 0)); // Nov 2 midnight EST
 
   const msg = document.getElementById('event-message');
   if (!msg) return;
