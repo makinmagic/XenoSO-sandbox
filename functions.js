@@ -829,6 +829,11 @@ async function searchSim(event) {
 	    };
 	   const jobName = jobMap[playerData.current_job];
 
+		const memorialList = await fetchMemorialList();
+		const memorialEntry = memorialList.find(entry => 
+		  entry.name.toLowerCase() === playerData.name.toLowerCase()
+		);
+
             // Display all information in the Console
             consoleContent.innerHTML = `
                 <div class="console-title">
@@ -850,6 +855,40 @@ async function searchSim(event) {
                 <p><strong>Currently Online:</strong> ${isOnline ? 'Yes 🟢' : 'No 🔴'}</p>
             `;
 		showSimNoteInline(idFromName);
+
+if (memorialEntry) {
+  consoleContent.style.background = 'rgba(255, 215, 0, 0.05)';
+  consoleContent.style.border = '1px solid rgba(255, 215, 0, 0.3)';
+  consoleContent.style.boxShadow = '0 0 12px rgba(255, 215, 0, 0.2)';
+
+  const tribute = document.createElement('div');
+  tribute.innerHTML = `
+    <p style="
+      text-align:center;
+      color:#FFD700;
+      font-style:italic;
+      margin-top:-5px;
+      margin-bottom:10px;
+    ">
+      ${memorialEntry.message}
+    </p>
+  `;
+  const descriptionContainer = consoleContent.querySelector('.description-container');
+  if (descriptionContainer) {
+    descriptionContainer.parentNode.insertBefore(tribute, descriptionContainer);
+  }
+
+  const title = consoleContent.querySelector('.console-title');
+  if (title && !title.textContent.includes(memorialEntry.symbol)) {
+    title.innerHTML = `${memorialEntry.symbol} ${title.innerHTML} ${memorialEntry.symbol}`;
+  }
+
+  const onlineText = consoleContent.querySelector('p strong');
+  if (onlineText && onlineText.textContent.includes('Currently Online')) {
+    const parentP = onlineText.closest('p');
+    if (parentP) parentP.style.opacity = '0.5';
+  }
+}
 
 	document.getElementById('console-container')?.scrollIntoView({
     	behavior: 'smooth',
