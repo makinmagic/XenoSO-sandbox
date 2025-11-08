@@ -582,14 +582,12 @@ function setMemorialMode(isActive, container, content) {
 
   if (isActive) {
     if (isModal) {
-      const modal = document.getElementById('sim-modal');
-      modal.style.backgroundColor = '#000';
-      content.style.background = '#000';
+      const modalContent = document.querySelector('#sim-modal .modal-content');
+      if (modalContent) modalContent.style.backgroundColor = '#000';
     } else {
       container.style.background = '#000';
       content.style.background = '#000';
     }
-
     container.dataset.memorial = 'true';
   } else if (container.dataset.memorial === 'true') {
     delete container.dataset.memorial;
@@ -597,8 +595,8 @@ function setMemorialMode(isActive, container, content) {
     container.removeAttribute('style');
 
     if (isModal) {
-      const modal = document.getElementById('sim-modal');
-      modal.removeAttribute('style');
+      const modalContent = document.querySelector('#sim-modal .modal-content');
+      if (modalContent) modalContent.removeAttribute('style');
     }
   }
 }
