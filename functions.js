@@ -1565,16 +1565,20 @@ async function loadTopPayingMOs() {
       });
     });
 
-    window.addEventListener("click", (e) => {
-      const modals = document.querySelectorAll(".modal");
-      modals.forEach((modal) => {
-        if (e.target === modal) modal.style.display = "none";
-      });
-    });
+document.querySelectorAll(".modal .close").forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    const modal = e.target.closest(".modal");
+    if (modal) modal.style.display = "none";
+  });
+});
 
-    window.onclick = (e) => {
-      if (e.target == modal) modal.style.display = "none";
-    };
+window.addEventListener("click", (e) => {
+  document.querySelectorAll(".modal").forEach((modal) => {
+    if (e.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+});
 
     container.style.display = "block";
 
