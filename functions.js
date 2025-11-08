@@ -857,9 +857,13 @@ async function searchSim(event) {
 		showSimNoteInline(idFromName);
 
 if (memorialEntry) {
+  const consoleContainer = document.getElementById('console-container');
   consoleContent.style.background = 'rgba(255, 215, 0, 0.05)';
   consoleContent.style.border = '1px solid rgba(255, 215, 0, 0.3)';
-  consoleContent.style.boxShadow = '0 0 12px rgba(255, 215, 0, 0.2)';
+  consoleContent.style.boxShadow = '0 0 15px rgba(255, 215, 0, 0.3)';
+  if (consoleContainer) {
+    consoleContainer.style.background = 'rgba(255, 215, 0, 0.02)';
+  }
 
   const tribute = document.createElement('div');
   tribute.innerHTML = `
@@ -880,13 +884,14 @@ if (memorialEntry) {
 
   const title = consoleContent.querySelector('.console-title');
   if (title && !title.textContent.includes(memorialEntry.symbol)) {
-    title.innerHTML = `${memorialEntry.symbol} ${title.innerHTML} ${memorialEntry.symbol}`;
+    title.innerHTML = `${memorialEntry.symbol} ${title.innerHTML}`;
   }
 
-  const onlineText = consoleContent.querySelector('p strong');
-  if (onlineText && onlineText.textContent.includes('Currently Online')) {
-    const parentP = onlineText.closest('p');
-    if (parentP) parentP.style.opacity = '0.5';
+  const onlineParagraph = Array.from(consoleContent.querySelectorAll('p')).find(p =>
+    p.textContent.toLowerCase().includes('currently online')
+  );
+  if (onlineParagraph) {
+    onlineParagraph.style.opacity = '0.5';
   }
 }
 
