@@ -658,7 +658,6 @@ const memorialEntry = memorialList.find(entry =>
 		showSimNoteInline(avatarId);
 
 const consoleContainer = document.getElementById('console-container');
-const consoleContent = document.getElementById('console-content');
 
 consoleContainer.removeAttribute('style');
 consoleContent.removeAttribute('style');
@@ -858,7 +857,6 @@ async function searchSim(event) {
 		showSimNoteInline(idFromName);
 
 const consoleContainer = document.getElementById('console-container');
-const consoleContent = document.getElementById('console-content');
 
 // Always reset to the seasonal background first
 consoleContainer.removeAttribute('style');
