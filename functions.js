@@ -1558,6 +1558,20 @@ async function loadTopPayingMOs() {
       });
     });
 
+    container.style.display = "block";
+
+    const bottomContainer = document.getElementById("bottom-container");
+    const footerNote = document.getElementById("footer-note");
+    if (bottomContainer && footerNote && guideLink) {
+      bottomContainer.parentNode.insertBefore(guideLink, footerNote);
+    }
+
+  } catch (error) {
+    console.error("Error fetching top-paying MOs:", error);
+  }
+}
+
+// Modal close behaviour
 document.addEventListener('click', (e) => {
   if (e.target.matches('.modal .close')) {
     e.target.closest('.modal').style.display = 'none';
@@ -1579,19 +1593,6 @@ document.addEventListener('keydown', (e) => {
     });
   }
 });
-
-    container.style.display = "block";
-
-    const bottomContainer = document.getElementById("bottom-container");
-    const footerNote = document.getElementById("footer-note");
-    if (bottomContainer && footerNote && guideLink) {
-      bottomContainer.parentNode.insertBefore(guideLink, footerNote);
-    }
-
-  } catch (error) {
-    console.error("Error fetching top-paying MOs:", error);
-  }
-}
 
 // Top-paying MOs (Piggy version)
 
