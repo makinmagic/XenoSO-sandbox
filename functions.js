@@ -1571,29 +1571,6 @@ async function loadTopPayingMOs() {
   }
 }
 
-// Modal close behaviour
-document.addEventListener('click', (e) => {
-  if (e.target.matches('.modal .close')) {
-    e.target.closest('.modal').style.display = 'none';
-    return;
-  }
-
-  document.querySelectorAll('.modal').forEach(modal => {
-    const content = modal.querySelector('.modal-content');
-    if (modal.style.display === 'block' && !content.contains(e.target)) {
-      modal.style.display = 'none';
-    }
-  });
-});
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    document.querySelectorAll('.modal').forEach(modal => {
-      modal.style.display = 'none';
-    });
-  }
-});
-
 // Top-paying MOs (Piggy version)
 
 async function fetchMoneyObject() {
@@ -1981,6 +1958,29 @@ if (saveBtn) {
   target.appendChild(noteDiv);
 };
 
+});
+
+// Modal close behaviour
+document.addEventListener('click', (e) => {
+  if (e.target.matches('.modal .close')) {
+    e.target.closest('.modal').style.display = 'none';
+    return;
+  }
+
+  document.querySelectorAll('.modal').forEach(modal => {
+    const content = modal.querySelector('.modal-content');
+    if (modal.style.display === 'block' && !content.contains(e.target)) {
+      modal.style.display = 'none';
+    }
+  });
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.style.display = 'none';
+    });
+  }
 });
         
 /* document.addEventListener('DOMContentLoaded', () => {
