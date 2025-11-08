@@ -576,6 +576,18 @@ async function fetchPlayerImages() {
         return {}; // Return an empty object on error
     }
 }
+
+function setMemorialMode(isActive, consoleContainer, consoleContent) {
+  if (isActive) {
+    consoleContainer.dataset.memorial = 'true';
+    consoleContainer.style.background = '#000';
+    consoleContent.style.background = '#000';
+  } else if (consoleContainer.dataset.memorial === 'true') {
+    consoleContainer.removeAttribute('data-memorial');
+    consoleContainer.removeAttribute('style');
+    consoleContent.removeAttribute('style');
+  }
+}
 	    
 async function displayPlayerInfo(avatarId) {
     // Remove placeholder text
@@ -663,8 +675,7 @@ consoleContainer.removeAttribute('style');
 consoleContent.removeAttribute('style');
 
 if (memorialEntry) {
-  consoleContainer.style.background = '#000';
-  consoleContent.style.background = '#000';
+  setMemorialMode(!!memorialEntry, consoleContainer, consoleContent);
 
   const tribute = document.createElement('div');
   tribute.innerHTML = `
@@ -863,9 +874,7 @@ consoleContainer.removeAttribute('style');
 consoleContent.removeAttribute('style');
 
 if (memorialEntry) {
-  // Apply memorial black background
-  consoleContainer.style.background = '#000';
-  consoleContent.style.background = '#000';
+  setMemorialMode(!!memorialEntry, consoleContainer, consoleContent);
 
   const tribute = document.createElement('div');
   tribute.innerHTML = `
@@ -1206,12 +1215,10 @@ const memorialEntry = memorialList.find(entry =>
   entry.name.toLowerCase() === playerData.name.toLowerCase()
 );
 
-const content = document.getElementById('sim-modal-content');
-
 content.removeAttribute('style');
 
 if (memorialEntry) {
-  content.style.background = '#000';
+  setMemorialMode(!!memorialEntry, content, content);
 
   const tribute = document.createElement('div');
   tribute.innerHTML = `
