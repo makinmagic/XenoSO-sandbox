@@ -539,6 +539,18 @@ consoleContent.innerHTML = `
     }
 }
 
+// Memorial List
+async function fetchMemorialList() {
+  try {
+    const response = await fetch('https://makinmagic.github.io/XenoSO/data/memorial.json');
+    if (!response.ok) throw new Error('Failed to fetch memorial list.');
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching memorial list:', error);
+    return [];
+  }
+}
+
 async function fetchPlayerImages() {
     const playerImagesUrl = 'https://opensheet.vercel.app/1CJQX1Y5zwayEqCpu3T2DljNkHBOCSNPTbH0YEhnpkqA/PFP';
 
@@ -618,6 +630,12 @@ async function displayPlayerInfo(avatarId) {
 	};
 	const jobName = jobMap[playerData.current_job];
 
+	// Memorial check
+const memorialList = await fetchMemorialList();
+const memorialEntry = memorialList.find(entry => 
+  entry.name.toLowerCase() === playerData.name.toLowerCase()
+);
+
         // Display all information in the Console
         consoleContent.innerHTML = `
             <div class="console-title">
@@ -638,6 +656,40 @@ async function displayPlayerInfo(avatarId) {
 	    ${jobName ? `<p><strong>Job:</strong> ${jobName}</p>` : ''}
         `;
 		showSimNoteInline(avatarId);
+
+if (memorialEntry) {
+  consoleContent.style.background = 'rgba(255, 215, 0, 0.05)';
+  consoleContent.style.border = '1px solid rgba(255, 215, 0, 0.3)';
+  consoleContent.style.boxShadow = '0 0 12px rgba(255, 215, 0, 0.2)';
+
+  const tribute = document.createElement('div');
+  tribute.innerHTML = `
+    <p style="
+      text-align:center;
+      color:#FFD700;
+      font-style:italic;
+      margin-top:-5px;
+      margin-bottom:10px;
+    ">
+      ${memorialEntry.message}
+    </p>
+  `;
+  const descriptionContainer = consoleContent.querySelector('.description-container');
+  if (descriptionContainer) {
+    descriptionContainer.parentNode.insertBefore(tribute, descriptionContainer);
+  }
+
+  const title = consoleContent.querySelector('.console-title');
+  if (title && !title.textContent.includes(memorialEntry.symbol)) {
+    title.innerHTML = `${memorialEntry.symbol} ${title.innerHTML} ${memorialEntry.symbol}`;
+  }
+
+  const onlineText = consoleContent.querySelector('p strong');
+  if (onlineText && onlineText.textContent.includes('Currently Online')) {
+    const parentP = onlineText.closest('p');
+    if (parentP) parentP.style.opacity = '0.5';
+  }
+}
 
 	document.getElementById('console-container')?.scrollIntoView({
     	behavior: 'smooth',
@@ -1117,7 +1169,7 @@ function closeSimModal() {
   document.getElementById('sim-modal').style.display = 'none';
 }
 
-const eventsUrl = 'https://opensheet.elk.sh/1xWQc2P86fisaRSdxyGWwTddX_a4ZGmWYaWRK0ZfXb_4/Events';
+const eventsUrl = 'https://opensheet.vercel.app/1xWQc2P86fisaRSdxyGWwTddX_a4ZGmWYaWRK0ZfXb_4/Events';
 
 async function fetchEvents() {
     try {
@@ -1390,7 +1442,7 @@ const moPayoutAt150 = {
 let percentChart = null;
 
 async function loadTopPayingMOs() {
-  const url = 'https://opensheet.elk.sh/1DJHQ0f5X9NUuAouEf5osJgLV2r2nuzsGLIyjLkm-0NM/MOs';
+  const url = 'https://opensheet.vercel.app/1DJHQ0f5X9NUuAouEf5osJgLV2r2nuzsGLIyjLkm-0NM/MOs';
 
   try {
     const response = await fetch(url);
@@ -1687,8 +1739,8 @@ function sortByFavorites() {
 document.addEventListener("DOMContentLoaded", function () {
   const now = new Date();
 
-  const start = new Date(Date.UTC(2025, 10, 2, 4, 0, 0)); // Nov 1 midnight EST
-  const expiry = new Date(Date.UTC(2025, 10, 3, 4, 0, 0)); // Nov 2 midnight EST
+  const start = new Date(Date.UTC(2025, 10, 8, 5, 0, 0)); // Nov 8 midnight EST
+  const expiry = new Date(Date.UTC(2025, 10, 10, 5, 0, 0)); // Nov 10 midnight EST
 
   const msg = document.getElementById('event-message');
   if (!msg) return;
@@ -1709,7 +1761,7 @@ document.addEventListener("DOMContentLoaded", function () {
 //Countdown
 async function loadCountdown() {
   try {
-    const response = await fetch('https://opensheet.elk.sh/1eTaXmyKRXZmWCvX5ZnSbjaWlT8X_KDWvN2PwBrlwEmc/Countdown');
+    const response = await fetch('https://opensheet.vercel.app/1eTaXmyKRXZmWCvX5ZnSbjaWlT8X_KDWvN2PwBrlwEmc/Countdown');
     const data = await response.json();
 
     const countdownData = data[0];
