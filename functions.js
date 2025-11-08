@@ -582,10 +582,16 @@ function setMemorialMode(isActive, consoleContainer, consoleContent) {
     consoleContainer.dataset.memorial = 'true';
     consoleContainer.style.background = '#000';
     consoleContent.style.background = '#000';
+
+    const modal = consoleContainer.closest('.modal');
+    if (modal) modal.style.background = '#000';
   } else if (consoleContainer.dataset.memorial === 'true') {
     consoleContainer.removeAttribute('data-memorial');
     consoleContainer.removeAttribute('style');
     consoleContent.removeAttribute('style');
+
+    const modal = consoleContainer.closest('.modal');
+    if (modal) modal.removeAttribute('style');
   }
 }
 	    
@@ -673,6 +679,8 @@ const consoleContainer = document.getElementById('console-container');
 
 consoleContainer.removeAttribute('style');
 consoleContent.removeAttribute('style');
+
+setMemorialMode(false, consoleContainer, consoleContent);
 
 if (memorialEntry) {
   setMemorialMode(!!memorialEntry, consoleContainer, consoleContent);
@@ -872,6 +880,8 @@ const consoleContainer = document.getElementById('console-container');
 // Always reset to the seasonal background first
 consoleContainer.removeAttribute('style');
 consoleContent.removeAttribute('style');
+
+setMemorialMode(false, consoleContainer, consoleContent);
 
 if (memorialEntry) {
   setMemorialMode(!!memorialEntry, consoleContainer, consoleContent);
@@ -1215,11 +1225,9 @@ const memorialEntry = memorialList.find(entry =>
   entry.name.toLowerCase() === playerData.name.toLowerCase()
 );
 
-content.removeAttribute('style');
+setMemorialMode(!!memorialEntry, content, content);
 
 if (memorialEntry) {
-  setMemorialMode(!!memorialEntry, content, content);
-
   const tribute = document.createElement('div');
   tribute.innerHTML = `
     <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
