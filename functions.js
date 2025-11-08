@@ -657,10 +657,11 @@ const memorialEntry = memorialList.find(entry =>
         `;
 		showSimNoteInline(avatarId);
 
+const consoleContainer = document.getElementById('console-container');
 if (memorialEntry) {
-  document.body.classList.add('memorial-mode');
+  consoleContainer?.classList.add('memorial-active');
 } else {
-  document.body.classList.remove('memorial-mode');
+  consoleContainer?.classList.remove('memorial-active');
 }
 
 if (memorialEntry) {
@@ -854,10 +855,11 @@ async function searchSim(event) {
             `;
 		showSimNoteInline(idFromName);
 
+const consoleContainer = document.getElementById('console-container');
 if (memorialEntry) {
-  document.body.classList.add('memorial-mode');
+  consoleContainer?.classList.add('memorial-active');
 } else {
-  document.body.classList.remove('memorial-mode');
+  consoleContainer?.classList.remove('memorial-active');
 }
 
 if (memorialEntry) {
@@ -1200,10 +1202,11 @@ const memorialEntry = memorialList.find(entry =>
   entry.name.toLowerCase() === playerData.name.toLowerCase()
 );
 
+const consoleContainer = document.getElementById('console-container');
 if (memorialEntry) {
-  document.body.classList.add('memorial-mode');
+  consoleContainer?.classList.add('memorial-active');
 } else {
-  document.body.classList.remove('memorial-mode');
+  consoleContainer?.classList.remove('memorial-active');
 }
 
 if (memorialEntry) {
