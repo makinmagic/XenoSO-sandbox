@@ -397,6 +397,30 @@ async function displayLotInfo(lotId) {
         const ownerData = ownerResponse.ok ? await ownerResponse.json() : { name: 'Unknown' };
         const ownerName = ownerData.name || 'Unknown';
 
+		// Memorial check
+		const memorialList = await fetchMemorialList();
+		const isMemorializedLot = memorialList.some(entry =>
+		  entry.name.toLowerCase() === ownerName.toLowerCase()
+		);
+		
+		const consoleContainer = document.getElementById('console-container');
+		const consoleContent = document.getElementById('console-content');
+		setMemorialMode(isMemorializedLot, consoleContainer, consoleContent);
+		
+		if (isMemorializedLot) {
+		  const tribute = document.createElement('div');
+		  tribute.innerHTML = `
+		    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
+		      🕯️ In Loving Memory of ${ownerName}, whose legacy lives on through this lot. 🕯️
+		    </p>
+		  `;
+		
+		  const descriptionContainer = consoleContent.querySelector('.description-container');
+		  if (descriptionContainer) {
+		    descriptionContainer.parentNode.insertBefore(tribute, descriptionContainer);
+		  }
+		}
+
         // Filter out the owner from the roommates list
         const roommatesWithoutOwner = lotData.roommates.filter(id => id !== lotData.owner_id);
 
@@ -1022,6 +1046,30 @@ async function searchLot(event) {
             const ownerResponse = await fetch(`https://api.xenoso.space/userapi/avatars/${lotData.owner_id}`);
             const ownerData = ownerResponse.ok ? await ownerResponse.json() : { name: 'Unknown' };
             const ownerName = ownerData.name;
+
+			// Memorial check
+		const memorialList = await fetchMemorialList();
+		const isMemorializedLot = memorialList.some(entry =>
+		  entry.name.toLowerCase() === ownerName.toLowerCase()
+		);
+		
+		const consoleContainer = document.getElementById('console-container');
+		const consoleContent = document.getElementById('console-content');
+		setMemorialMode(isMemorializedLot, consoleContainer, consoleContent);
+		
+		if (isMemorializedLot) {
+		  const tribute = document.createElement('div');
+		  tribute.innerHTML = `
+		    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
+		      🕯️ In Loving Memory of ${ownerName}, whose legacy lives on through this lot. 🕯️
+		    </p>
+		  `;
+		
+		  const descriptionContainer = consoleContent.querySelector('.description-container');
+		  if (descriptionContainer) {
+		    descriptionContainer.parentNode.insertBefore(tribute, descriptionContainer);
+		  }
+		}
 
             // Fetch roommate names
             const roommateNames = await Promise.all(
