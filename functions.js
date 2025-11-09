@@ -1054,7 +1054,6 @@ async function searchLot(event) {
 		);
 		
 		const consoleContainer = document.getElementById('console-container');
-		const consoleContent = document.getElementById('console-content');
 		setMemorialMode(isMemorializedLot, consoleContainer, consoleContent);
 		
 		if (isMemorializedLot) {
