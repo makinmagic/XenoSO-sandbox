@@ -415,10 +415,10 @@ async function displayLotInfo(lotId) {
 		    </p>
 		  `;
 		
-		  const title = consoleContent.querySelector('.console-title');
-		  if (title) {
-		    title.insertAdjacentElement('afterend', tribute);
-		  }
+		  const img = consoleContent.querySelector('.console-img');
+			if (img) {
+			  img.insertAdjacentElement('afterend', tribute);
+			}
 		}
 
         // Filter out the owner from the roommates list
@@ -1064,10 +1064,10 @@ async function searchLot(event) {
     </p>
   `;
 
-  const title = consoleContent.querySelector('.console-title');
-  if (title) {
-    title.insertAdjacentElement('afterend', tribute);
-  }
+		 const img = consoleContent.querySelector('.console-img');
+		if (img) {
+		  img.insertAdjacentElement('afterend', tribute);
+		}
 }
 
             // Fetch roommate names
