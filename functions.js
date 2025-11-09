@@ -1085,6 +1085,7 @@ if (appendedHiddenHost) {
             const showHiddenNote = totalSimsInside > knownSims.length;
 
                         // Display lot information in Console
+			setMemorialMode(false, document.getElementById('console-container'), document.getElementById('console-content'));
             const consoleContent = document.getElementById('console-content');
             consoleContent.innerHTML = `
                 <div class="console-title">
