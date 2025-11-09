@@ -415,9 +415,9 @@ async function displayLotInfo(lotId) {
 		    </p>
 		  `;
 		
-		  const descriptionContainer = consoleContent.querySelector('.description-container');
-		  if (descriptionContainer) {
-		    descriptionContainer.parentNode.insertBefore(tribute, descriptionContainer);
+		  const title = consoleContent.querySelector('.console-title');
+		  if (title) {
+		    title.insertAdjacentElement('afterend', tribute);
 		  }
 		}
 
@@ -1057,18 +1057,18 @@ async function searchLot(event) {
 		setMemorialMode(isMemorializedLot, consoleContainer, consoleContent);
 		
 		if (isMemorializedLot) {
-		  const tribute = document.createElement('div');
-		  tribute.innerHTML = `
-		    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
-		      🕯️ In Loving Memory of ${ownerName}, whose legacy lives on through this lot. 🕯️
-		    </p>
-		  `;
-		
-		  const descriptionContainer = consoleContent.querySelector('.description-container');
-		  if (descriptionContainer) {
-		    descriptionContainer.parentNode.insertBefore(tribute, descriptionContainer);
-		  }
-		}
+  const tribute = document.createElement('div');
+  tribute.innerHTML = `
+    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
+      🕯️ In Loving Memory of ${ownerName}, forever part of Xenovia 🕯️
+    </p>
+  `;
+
+  const title = consoleContent.querySelector('.console-title');
+  if (title) {
+    title.insertAdjacentElement('afterend', tribute);
+  }
+}
 
             // Fetch roommate names
             const roommateNames = await Promise.all(
