@@ -1105,35 +1105,14 @@ const fullKnownSimsList = [...knownSims];
 if (appendedHiddenHost) {
   fullKnownSimsList.push(`${appendedHiddenHost} (hidden)`);
 }
-
-			// Memorial check
-		const memorialList = await fetchMemorialList();
-		const isMemorializedLot = memorialList.some(entry =>
-		  entry.name.toLowerCase() === ownerName.toLowerCase()
-		);
-		
-		const consoleContainer = document.getElementById('console-container');
-		setMemorialMode(isMemorializedLot, consoleContainer, consoleContent);
-		
-		if (isMemorializedLot) {
-  const tribute = document.createElement('div');
-  tribute.innerHTML = `
-    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
-      🕯️ In Loving Memory of ${ownerName}, forever part of Xenovia 🕯️
-    </p>
-  `;
-
-		 const img = consoleContent.querySelector('.console-img');
-		if (img) {
-		  img.insertAdjacentElement('afterend', tribute);
-		}
-}
                 
             const showHiddenNote = totalSimsInside > knownSims.length;
 
-                        // Display lot information in Console
-			setMemorialMode(false, document.getElementById('console-container'), document.getElementById('console-content'));
-            const consoleContent = document.getElementById('console-content');
+		const consoleContainer = document.getElementById('console-container');
+const consoleContent = document.getElementById('console-content');
+setMemorialMode(false, consoleContainer, consoleContent);
+			
+                        // Display lot information in Console			
             consoleContent.innerHTML = `
                 <div class="console-title">
                     ${lotData.name}
@@ -1180,6 +1159,26 @@ ${activeStatus === 'Yes' ? `
   ${showHiddenNote ? `<p><em>There are sims inside with their location hidden.</em></p>` : ''}
 ` : ''}
 `;
+
+	// Memorial check
+const memorialList = await fetchMemorialList();
+const isMemorializedLot = memorialList.some(entry =>
+  entry.name.toLowerCase() === ownerName.toLowerCase()
+);
+
+setMemorialMode(isMemorializedLot, consoleContainer, consoleContent);
+
+if (isMemorializedLot) {
+  const tribute = document.createElement('div');
+  tribute.innerHTML = `
+    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
+      🕯️ In Loving Memory of ${ownerName}, forever part of Xenovia 🕯️
+    </p>
+  `;
+
+  const img = consoleContent.querySelector('.console-img');
+  if (img) img.insertAdjacentElement('afterend', tribute);
+}
 
 	document.getElementById('console-container')?.scrollIntoView({
     	behavior: 'smooth',
