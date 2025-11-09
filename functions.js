@@ -431,30 +431,6 @@ async function displayLotInfo(lotId) {
     day: 'numeric'
 });
 
-		// Memorial check
-		const memorialList = await fetchMemorialList();
-		const isMemorializedLot = memorialList.some(entry =>
-		  entry.name.toLowerCase() === ownerName.toLowerCase()
-		);
-		
-		const consoleContainer = document.getElementById('console-container');
-		const consoleContent = document.getElementById('console-content');
-		setMemorialMode(isMemorializedLot, consoleContainer, consoleContent);
-		
-		if (isMemorializedLot) {
-		  const tribute = document.createElement('div');
-		  tribute.innerHTML = `
-		    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
-		      🕯️ In Loving Memory of ${ownerName}, whose legacy lives on through this lot. 🕯️
-		    </p>
-		  `;
-		
-		  const img = consoleContent.querySelector('.console-img');
-			if (img) {
-			  img.insertAdjacentElement('afterend', tribute);
-			}
-		}
-
         // Find known Sims inside the lot (from the Sims Online table)
         const playersContainer = document.getElementById('players');
         const playersRows = Array.from(playersContainer.querySelectorAll('tr'));
@@ -553,6 +529,24 @@ consoleContent.innerHTML = `
 }</p>
     ${showHiddenNote ? `<p><em>There are sims inside with their location hidden.</em></p>` : ''}
 `;
+
+        const memorialList = await fetchMemorialList();
+        const isMemorializedLot = memorialList.some(entry =>
+            entry.name.toLowerCase() === ownerName.toLowerCase()
+        );
+
+        setMemorialMode(isMemorializedLot, document.getElementById('console-container'), consoleContent);
+
+        if (isMemorializedLot) {
+            const tribute = document.createElement('div');
+            tribute.innerHTML = `
+                <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:10px; margin-bottom:15px;">
+                    🕯️ In Loving Memory of ${ownerName}, whose legacy lives on through this lot. 🕯️
+                </p>
+            `;
+            const img = consoleContent.querySelector('.console-img');
+            if (img) img.insertAdjacentElement('afterend', tribute);
+        }
 
 	    document.getElementById('console-container')?.scrollIntoView({
     	behavior: 'smooth',
@@ -1171,8 +1165,8 @@ setMemorialMode(isMemorializedLot, consoleContainer, consoleContent);
 if (isMemorializedLot) {
   const tribute = document.createElement('div');
   tribute.innerHTML = `
-    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
-      🕯️ In Loving Memory of ${ownerName}, forever part of Xenovia 🕯️
+    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:10px; margin-bottom:15px;">
+      🕯️ In Loving Memory of ${ownerName}, whose legacy lives on through this lot. 🕯️
     </p>
   `;
 
