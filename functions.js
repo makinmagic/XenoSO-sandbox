@@ -397,30 +397,6 @@ async function displayLotInfo(lotId) {
         const ownerData = ownerResponse.ok ? await ownerResponse.json() : { name: 'Unknown' };
         const ownerName = ownerData.name || 'Unknown';
 
-		// Memorial check
-		const memorialList = await fetchMemorialList();
-		const isMemorializedLot = memorialList.some(entry =>
-		  entry.name.toLowerCase() === ownerName.toLowerCase()
-		);
-		
-		const consoleContainer = document.getElementById('console-container');
-		const consoleContent = document.getElementById('console-content');
-		setMemorialMode(isMemorializedLot, consoleContainer, consoleContent);
-		
-		if (isMemorializedLot) {
-		  const tribute = document.createElement('div');
-		  tribute.innerHTML = `
-		    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
-		      🕯️ In Loving Memory of ${ownerName}, whose legacy lives on through this lot. 🕯️
-		    </p>
-		  `;
-		
-		  const img = consoleContent.querySelector('.console-img');
-			if (img) {
-			  img.insertAdjacentElement('afterend', tribute);
-			}
-		}
-
         // Filter out the owner from the roommates list
         const roommatesWithoutOwner = lotData.roommates.filter(id => id !== lotData.owner_id);
 
@@ -454,6 +430,30 @@ async function displayLotInfo(lotId) {
     month: 'long',
     day: 'numeric'
 });
+
+		// Memorial check
+		const memorialList = await fetchMemorialList();
+		const isMemorializedLot = memorialList.some(entry =>
+		  entry.name.toLowerCase() === ownerName.toLowerCase()
+		);
+		
+		const consoleContainer = document.getElementById('console-container');
+		const consoleContent = document.getElementById('console-content');
+		setMemorialMode(isMemorializedLot, consoleContainer, consoleContent);
+		
+		if (isMemorializedLot) {
+		  const tribute = document.createElement('div');
+		  tribute.innerHTML = `
+		    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
+		      🕯️ In Loving Memory of ${ownerName}, whose legacy lives on through this lot. 🕯️
+		    </p>
+		  `;
+		
+		  const img = consoleContent.querySelector('.console-img');
+			if (img) {
+			  img.insertAdjacentElement('afterend', tribute);
+			}
+		}
 
         // Find known Sims inside the lot (from the Sims Online table)
         const playersContainer = document.getElementById('players');
@@ -1047,29 +1047,6 @@ async function searchLot(event) {
             const ownerData = ownerResponse.ok ? await ownerResponse.json() : { name: 'Unknown' };
             const ownerName = ownerData.name;
 
-			// Memorial check
-		const memorialList = await fetchMemorialList();
-		const isMemorializedLot = memorialList.some(entry =>
-		  entry.name.toLowerCase() === ownerName.toLowerCase()
-		);
-		
-		const consoleContainer = document.getElementById('console-container');
-		setMemorialMode(isMemorializedLot, consoleContainer, consoleContent);
-		
-		if (isMemorializedLot) {
-  const tribute = document.createElement('div');
-  tribute.innerHTML = `
-    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
-      🕯️ In Loving Memory of ${ownerName}, forever part of Xenovia 🕯️
-    </p>
-  `;
-
-		 const img = consoleContent.querySelector('.console-img');
-		if (img) {
-		  img.insertAdjacentElement('afterend', tribute);
-		}
-}
-
             // Fetch roommate names
             const roommateNames = await Promise.all(
                 lotData.roommates
@@ -1127,6 +1104,29 @@ if (!anyHostAlreadyListed) {
 const fullKnownSimsList = [...knownSims];
 if (appendedHiddenHost) {
   fullKnownSimsList.push(`${appendedHiddenHost} (hidden)`);
+}
+
+			// Memorial check
+		const memorialList = await fetchMemorialList();
+		const isMemorializedLot = memorialList.some(entry =>
+		  entry.name.toLowerCase() === ownerName.toLowerCase()
+		);
+		
+		const consoleContainer = document.getElementById('console-container');
+		setMemorialMode(isMemorializedLot, consoleContainer, consoleContent);
+		
+		if (isMemorializedLot) {
+  const tribute = document.createElement('div');
+  tribute.innerHTML = `
+    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
+      🕯️ In Loving Memory of ${ownerName}, forever part of Xenovia 🕯️
+    </p>
+  `;
+
+		 const img = consoleContent.querySelector('.console-img');
+		if (img) {
+		  img.insertAdjacentElement('afterend', tribute);
+		}
 }
                 
             const showHiddenNote = totalSimsInside > knownSims.length;
