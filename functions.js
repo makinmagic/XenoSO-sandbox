@@ -1573,7 +1573,7 @@ const moPayoutAt150 = {
 let percentChart = null;
 
 async function loadTopPayingMOs() {
-  const url = 'https://opensheet.vercel.app/1DJHQ0f5X9NUuAouEf5osJgLV2r2nuzsGLIyjLkm-0NM/MOs';
+  const url = 'https://opensheet.elk.sh/1DJHQ0f5X9NUuAouEf5osJgLV2r2nuzsGLIyjLkm-0NM/MOs';
 
   try {
     const response = await fetch(url);
@@ -1593,45 +1593,44 @@ async function loadTopPayingMOs() {
     const utcNow = new Date();
 
     const startTime = new Date(Date.UTC(
-  formTimestamp.getUTCFullYear(),
-  formTimestamp.getUTCMonth(),
-  formTimestamp.getUTCDate(),
-  4, 0, 0
-));
-const endTime = new Date(startTime);
-endTime.setUTCDate(startTime.getUTCDate() + 1);
+      formTimestamp.getUTCFullYear(),
+      formTimestamp.getUTCMonth(),
+      formTimestamp.getUTCDate(),
+      4, 0, 0
+    ));
+    const endTime = new Date(startTime);
+    endTime.setUTCDate(startTime.getUTCDate() + 1);
 
-const container = document.getElementById("money-object");
-const modal = document.getElementById("moModal");
-const guideLink = document.getElementById("guideLink");
+    const container = document.getElementById("money-object");
+    const viewAllLink = document.getElementById("viewAllLink");
+    const modal = document.getElementById("moModal");
+    const guideLink = document.getElementById("guideLink");
 
-if (utcNow < startTime || utcNow >= endTime) {
-  container.style.display = "none";
-  const tempoSim = document.getElementById("tempoSim");
-  if (guideLink && tempoSim) {
-    tempoSim.parentNode.insertBefore(guideLink, tempoSim);
-  }
-  return;
-}
+    if (utcNow < startTime || utcNow >= endTime) {
+      container.style.display = "none";
+      const tempoSim = document.getElementById("tempoSim");
+      if (guideLink && tempoSim) {
+        tempoSim.parentNode.insertBefore(guideLink, tempoSim);
+      }
+      return;
+    }
 
-const entries = Object.entries(latest).filter(([key]) => key !== "Timestamp");
+    const entries = Object.entries(latest).filter(([key]) => key !== "Timestamp");
 
-const topMOs = entries
-  .filter(([, val]) => parseInt(val) > 139)
-  .sort((a, b) => parseInt(b[1]) - parseInt(a[1]))
-  .map(([key, val]) => `${key} (${parseInt(val)}%)`);
+    const topMOs = entries
+      .filter(([, val]) => parseInt(val) > 139)
+      .sort((a, b) => parseInt(b[1]) - parseInt(a[1]))
+      .map(([key, val]) => `${key} (${parseInt(val)}%)`);
 
-container.innerHTML = `Today's top MOs are: ${topMOs.join(', ')} <a href="#" id="viewAllLink">View All</a>`;
+    container.firstChild.textContent = `Today's top-paying MOs are: ${topMOs.join(', ')}`;
+    viewAllLink.style.display = "inline";
 
-const link = document.getElementById("viewAllLink");
-if (link) {
-  link.addEventListener("click", (e) => {
-    e.preventDefault();
-    modal.style.display = "block";
-  });
-}
+    const sorted = entries.sort((a, b) => parseInt(b[1]) - parseInt(a[1]));
 
-const sorted = entries.sort((a, b) => parseInt(b[1]) - parseInt(a[1]));
+    viewAllLink.onclick = (e) => {
+      e.preventDefault();
+      modal.style.display = "block";
+    };
 
     // Percentage Chart
     const ctx = document.getElementById("percentChart").getContext("2d");
@@ -1742,6 +1741,20 @@ const sorted = entries.sort((a, b) => parseInt(b[1]) - parseInt(a[1]));
       });
     });
 
+    document.querySelectorAll(".modal .close").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const modal = e.target.closest(".modal");
+        if (modal) modal.style.display = "none";
+      });
+    });
+
+    window.addEventListener("click", (e) => {
+      const modals = document.querySelectorAll(".modal");
+      modals.forEach((modal) => {
+        if (e.target === modal) modal.style.display = "none";
+      });
+    });
+
     container.style.display = "block";
 
     const bottomContainer = document.getElementById("bottom-container");
@@ -1754,6 +1767,8 @@ const sorted = entries.sort((a, b) => parseInt(b[1]) - parseInt(a[1]));
     console.error("Error fetching top-paying MOs:", error);
   }
 }
+
+// Top-paying MOs (Piggy version)
 
 // Top-paying MOs (Piggy version)
 
