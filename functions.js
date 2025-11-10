@@ -1593,44 +1593,45 @@ async function loadTopPayingMOs() {
     const utcNow = new Date();
 
     const startTime = new Date(Date.UTC(
-      formTimestamp.getUTCFullYear(),
-      formTimestamp.getUTCMonth(),
-      formTimestamp.getUTCDate(),
-      4, 0, 0
-    ));
-    const endTime = new Date(startTime);
-    endTime.setUTCDate(startTime.getUTCDate() + 1);
+  formTimestamp.getUTCFullYear(),
+  formTimestamp.getUTCMonth(),
+  formTimestamp.getUTCDate(),
+  4, 0, 0
+));
+const endTime = new Date(startTime);
+endTime.setUTCDate(startTime.getUTCDate() + 1);
 
-    const container = document.getElementById("money-object");
-    const viewAllLink = document.getElementById("viewAllLink");
-    const modal = document.getElementById("moModal");
-    const guideLink = document.getElementById("guideLink");
+const container = document.getElementById("money-object");
+const modal = document.getElementById("moModal");
+const guideLink = document.getElementById("guideLink");
 
-    if (utcNow < startTime || utcNow >= endTime) {
-      container.style.display = "none";
-      const tempoSim = document.getElementById("tempoSim");
-      if (guideLink && tempoSim) {
-        tempoSim.parentNode.insertBefore(guideLink, tempoSim);
-      }
-      return;
-    }
+if (utcNow < startTime || utcNow >= endTime) {
+  container.style.display = "none";
+  const tempoSim = document.getElementById("tempoSim");
+  if (guideLink && tempoSim) {
+    tempoSim.parentNode.insertBefore(guideLink, tempoSim);
+  }
+  return;
+}
 
-    const entries = Object.entries(latest).filter(([key]) => key !== "Timestamp");
+const entries = Object.entries(latest).filter(([key]) => key !== "Timestamp");
 
-    const topMOs = entries
-      .filter(([, val]) => parseInt(val) > 139)
-      .sort((a, b) => parseInt(b[1]) - parseInt(a[1]))
-      .map(([key, val]) => `${key} (${parseInt(val)}%)`);
+const topMOs = entries
+  .filter(([, val]) => parseInt(val) > 139)
+  .sort((a, b) => parseInt(b[1]) - parseInt(a[1]))
+  .map(([key, val]) => `${key} (${parseInt(val)}%)`);
 
-    container.firstChild.textContent = `Today's top MOs are: ${topMOs.join(', ')}`;
-    viewAllLink.style.display = "inline";
+container.innerHTML = `Today's top MOs are: ${topMOs.join(', ')} <a href="#" id="viewAllLink">View All</a>`;
 
-    const sorted = entries.sort((a, b) => parseInt(b[1]) - parseInt(a[1]));
+const link = document.getElementById("viewAllLink");
+if (link) {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+    modal.style.display = "block";
+  });
+}
 
-    viewAllLink.onclick = (e) => {
-      e.preventDefault();
-      modal.style.display = "block";
-    };
+const sorted = entries.sort((a, b) => parseInt(b[1]) - parseInt(a[1]));
 
     // Percentage Chart
     const ctx = document.getElementById("percentChart").getContext("2d");
