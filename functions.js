@@ -2164,13 +2164,14 @@ document.addEventListener('click', (e) => {
   const isModalContent = e.target.closest('.modal-content');
   const isModal = e.target.closest('.modal');
   const isOpenTrigger = e.target.closest('[onclick*="open"]');
+  const isViewAll = e.target.id === 'viewAllLink' || e.target.closest('#viewAllLink');
 
   if (e.target.matches('.modal .close')) {
     e.target.closest('.modal').style.display = 'none';
     return;
   }
 
-  if (isModalContent || isOpenTrigger) return;
+  if (isModalContent || isOpenTrigger || isViewAll) return;
 
   document.querySelectorAll('.modal').forEach(modal => {
     if (modal.style.display === 'block' && !modal.querySelector('.modal-content').contains(e.target)) {
