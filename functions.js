@@ -1075,33 +1075,56 @@ async function searchLot(event) {
             );
 
             // Known Sims inside the lot from Sims Online table
-            const playersContainer = document.getElementById('players');
-            const knownSims = Array.from(playersContainer.querySelectorAll('tr'))
-                .filter(row => {
-                    const locationCell = row.querySelector('.hidden:nth-child(4)');
-                    return locationCell && locationCell.textContent == lotData.location;
-                })
-		.map(row => row.querySelector('td')?.dataset.simname?.trim() || '');
+const playersContainer = document.getElementById('players');
+const knownSims = Array.from(playersContainer.querySelectorAll('tr'))
+  .filter(row => {
+    const locationCell = row.querySelector('.hidden:nth-child(4)');
+    return locationCell && locationCell.textContent == lotData.location;
+  })
+  .map(row => row.querySelector('td')?.dataset.simname?.trim() || '');
 
+const adminNamesLower = [
+  "sorta","savaki","daat","xeno","eric","sneaky",
+  "nyx","bruglar","breaker","magic genie","santa"
+];
 
-		let appendedHiddenHost = null;
-const allHosts = [ownerName, ...roommateNames];
+let appendedHiddenHost = null;
+
+const allHosts = [ownerName, ...roommateNames]
+  .filter(Boolean)
+  .filter(n => !adminNamesLower.includes(n.trim().toLowerCase()));
+
 const normalizedHosts = new Set(allHosts.map(n => n.trim().toLowerCase()));
-const normalizedKnown = new Set(knownSims.map(n => n.trim().toLowerCase()));
+const normalizedKnown = new Set(
+  knownSims.filter(n => n.trim() !== "").map(n => n.trim().toLowerCase())
+);
 
-const anyHostAlreadyListed = Array.from(normalizedHosts).some(name => normalizedKnown.has(name));
+const anyHostAlreadyListed = Array.from(normalizedHosts).some(name =>
+  normalizedKnown.has(name)
+);
 
-if (!anyHostAlreadyListed) {
+if (!anyHostAlreadyListed && normalizedHosts.size > 0) {
   const candidateHosts = Array.from(playersContainer.querySelectorAll('tr'))
     .map(row => {
       const nameCell = row.querySelector('td');
       const locationCell = row.querySelector('.hidden:nth-child(4)');
-      const name = nameCell?.textContent.trim();
-      const location = locationCell?.textContent.trim().toLowerCase() || '';
 
-      const isHost = name && normalizedHosts.has(name.toLowerCase());
-      const isUnknown = location === '0' || /unknown|^$|^[-–]$/.test(location);
-      const alreadyListed = name && normalizedKnown.has(name.toLowerCase());
+      const name =
+        nameCell?.dataset.simname?.trim() || nameCell?.textContent.trim();
+      if (!name) return null;
+
+      const lowerName = name.toLowerCase();
+
+      if (adminNamesLower.includes(lowerName)) return null;
+
+      const location = (locationCell?.textContent || "")
+        .trim()
+        .toLowerCase();
+
+      const isHost = normalizedHosts.has(lowerName);
+      const isUnknown =
+        location === "0" || /unknown|^\s*$|^[-–]$/.test(location);
+      const alreadyListed = normalizedKnown.has(lowerName);
 
       return isHost && isUnknown && !alreadyListed ? name : null;
     })
