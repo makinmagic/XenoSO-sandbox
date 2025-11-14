@@ -1177,7 +1177,7 @@ setMemorialMode(false, consoleContainer, consoleContent);
 
 <p><strong>Currently Active:</strong> ${activeStatus}</p>
 
-${activeStatus === 'Yes' ? `
+${isActive ? `
   <p><strong>Known Sims Inside:</strong> ${
     fullKnownSimsList.length > 0
       ? fullKnownSimsList.map(name => {
