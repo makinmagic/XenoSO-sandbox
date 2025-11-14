@@ -441,25 +441,42 @@ async function displayLotInfo(lotId) {
             })
             .map(row => row.querySelector('td')?.dataset.simname?.trim() || '');
 
-	// Identify a single host with location = Unknown
+	// Identify a single host with location = Unknown (excluding admins)
 let appendedHiddenHost = null;
-const allHosts = [ownerName, ...roommateNames];
-const normalizedHosts = allHosts.map(n => n.trim().toLowerCase());
-const normalizedKnown = knownSims.map(n => n.trim().toLowerCase());
-	    
-const anyHostAlreadyListed = normalizedHosts.some(name => normalizedKnown.includes(name));
 
-if (!anyHostAlreadyListed) {
+const adminNamesLower = [
+  "sorta","savaki","daat","xeno","eric","sneaky",
+  "nyx","bruglar","breaker","magic genie","santa"
+];
+
+const allHosts = [ownerName, ...roommateNames]
+  .filter(Boolean)
+  .filter(n => !adminNamesLower.includes(n.trim().toLowerCase()));
+
+const normalizedHosts = allHosts.map(n => n.trim().toLowerCase());
+const normalizedKnown = knownSims
+  .filter(n => n.trim() !== "")
+  .map(n => n.trim().toLowerCase());
+
+const anyHostAlreadyListed = normalizedHosts.some(n => normalizedKnown.includes(n));
+
+if (!anyHostAlreadyListed && normalizedHosts.length > 0) {
   const candidateHosts = playersRows
     .map(row => {
       const nameCell = row.querySelector('td');
       const locationCell = row.querySelector('.hidden:nth-child(4)');
-      const name = nameCell?.textContent.trim();
-      const location = locationCell?.textContent.trim().toLowerCase() || '';
+      const name = nameCell?.dataset.simname?.trim() || nameCell?.textContent.trim();
+      if (!name) return null;
 
-      const isHost = name && normalizedHosts.includes(name.toLowerCase());
+      const lowerName = name.toLowerCase();
+
+      if (adminNamesLower.includes(lowerName)) return null;
+
+      const location = (locationCell?.textContent || "").trim().toLowerCase();
+
+      const isHost = normalizedHosts.includes(lowerName);
       const isUnknown = location === '0' || /unknown|^\s*$|^[-–]$/.test(location);
-      const alreadyListed = name && normalizedKnown.includes(name.toLowerCase());
+      const alreadyListed = normalizedKnown.includes(lowerName);
 
       return isHost && isUnknown && !alreadyListed ? name : null;
     })
