@@ -53,7 +53,7 @@ function formatDisplayName(name) {
   if (adminNames.includes(name)) {
     display += ` <span title="Admin">🛡️</span>`;
   } else if (mentorNames.includes(name)) {
-    display += ` <span title="XenoSO Mentor">🎓</span>`;
+    display += ` <span title="Mentor">🎓</span>`;
   }
 
   return display;
