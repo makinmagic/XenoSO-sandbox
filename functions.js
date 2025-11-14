@@ -45,14 +45,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Define emoji rules
 function formatDisplayName(name) {
-  const adminNames = ["Sorta", "Savaki", "Daat", "Xeno", "Eric", "Sneaky", "Nyx", "Bruglar", "Breaker", "Magic Genie"];
-  const emojiMap = {
-    "Mr Teddy": "🐻"
-  };
+  const adminNames = ["Sorta", "Savaki", "Daat", "Xeno", "Eric", "Sneaky", "Nyx", "Bruglar", "Breaker", "Magic Genie", "Santa"];
+  const mentorNames = ["Sim", "Simoleon", "Servo", "Erometal", "Brian", "Aristotle", "Mr Teddy", "Jack Lumberjack", "Beary Cold"];
 
   let display = name;
-  if (emojiMap[name]) display += ` ${emojiMap[name]}`;
-  if (adminNames.includes(name)) display += ` <span title="Admin">🛡️</span>`;
+
+  if (adminNames.includes(name)) {
+    display += ` <span title="Admin">🛡️</span>`;
+  } else if (mentorNames.includes(name)) {
+    display += ` <span title="XenoSO Mentor">🎓</span>`;
+  }
+
   return display;
 }
 
