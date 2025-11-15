@@ -1722,7 +1722,7 @@ async function loadTopPayingMOs() {
       plugins: [ChartDataLabels]
     });
 
-    // Payout Chart
+    /* // Payout Chart
     const payoutCtx = document.getElementById("payoutChart").getContext("2d");
     const entriesWithPayout = entries.map(([key, val]) => {
       const pct = parseInt(val);
@@ -1772,7 +1772,7 @@ async function loadTopPayingMOs() {
         }
       },
       plugins: [ChartDataLabels]
-    });
+    });*/
 
     document.querySelectorAll(".tab-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
