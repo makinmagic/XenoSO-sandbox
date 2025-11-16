@@ -953,10 +953,7 @@ if (memorialEntry) {
             console.error('Failed to fetch sim details:', error);
             consoleContent.innerHTML = `
 			  <div class="console-message">
-			    🤔 Sim not found<br>
-			    <span style="font-size: 0.9rem; opacity: 0.8;">
-			      Please check the spelling or try another name.
-			    </span>
+			    🤔 Sim not found. Please check the spelling or try another name.
 			  </div>
 			`;
         }
