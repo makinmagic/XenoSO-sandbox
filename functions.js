@@ -1355,7 +1355,7 @@ function closeSimModal() {
 }
 
 const eventsUrl = 'https://opensheet.elk.sh/1m3_-Vj_cOlASYfhfQarUyECk0LyZF5GYj_mZoHHQ0ho/Events';
-const flagFormBaseUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdSSzVahyBz-wQ0aGn_m1RZKy9f5tjsWWgM8o4VXmhXde1fFg/viewform?usp=pp_url&entry.1111448424=';
+const flagFormBaseUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfop2YQVz2xpxrOASE0BeyD7VN2m2e1JerLrOla5ZviCSYucg/viewform?usp=pp_url&entry.1329864422=';
 
 function isEventFlagged(event) {
     const flaggedRaw = (event.Flagged || event.flagged || '').toString().trim().toLowerCase();
