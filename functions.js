@@ -1354,7 +1354,7 @@ function closeSimModal() {
   document.getElementById('sim-modal').style.display = 'none';
 }
 
-const eventsUrl = 'https://opensheet.elk.sh/1W-vExTPWVGsS0fHKH8K0U3vz0vlFNSm7Y-3kW_VG7yA/XSO%20Events';
+const eventsUrl = 'https://opensheet.elk.sh/1m3_-Vj_cOlASYfhfQarUyECk0LyZF5GYj_mZoHHQ0ho/Events';
 const flagFormBaseUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdSSzVahyBz-wQ0aGn_m1RZKy9f5tjsWWgM8o4VXmhXde1fFg/viewform?usp=pp_url&entry.1111448424=';
 
 function isEventFlagged(event) {
