@@ -228,7 +228,11 @@ const isFavorite = favoriteSims[avatar.avatar_id];
 
 } catch (error) {
         console.error('Failed to load online players:', error);
-        document.getElementById('players').innerHTML = 'Error loading data. Please check again soon.';
+        document.getElementById('players').innerHTML = `
+			  <div class="console-message">
+			    ⚠️ Error loading data. Please check again soon.
+			  </div>
+			`;
         // If there is an error, reset the title to show 0
         if (playersTitle) {
             playersTitle.innerHTML = `<span class="sims-online-icon"></span> Sims Online: 0 <span class="sims-online-icon"></span>`;
@@ -560,7 +564,7 @@ consoleContent.innerHTML = `
         if (isMemorializedLot) {
             const tribute = document.createElement('div');
             tribute.innerHTML = `
-                <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:10px; margin-bottom:15px;">
+                <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:15px; margin-bottom:15px;">
                     🕯️ In Loving Memory of ${ownerName}, whose legacy lives on through this lot. 🕯️
                 </p>
             `;
@@ -712,7 +716,7 @@ const memorialEntry = memorialList.find(entry =>
                  alt="Profile Picture" 
                  class="console-img">
             <p style="text-align: center; margin-top: -9px;">
-                <a href="https://forms.gle/p7DTPGDpiztywdsM9" target="_blank" style="text-decoration: underline;">Submit/Change Profile Picture</a>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSd-aCzrhLeTmjeVUwR-1aekq5o7v0OhGpKQP-c5gUGULeHbQw/viewform?usp=pp_url&entry.1723241866=${encodeURIComponent(playerData.name)}" target="_blank" style="text-decoration: underline;">Submit/Change Profile Picture</a>
             </p>
             <div class="description-container">${formattedDescription}</div>
             <p><strong>Age:</strong> ${ageInDays} days old</p>
@@ -727,7 +731,7 @@ setMemorialMode(!!memorialEntry, consoleContainer, consoleContent);
 if (memorialEntry) {
   const tribute = document.createElement('div');
   tribute.innerHTML = `
-    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
+    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:0px; margin-bottom:15px;">
       ${memorialEntry.message}
     </p>
   `;
@@ -921,7 +925,7 @@ setMemorialMode(!!memorialEntry, consoleContainer, consoleContent);
 if (memorialEntry) {
   const tribute = document.createElement('div');
   tribute.innerHTML = `
-    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:-5px; margin-bottom:10px;">
+    <p style="text-align:center; color:#FFD700; font-style:italic; margin-top:0px; margin-bottom:15px;">
       ${memorialEntry.message}
     </p>
   `;
@@ -1350,7 +1354,13 @@ function closeSimModal() {
   document.getElementById('sim-modal').style.display = 'none';
 }
 
-const eventsUrl = 'https://opensheet.vercel.app/1xWQc2P86fisaRSdxyGWwTddX_a4ZGmWYaWRK0ZfXb_4/Events';
+const eventsUrl = 'https://opensheet.elk.sh/1W-vExTPWVGsS0fHKH8K0U3vz0vlFNSm7Y-3kW_VG7yA/XSO%20Events';
+const flagFormBaseUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdSSzVahyBz-wQ0aGn_m1RZKy9f5tjsWWgM8o4VXmhXde1fFg/viewform?usp=pp_url&entry.1111448424=';
+
+function isEventFlagged(event) {
+    const flaggedRaw = (event.Flagged || event.flagged || '').toString().trim().toLowerCase();
+    return flaggedRaw === 'true' || flaggedRaw === 'yes' || flaggedRaw === '1';
+}
 
 async function fetchEvents() {
     try {
@@ -1361,25 +1371,24 @@ async function fetchEvents() {
         const events = await response.json();
 
         const eventsContainer = document.getElementById('events-table').getElementsByTagName('tbody')[0];
-        eventsContainer.innerHTML = ''; // Clear any existing events
+        eventsContainer.innerHTML = '';
 
         const now = new Date();
 
-        // Filter upcoming events and sort them by startTime
 	const upcomingEvents = events
-    .filter(event => new Date(event.startTime) > now)
+    .filter(event => !isEventFlagged(event) && new Date(event.startTime) > now)
     .sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
 
         if (upcomingEvents.length === 0) {
-            // Add a single row if there are no upcoming events
+
             const row = eventsContainer.insertRow();
             const cell = row.insertCell();
             cell.colSpan = 3;
             cell.style.textAlign = 'center';
             cell.textContent = "No upcoming events.";
-            cell.style.fontStyle = "italic"; // Optional styling
+            cell.style.fontStyle = "italic";
         } else {
-            // Populate the table with upcoming events
+
             upcomingEvents.forEach(event => {
                 const row = eventsContainer.insertRow();
                 const eventDate = new Date(event.startTime);
@@ -1394,7 +1403,7 @@ async function fetchEvents() {
                     <td>${event.location}</td>
                 `;
                 row.addEventListener('click', () => {
-                    displayEventInfo(event); // Show details in the Console when clicked
+                    displayEventInfo(event);
 			document.getElementById('console-container')?.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
@@ -1409,28 +1418,55 @@ async function fetchEvents() {
 
 function displayEventInfo(event) {
     const consoleContent = document.getElementById('console-content');
-	setMemorialMode(false, document.getElementById('console-container'), consoleContent);
+    setMemorialMode(false, document.getElementById('console-container'), consoleContent);
+
     const eventStartDate = new Date(event.startTime);
     const eventEndDate = new Date(event.endTime);
+
     const formattedDate = eventStartDate.toLocaleDateString(undefined, {
         weekday: 'long', month: 'long', day: 'numeric'
     });
-    const formattedTime = `${eventStartDate.toLocaleTimeString(undefined, { hour: 'numeric', minute: 'numeric', hour12: true })} to ${eventEndDate.toLocaleTimeString(undefined, { hour: 'numeric', minute: 'numeric', hour12: true })} (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
+
+    const formattedTime = `${eventStartDate.toLocaleTimeString(undefined, { 
+        hour: 'numeric', minute: 'numeric', hour12: true 
+    })} to ${eventEndDate.toLocaleTimeString(undefined, { 
+        hour: 'numeric', minute: 'numeric', hour12: true 
+    })} (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
+
+    const eventId = event['Event ID'] || '';
+
+    const flagLinkHtml = eventId
+        ? `
+        <p style="margin-top: 8px; text-align: center;">
+            <a href="${flagFormBaseUrl}${encodeURIComponent(eventId)}" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               style="text-decoration: underline; font: inherit;">
+               🚩 Report/flag this event
+            </a>
+        </p>`
+        : '';
 
     consoleContent.innerHTML = `
         <div class="console-title">
             ${event.name}
         </div>
-        <p><strong>ℹ️ Description:</strong></p><div class="event-card">${event.description.replace(/(\r\n|\n|\r)/g, "<br>")}</div>
+        <p><strong>ℹ️ Description:</strong></p>
+        <div class="event-card">
+            ${event.description.replace(/(\r\n|\n|\r)/g, "<br>")}
+        </div>
+        ${flagLinkHtml}
         <p><strong>📅 Date:</strong> ${formattedDate}</p>
         <p><strong>🕐 Time:</strong> ${formattedTime}</p>
         <p><strong>📍 Location:</strong> ${event.location}</p>
-		<p style="margin-top: 10px;">
-            <a href="#" id="addToCalendarLink" style="text-decoration: underline; font: inherit;">⏰ Add to Calendar</a>
+        <p style="margin-top: 10px; text-align: underline;">
+            <a href="#" id="addToCalendarLink" style="text-decoration: underline; font: inherit;">
+                ⏰ Add to Calendar
+            </a>
         </p>
     `;
 
-	const addLink = document.getElementById('addToCalendarLink');
+    const addLink = document.getElementById('addToCalendarLink');
     if (addLink) {
         addLink.addEventListener('click', (e) => {
             e.preventDefault();
@@ -1479,27 +1515,27 @@ async function displayCurrentEvent() {
 
         const now = new Date();
         const currentEventContainer = document.getElementById("currentEvent");
-        let currentEvents = []; // Array to store all currently ongoing events
+        let currentEvents = [];
 
-        // Check if any events are currently ongoing
         events.forEach(event => {
+            if (isEventFlagged(event)) return;
+
             const startTime = new Date(event.startTime);
             const endTime = new Date(event.endTime);
 
             if (now >= startTime && now <= endTime) {
-                currentEvents.push(event); // Add ongoing event to the list
+                currentEvents.push(event);
             }
         });
 
-        // Display all overlapping events
         if (currentEvents.length > 0) {
             currentEventContainer.innerHTML = currentEvents
                 .map(event => `🔥 Current Event: ${event.name} at ${event.location}!`)
-                .join('<br>'); // Join with line breaks for multiple events
+                .join('<br>');
 
-            currentEvents.forEach(event => addEventIconToLocation(event.location)); // Add balloon icon for each location
+            currentEvents.forEach(event => addEventIconToLocation(event.location));
         } else {
-            currentEventContainer.innerHTML = ""; // Clear if no event is ongoing
+            currentEventContainer.innerHTML = "";
         }
     } catch (error) {
         console.error('Failed to fetch current events:', error);
@@ -1673,7 +1709,7 @@ async function loadTopPayingMOs() {
       .sort((a, b) => parseInt(b[1]) - parseInt(a[1]))
       .map(([key, val]) => `${key} (${parseInt(val)}%)`);
 
-    container.firstChild.textContent = `Today's top-paying MOs are: ${topMOs.join(', ')}`;
+    container.firstChild.textContent = `Today's top MOs: ${topMOs.join(', ')}`;
     viewAllLink.style.display = "inline";
 
     const sorted = entries.sort((a, b) => parseInt(b[1]) - parseInt(a[1]));
@@ -1730,7 +1766,7 @@ async function loadTopPayingMOs() {
       plugins: [ChartDataLabels]
     });
 
-    /* // Payout Chart
+    // Payout Chart
     const payoutCtx = document.getElementById("payoutChart").getContext("2d");
     const entriesWithPayout = entries.map(([key, val]) => {
       const pct = parseInt(val);
@@ -1780,7 +1816,7 @@ async function loadTopPayingMOs() {
         }
       },
       plugins: [ChartDataLabels]
-    });*/
+    });
 
     document.querySelectorAll(".tab-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -1818,8 +1854,6 @@ async function loadTopPayingMOs() {
     console.error("Error fetching top-paying MOs:", error);
   }
 }
-
-// Top-paying MOs (Piggy version)
 
 // Top-paying MOs (Piggy version)
 
