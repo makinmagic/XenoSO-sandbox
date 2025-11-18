@@ -1441,7 +1441,7 @@ function displayEventInfo(event) {
             <a href="${flagFormBaseUrl}${encodeURIComponent(eventId)}" 
                target="_blank" 
                rel="noopener noreferrer"
-               style="text-decoration: underline; font: inherit;">
+               class="event-flag-link">
                🚩 Report/flag this event
             </a>
         </p>`
