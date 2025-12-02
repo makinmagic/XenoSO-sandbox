@@ -65,6 +65,18 @@ function toggleJobFilter() {
     loadOnlinePlayers();
 }
 
+// Sims Online table
+
+const nhoodMap = {
+    1: "The Weirding Triangle",
+    2: "Nebula Heights",
+    3: "Solaris Slopes",
+    4: "Stardust Valley",
+    5: "Great Orion Wall",
+    6: "Stellar Springs",
+    7: "Apollo Acres"
+};
+
 async function loadOnlinePlayers() {
     try {
 
@@ -183,7 +195,11 @@ const isFavorite = favoriteSims[avatar.avatar_id];
                title="Click to toggle favorite" 
                data-favorite-id="${avatar.avatar_id}" 
                onclick="toggleFavorite('sims', '${avatar.avatar_id}', '${avatar.name}', event)"></i>
-            ${formatDisplayName(avatar.name)}${(isJobLot && /join me at/i.test(playerDetails.description || '')) 
+            ${formatDisplayName(avatar.name)}
+			${playerDetails.mayor_nhood !== null 
+			    ? `<span class="mayor-icon" title="Mayor of ${nhoodMap[playerDetails.mayor_nhood]}">🎩</span>` 
+			    : ''
+			}${(isJobLot && /join me at/i.test(playerDetails.description || '')) 
   ? ' <span class="join-label" title="This sim is looking for others to join them at work!">Join me at work!</span>' 
   : ''}
         </td>
@@ -395,11 +411,11 @@ async function displayLotInfo(lotId) {
         const lotData = await response.json();
 
         const admitModeMapping = {
-            0: 'Admit All',
-            1: 'Admit List',
-            2: 'Ban List',
-            3: 'Ban All',
-            4: 'Admit All'
+            0: '🟢 Admit All',
+            1: '🟡 Admit List',
+            2: '🟡 Ban List',
+            3: '🔴 Ban All',
+            4: '🟢 Admit All'
         };
 
         const ownerNameUrl = `https://api.xenoso.space/userapi/avatars/${lotData.owner_id}`;
