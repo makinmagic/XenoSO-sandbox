@@ -313,6 +313,14 @@ function filterLots(type) {
             4: "🟢"  // Admit All
         };
 
+		const admitModeMapping = {
+		    0: "Admit All",
+		    1: "Admit List",
+		    2: "Ban List",
+		    3: "Ban All",
+		    4: "Admit All"
+		};
+
         let tableHtml = `
             <table>
                 <thead>
@@ -339,7 +347,7 @@ function filterLots(type) {
                                data-favorite-id="${lot.id}" 
                                onclick="toggleFavorite('lots', '${lot.id}', '${lot.name}', event)"></i>
 
-                            <span class="lot-admit-icon">${admitEmoji}</span>
+                            <span class="lot-admit-icon" title="${admitModeMapping[lotDetails.admit_mode]}">${admitEmoji}</span>
                             <span class="lot-name">${lot.name}</span>
                         </td>
 
