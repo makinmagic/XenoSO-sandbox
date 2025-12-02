@@ -1,7 +1,7 @@
 async function loadLotName(lotId) {
-            if (lotId === 0) return 'Unknown'; // Return 'Unknown' for lot ID 0
+            if (lotId === 0) return 'Unknown';
             const lotData = await fetch('https://api.xenoso.space/userapi/city/1/city.json');
-            return lotData ? lotData.name : 'N/A'; // Return the lot name if valid
+            return lotData ? lotData.name : 'N/A';
         }
 
         async function loadActiveLots() {
@@ -12,19 +12,18 @@ async function loadLotName(lotId) {
         }
         const activeLotsData = await response.json();
 
-        // Create a mapping of lot IDs to lot names
         const lotMapping = {};
         const names = activeLotsData.names;
         const reservedLots = activeLotsData.reservedLots;
 
         reservedLots.forEach((id, index) => {
-            lotMapping[id] = names[index]; // Map each ID to its corresponding name
+            lotMapping[id] = names[index];
         });
 
-        return lotMapping; // Return the mapping
+        return lotMapping;
     } catch (error) {
         console.error('Failed to load active lots:', error);
-        return {}; // Return an empty object on error
+        return {};
     }
 }
 
@@ -45,8 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Define emoji rules
 function formatDisplayName(name) {
-  const adminNames = ["Sorta", "Savaki", "Daat", "Xeno", "Eric", "Sneaky", "Nyx", "Bruglar", "Breaker", "Magic Genie", "Santa"];
-  const mentorNames = ["Sim", "Simoleon", "Servo", "Erometal", "Brian", "Aristotle", "Mr Teddy", "Jack Lumberjack", "Beary Cold"];
+  const adminNames = ["Sorta", "Savaki", "Daat", "Xeno", "Eric", "Sneaky", "Nyx", "Bruglar", "Breaker", "Magic Genie", "PETA", "Holly Claus", "Santa"];
+  const mentorNames = ["Mentor Teddy", "Mr Teddy", "Jack Lumberjack", "Beary Cold"];
 
   let display = name;
 
@@ -69,7 +68,6 @@ function toggleJobFilter() {
 async function loadOnlinePlayers() {
     try {
 
-        // Set the Sims Online title to "Loading..." while data is being fetched
         const playersTitle = document.getElementById('players-title');
         if (playersTitle) {
             playersTitle.innerHTML = `<span class="sims-online-icon"></span> Sims Online: Loading... <span class="sims-online-icon"></span>`;
@@ -82,31 +80,26 @@ async function loadOnlinePlayers() {
 
         const onlineData = await response.json();
         const playersContainer = document.getElementById('players');
-        playersContainer.innerHTML = ''; // Clear previous content
+        playersContainer.innerHTML = '';
 
-        // Fetch active lots data and create a mapping
         const lotMapping = await loadActiveLots();
 		
-		// Get favorites from localStorage
         const favorites = JSON.parse(localStorage.getItem('favorites')) || {};
         const favoriteSims = favorites.sims || {};
 
-        // Sort Sims: Favorites first, then alphabetically
         const sortedAvatars = onlineData.avatars.sort((a, b) => {
             const isAFavorite = favoriteSims[a.avatar_id] ? 1 : 0;
             const isBFavorite = favoriteSims[b.avatar_id] ? 1 : 0;
             if (isBFavorite !== isAFavorite) {
-                return isBFavorite - isAFavorite; // Favorites come first
+                return isBFavorite - isAFavorite;
             }
-            return a.name.localeCompare(b.name); // Then sort alphabetically
+            return a.name.localeCompare(b.name);
         });
 
-        // Prepare fetch requests for all avatars in parallel
         const fetchPlayerDetailsPromises = sortedAvatars.map(avatar =>
             fetch(`https://api.xenoso.space/userapi/avatars/${avatar.avatar_id}`).then(response => response.json())
         );
 
-        // Wait for all player detail requests to complete
         const playerDetailsArray = await Promise.all(fetchPlayerDetailsPromises);
 
         let tableHtml = `
@@ -140,16 +133,13 @@ async function loadOnlinePlayers() {
 </thead>
                 <tbody>`;
 
-        // Process sorted online players
         sortedAvatars.forEach((avatar, index) => {
     const playerDetails = playerDetailsArray[index];
 
-	//Determine if sim is at a job lot
     const isJobLot = avatar.location.toString().length === 10;
 
     if (jobFilterEnabled && !isJobLot) return;
 
-// Map job ID to name
 const jobMap = {
     1: "Factory",
     2: "Diner",
@@ -162,7 +152,6 @@ let lotName;
 if (isJobLot && playerDetails.current_job) {
     const jobName = jobMap[playerDetails.current_job] || "Job";
 
-    // Attempt to extract job level from description
     let jobLevel = null;
     if (typeof playerDetails.description === 'string') {
         const levelMatch = playerDetails.description.match(/\b(?:level|lvl)\s*(\b(?:[0-9]|10))\b/i);
@@ -180,12 +169,11 @@ if (jobLevel !== null && !isNaN(jobLevel)) {
     lotName = lotMapping[avatar.location] || 'Unknown';
 }
 		
-            // Calculate player age from Unix timestamp (avatar.date)
-            const creationDate = new Date(playerDetails.date * 1000); // Convert to milliseconds
+            const creationDate = new Date(playerDetails.date * 1000);
             const currentDate = new Date();
-            const ageInDays = Math.floor((currentDate - creationDate) / (1000 * 60 * 60 * 24)); // Age in days
+            const ageInDays = Math.floor((currentDate - creationDate) / (1000 * 60 * 60 * 24));
 
-// Check if this Sim is a favorite
+
 const isFavorite = favoriteSims[avatar.avatar_id];
 					
             tableHtml += `
@@ -210,18 +198,17 @@ const isFavorite = favoriteSims[avatar.avatar_id];
                 </tbody>
             </table>`;
 
-        playersContainer.innerHTML = tableHtml; // Update the container with the table
+        playersContainer.innerHTML = tableHtml;
 
-        // Add event listeners to each row in Sims Online table
         const playerRows = playersContainer.querySelectorAll('tr[data-avatar-id]');
         playerRows.forEach(row => {
             row.addEventListener('click', () => {
-                const avatarId = row.dataset.avatarId; // Get the avatar ID
-                displayPlayerInfo(avatarId); // Fetch and display player info
+                const avatarId = row.dataset.avatarId;
+                displayPlayerInfo(avatarId);
             });
         });
 
-        // Update the title with the online player count
+
         if (playersTitle) {
             playersTitle.innerHTML = `<span class="sims-online-icon"></span> Sims Online: ${onlineData.avatars_online_count} <span class="sims-online-icon"></span>`;
         }
@@ -233,7 +220,7 @@ const isFavorite = favoriteSims[avatar.avatar_id];
 			    ⚠️ Error loading data. Please check again soon.
 			  </div>
 			`;
-        // If there is an error, reset the title to show 0
+
         if (playersTitle) {
             playersTitle.innerHTML = `<span class="sims-online-icon"></span> Sims Online: 0 <span class="sims-online-icon"></span>`;
         }
@@ -254,24 +241,24 @@ const isFavorite = favoriteSims[avatar.avatar_id];
                 11: 'Community'
         };
 
-let currentFilter = ''; // Track the current filter
+let currentFilter = '';
 
 function filterLots(type) {
-    // Check if the clicked filter is already active to toggle
+
     if (currentFilter === type) {
-        type = ''; // Clear filter if clicked again
-        currentFilter = ''; // Reset the current filter
+        type = '';
+        currentFilter = '';
     } else {
-        currentFilter = type; // Set new filter as active
+        currentFilter = type;
     }
 
     const rows = document.querySelectorAll('#lots tbody tr');
     rows.forEach(row => {
         const lotTypeCell = row.querySelector('td:nth-child(3)');
         if (!type || (lotTypeCell && lotTypeCell.textContent.trim() === type)) {
-            row.style.display = ''; // Show matching type or all if no type
+            row.style.display = '';
         } else {
-            row.style.display = 'none'; // Hide non-matching types
+            row.style.display = 'none';
         }
     });
 }
@@ -289,9 +276,8 @@ function filterLots(type) {
         }
 
         const lotsContainer = document.getElementById('lots');
-        lotsContainer.innerHTML = ''; // Clear previous content
-		
-		// Retrieve favorites from localStorage
+        lotsContainer.innerHTML = '';
+
         const favorites = JSON.parse(localStorage.getItem('favorites')) || {};
         const favoriteLots = favorites.lots || {};
 
@@ -300,26 +286,32 @@ function filterLots(type) {
                 name: lotMapping[lotID] || lotID,
                 count: onlineCounts[index],
                 id: lotID,
-				isFavorite: !!favoriteLots[lotID] // Mark if the lot is a favorite
+                isFavorite: !!favoriteLots[lotID]
             };
         });
 
-        // Sort Lots: Favorites first, then by Sims Inside (descending)
         lotsData.sort((a, b) => {
             if (b.isFavorite !== a.isFavorite) {
-                return b.isFavorite - a.isFavorite; // Favorites come first
+                return b.isFavorite - a.isFavorite;
             }
             if (b.count !== a.count) {
-    	return b.count - a.count;
-	}
-	return a.name.localeCompare(b.name);
+                return b.count - a.count;
+            }
+            return a.name.localeCompare(b.name);
         });
 
         const fetchLotDetailsPromises = lotsData.map(lot =>
-            fetch(`https://api.xenoso.space/userapi/city/1/i${lot.id}.json`).then(response => response.json())
+            fetch(`https://api.xenoso.space/userapi/city/1/i${lot.id}.json`).then(r => r.json())
         );
-
         const lotDetailsArray = await Promise.all(fetchLotDetailsPromises);
+
+        const admitIcons = {
+            0: "🟢", // Admit All
+            1: "🟡", // Admit List
+            2: "🟡", // Ban List
+            3: "🔴", // Ban All
+            4: "🟢"  // Admit All
+        };
 
         let tableHtml = `
             <table>
@@ -337,15 +329,20 @@ function filterLots(type) {
                 const lotDetails = lotDetailsArray[index];
                 const lotType = categoryMapping[lotDetails.category] || 'Unknown';
 
+                const admitEmoji = admitIcons[lotDetails.admit_mode] || "⚪";
+
                 tableHtml += `
                     <tr data-lot-id="${lot.id}">
                         <td>
-            <i class="${lot.isFavorite ? 'fa-solid fa-star' : 'fa-regular fa-star'}" 
-               title="Click to toggle favorite" 
-               data-favorite-id="${lot.id}" 
-               onclick="toggleFavorite('lots', '${lot.id}', '${lot.name}', event)"></i>
-            ${lot.name}
-        </td>
+                            <i class="${lot.isFavorite ? 'fa-solid fa-star' : 'fa-regular fa-star'}"
+                               title="Click to toggle favorite" 
+                               data-favorite-id="${lot.id}" 
+                               onclick="toggleFavorite('lots', '${lot.id}', '${lot.name}', event)"></i>
+
+                            <span class="lot-admit-icon">${admitEmoji}</span>
+                            <span class="lot-name">${lot.name}</span>
+                        </td>
+
                         <td>${lot.count}</td>
                         <td>${lotType}</td>
                     </tr>`;
@@ -374,8 +371,8 @@ function filterLots(type) {
 
 async function displayLotInfo(lotId) {
     const consoleContent = document.getElementById('console-content');
-    consoleContent.dataset.id = lotId; // Set the current Lot ID
-    consoleContent.dataset.type = 'lots'; // Set the type to Lots
+    consoleContent.dataset.id = lotId;
+    consoleContent.dataset.type = 'lots';
 
 	setMemorialMode(false, document.getElementById('console-container'), consoleContent);
 
@@ -389,7 +386,6 @@ async function displayLotInfo(lotId) {
 
         const lotData = await response.json();
 
-        // Mapping for admit modes
         const admitModeMapping = {
             0: 'Admit All',
             1: 'Admit List',
@@ -398,16 +394,13 @@ async function displayLotInfo(lotId) {
             4: 'Admit All'
         };
 
-        // Fetch owner's name using owner_id
         const ownerNameUrl = `https://api.xenoso.space/userapi/avatars/${lotData.owner_id}`;
         const ownerResponse = await fetch(ownerNameUrl);
         const ownerData = ownerResponse.ok ? await ownerResponse.json() : { name: 'Unknown' };
         const ownerName = ownerData.name || 'Unknown';
 
-        // Filter out the owner from the roommates list
         const roommatesWithoutOwner = lotData.roommates.filter(id => id !== lotData.owner_id);
 
-        // Fetch roommates' names (excluding the owner)
         const roommateNames = await Promise.all(
             roommatesWithoutOwner.map(async (roommateId) => {
                 const roommateUrl = `https://api.xenoso.space/userapi/avatars/${roommateId}`;
@@ -421,7 +414,6 @@ async function displayLotInfo(lotId) {
             })
         );
 
-        // Format description and creation date
         const formattedDescription = ((lotData.description || 'No description available.')
   .split(/\r?\n/)
   .map(line => {
@@ -438,7 +430,6 @@ async function displayLotInfo(lotId) {
     day: 'numeric'
 });
 
-        // Find known Sims inside the lot (from the Sims Online table)
         const playersContainer = document.getElementById('players');
         const playersRows = Array.from(playersContainer.querySelectorAll('tr'));
         const knownSims = playersRows
@@ -448,12 +439,11 @@ async function displayLotInfo(lotId) {
             })
             .map(row => row.querySelector('td')?.dataset.simname?.trim() || '');
 
-	// Identify a single host with location = Unknown (excluding admins)
 let appendedHiddenHost = null;
 
 const adminNamesLower = [
   "sorta","savaki","daat","xeno","eric","sneaky",
-  "nyx","bruglar","breaker","magic genie","santa"
+  "nyx","bruglar","breaker","magic genie","peta","holly claus","santa" 
 ];
 
 const allHosts = [ownerName, ...roommateNames]
@@ -499,7 +489,6 @@ if (appendedHiddenHost) {
   fullKnownSimsList.push(`${appendedHiddenHost} (hidden)`);
 }
 
-	// Get total Sims inside from Active Lots table
         let totalSimsInside = 0;
         const lotsContainer = document.getElementById('lots');
         const lotRow = Array.from(lotsContainer.querySelectorAll('tr')).find(row =>
@@ -512,11 +501,9 @@ if (appendedHiddenHost) {
 
         const showHiddenNote = totalSimsInside > knownSims.length;
 
-        // Check for favorites in localStorage
         const favorites = JSON.parse(localStorage.getItem('favorites')) || {};
         const isFavorite = favorites.lots && favorites.lots[lotId];
 
-        // Display lot information in Console
 consoleContent.innerHTML = `
     <div class="console-title">
         ${lotData.name}
@@ -617,7 +604,7 @@ async function fetchPlayerImages() {
         return result;
     } catch (error) {
         console.error(error);
-        return {}; // Return an empty object on error
+        return {};
     }
 }
 
@@ -660,8 +647,7 @@ async function displayPlayerInfo(avatarId) {
         if (!response.ok) throw new Error('Failed to fetch player details.');
         const playerData = await response.json();
 
-        // Match the Sim name to the JSON file
-        const simName = playerData.name; // Sim name from API
+        const simName = playerData.name;
         const playerImage = playerImages[simName] || 'https://makinmagic.github.io/XenoSO/images/pfp-placeholder.png';
 
         // Debug
@@ -671,25 +657,20 @@ async function displayPlayerInfo(avatarId) {
             console.log(`Image found for Sim: ${simName}: ${playerImage}`);
         }
 
-        // Calculate player age from Unix timestamp
-        const creationDate = new Date(playerData.date * 1000); // Convert to milliseconds
+        const creationDate = new Date(playerData.date * 1000);
         const currentDate = new Date();
-        const ageInDays = Math.floor((currentDate - creationDate) / (1000 * 60 * 60 * 24)); // Calculate age in days
+        const ageInDays = Math.floor((currentDate - creationDate) / (1000 * 60 * 60 * 24));
 
-        // Get the player's location from the Sims Online table
         const playersContainer = document.getElementById('players');
         const locationRow = Array.from(playersContainer.querySelectorAll('tr'))
-            .find(row => row.querySelector('.hidden:nth-child(2)').textContent === avatarId.toString()); // Match avatar ID
-        const playerLocation = locationRow ? locationRow.querySelector('td:nth-child(5)').textContent : 'Unknown'; // Get location name
+            .find(row => row.querySelector('.hidden:nth-child(2)').textContent === avatarId.toString());
+        const playerLocation = locationRow ? locationRow.querySelector('td:nth-child(5)').textContent : 'Unknown';
 
-        // Format description
 	const formattedDescription = (playerData.description || 'No description available.').replace(/(\r\n|\n|\r)/g, '<br>');
 
-        // Check for favorites in localStorage
         const favorites = JSON.parse(localStorage.getItem('favorites')) || {};
         const isFavorite = favorites.sims && favorites.sims[avatarId];
 
-	// Job mapping
 	const jobMap = {
    	 1: 'Factory 🏭',
  	 2: 'Diner 🍽️',
@@ -704,7 +685,6 @@ const memorialEntry = memorialList.find(entry =>
   entry.name.toLowerCase() === playerData.name.toLowerCase()
 );
 
-        // Display all information in the Console
         consoleContent.innerHTML = `
             <div class="console-title">
                 ${playerData.name}
@@ -838,9 +818,9 @@ async function searchSim(event) {
 
         const url = `https://api.xenoso.space/userapi/city/1/avatars/name/${simName}`;
         const consoleContent = document.getElementById('console-content');
-        consoleContent.innerHTML = ''; // Clear existing content
-        consoleContent.dataset.id = simName; // Set the current Sim ID (by name)
-        consoleContent.dataset.type = 'sims'; // Set the type to Sims
+        consoleContent.innerHTML = '';
+        consoleContent.dataset.id = simName;
+        consoleContent.dataset.type = 'sims';
 
         try {
             const playerImages = await fetchPlayerImages();
@@ -849,18 +829,15 @@ async function searchSim(event) {
 
             const playerData = await response.json();
 
-            // Match the Sim name to the JSON file
             const playerImage = playerImages[playerData.name] || 'https://makinmagic.github.io/XenoSO/images/pfp-placeholder.png';
 
             // Debugging logs
             console.log(`Image for ${playerData.name}: ${playerImage}`);
 
-            // Calculate player age from Unix timestamp
             const creationDate = new Date(playerData.date * 1000);
             const currentDate = new Date();
             const ageInDays = Math.floor((currentDate - creationDate) / (1000 * 60 * 60 * 24));
 
-            // Check if the player is online
             const playersContainer = document.getElementById('players');
             const onlineRow = Array.from(playersContainer.querySelectorAll('tr')).find(row => {
                 const firstCell = row.querySelector('td');
@@ -874,16 +851,14 @@ async function searchSim(event) {
 
             console.log(`Player ${playerData.name} is ${isOnline ? 'online' : 'offline'}`);
 
-            // Check for favorites using name-to-ID mapping
             const nameToIdMap = JSON.parse(localStorage.getItem('nameToIdMap')) || {};
             const idFromName = nameToIdMap[simName] || playerData.avatar_id;
-            nameToIdMap[simName] = idFromName; // Update map if missing
+            nameToIdMap[simName] = idFromName;
             localStorage.setItem('nameToIdMap', JSON.stringify(nameToIdMap));
 
             const favorites = JSON.parse(localStorage.getItem('favorites')) || {};
             const isFavorite = favorites.sims && favorites.sims[idFromName];
 
-	    // Job mapping
 	   const jobMap = {
  	   1: 'Factory 🏭',
     	   2: 'Diner 🍽️',
@@ -897,7 +872,6 @@ async function searchSim(event) {
 		  entry.name.toLowerCase() === playerData.name.toLowerCase()
 		);
 
-            // Display all information in the Console
             consoleContent.innerHTML = `
                 <div class="console-title">
                     ${playerData.name}
@@ -1041,11 +1015,9 @@ async function searchLot(event) {
     day: 'numeric'
 });
 			
-			// Check for favorites in localStorage
             const favorites = JSON.parse(localStorage.getItem('favorites')) || {};
             const isFavorite = favorites.lots && favorites.lots[lotData.location];
 
-            // Check if the lot is currently active by searching in the Active Lots table
             const lotsContainer = document.getElementById('lots');
             const isActive = Array.from(lotsContainer.querySelectorAll('tr')).some(row => {
     const firstCell = row.querySelector('td');
@@ -1064,15 +1036,13 @@ async function searchLot(event) {
                 totalSimsInside = parseInt(simsInsideCell?.textContent.trim() || '0', 10);
             }
 
-            // Fetch owner's name using owner_id
             const ownerResponse = await fetch(`https://api.xenoso.space/userapi/avatars/${lotData.owner_id}`);
             const ownerData = ownerResponse.ok ? await ownerResponse.json() : { name: 'Unknown' };
             const ownerName = ownerData.name;
 
-            // Fetch roommate names
             const roommateNames = await Promise.all(
                 lotData.roommates
-                    .filter(id => id !== lotData.owner_id) // Exclude owner from roommates
+                    .filter(id => id !== lotData.owner_id)
                     .map(async (roommateId) => {
                         const roommateUrl = `https://api.xenoso.space/userapi/avatars/${roommateId}`;
                         const roommateResponse = await fetch(roommateUrl);
@@ -1085,7 +1055,6 @@ async function searchLot(event) {
                     })
             );
 
-            // Known Sims inside the lot from Sims Online table
 const playersContainer = document.getElementById('players');
 const knownSims = Array.from(playersContainer.querySelectorAll('tr'))
   .filter(row => {
@@ -1096,7 +1065,7 @@ const knownSims = Array.from(playersContainer.querySelectorAll('tr'))
 
 const adminNamesLower = [
   "sorta","savaki","daat","xeno","eric","sneaky",
-  "nyx","bruglar","breaker","magic genie","santa"
+  "nyx","bruglar","breaker","magic genie","peta","holly claus","santa"
 ];
 
 let appendedHiddenHost = null;
@@ -1156,8 +1125,7 @@ if (appendedHiddenHost) {
 		const consoleContainer = document.getElementById('console-container');
 const consoleContent = document.getElementById('console-content');
 setMemorialMode(false, consoleContainer, consoleContent);
-			
-                        // Display lot information in Console			
+					
             consoleContent.innerHTML = `
                 <div class="console-title">
                     ${lotData.name}
@@ -1542,7 +1510,7 @@ async function displayCurrentEvent() {
     }
 }
 
-// Function to add the balloon icon to the active event's location in the Active Lots
+// Function to add the fire icon to the active event's location in the Active Lots
 function addEventIconToLocation(locationName) {
     const lotsTable = document.getElementById("lots");
     const rows = lotsTable.querySelectorAll("tbody tr");
