@@ -726,6 +726,10 @@ const memorialEntry = memorialList.find(entry =>
             <p><strong>Age:</strong> ${ageInDays} days old</p>
             <p><strong>Location:</strong> ${playerLocation}</p>
 	    ${jobName ? `<p><strong>Job:</strong> ${jobName}</p>` : ''}
+				${playerData.mayor_nhood !== null 
+		    ? `<p>🎩 Mayor of ${nhoodMap[playerData.mayor_nhood]}</p>`
+		    : ''
+		}
         `;
 		showSimNoteInline(avatarId);
 
@@ -913,6 +917,10 @@ async function searchSim(event) {
                 <p><strong>Age:</strong> ${ageInDays} days old</p>
                 ${isOnline ? `<p><strong>Location:</strong> ${playerLocation}</p>` : ''}
 		${jobName ? `<p><strong>Job:</strong> ${jobName}</p>` : ''}
+		${playerData.mayor_nhood !== null 
+		    ? `<p>🎩 Mayor of ${nhoodMap[playerData.mayor_nhood]}</p>`
+		    : ''
+		}
                 <p><strong>Currently Online:</strong> ${isOnline ? 'Yes 🟢' : 'No 🔴'}</p>
             `;
 		showSimNoteInline(idFromName);
@@ -1297,6 +1305,10 @@ async function openSimModal(event) {
   	<p><strong>Age:</strong> ${ageInDays} days old</p>
   	${isOnline ? `<p><strong>Location:</strong> ${playerLocation}</p>` : ''}
   	${jobName ? `<p><strong>Job:</strong> ${jobName}</p>` : ''}
+	${playerData.mayor_nhood !== null 
+		    ? `<p>🎩 Mayor of ${nhoodMap[playerData.mayor_nhood]}</p>`
+		    : ''
+		}
   	<p><strong>Currently Online:</strong> ${isOnline ? 'Yes 🟢' : 'No 🔴'}</p>
 	</div>
     `;
