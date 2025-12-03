@@ -185,9 +185,6 @@ const creationDate = new Date(playerDetails.date * 1000);
 const currentDate = new Date();
 const ageInDays = Math.floor((currentDate - creationDate) / (1000 * 60 * 60 * 24));
 
-const lockDisplay = `${lockWeekday} at ${lockTime} (${userTZ})`;
-
-
 const isFavorite = favoriteSims[avatar.avatar_id];
 					
             tableHtml += `
