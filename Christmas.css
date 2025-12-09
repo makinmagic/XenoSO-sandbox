@@ -734,21 +734,12 @@ span[title="Admin"] {
   margin: 4% auto;
 }
 
-.tab-content {
-  width: 100%;
-  max-width: 100%;
-  padding-left: 0;
-  padding-right: 0;
-}
-
 .mo-bar-wrapper {
   width: 100%;
   max-width: 550px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 10px;
   box-sizing: border-box;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
 }
 
 .mo-note {
@@ -761,18 +752,15 @@ span[title="Admin"] {
 .mo-row {
   display: flex;
   align-items: center;
-  margin-left: 0 !important;
-  padding-left: 0
-  justify-content: flex-start !important;
+  margin: 8px 0;
 }
 
 .mo-label {
-  flex: 0 0 auto;
+  width: 120px;
   text-align: left;
+  padding-right: 10px;
   font-weight: bold;
   font-size: 20px;
-  margin-right: 10px;
-  margin-left: 0 !important;
 }
 
 .mo-bar {
@@ -780,7 +768,6 @@ span[title="Admin"] {
   flex: 0 0 auto;
   height: 42px;
   border-radius: 10px;
-  margin-right: 20px;
 }
 
 .mo-bar span {
@@ -792,14 +779,6 @@ span[title="Admin"] {
   font-size: 18px;
   color: #fff;
 }
-
-.mo-value {
-  width: 60px;
-  text-align: left;
-  font-weight: bold;
-  font-size: 20px;
-}
-
     /* Stars background - used with permission from Sorta */
     .stars {
       position: fixed;
