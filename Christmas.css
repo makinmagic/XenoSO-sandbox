@@ -759,7 +759,6 @@ span[title="Admin"] {
 .mo-row {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
   margin: 10px 0;
 }
 
@@ -775,7 +774,8 @@ span[title="Admin"] {
   position: relative;
   height: 42px;
   border-radius: 10px;
-  flex-grow: 1;
+  margin-right: 20px;
+  flex: 0 0 auto;
 }
 
 .mo-bar span {
