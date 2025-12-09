@@ -732,13 +732,15 @@ span[title="Admin"] {
 #moModal .modal-content {
   max-width: 650px;
   margin: 4% auto;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .mo-bar-wrapper {
   width: 100%;
   max-width: 550px;
   margin: 0 auto;
-  padding: 0 10px;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -750,22 +752,22 @@ span[title="Admin"] {
 }
 
 .mo-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr;
   align-items: center;
+  column-gap: 10px;
   margin: 8px 0;
 }
 
 .mo-label {
-  width: 120px;
   text-align: left;
-  padding-right: 10px;
+  padding-right: 0;
   font-weight: bold;
   font-size: 20px;
 }
 
 .mo-bar {
   position: relative;
-  flex: 0 0 auto;
   height: 42px;
   border-radius: 10px;
 }
