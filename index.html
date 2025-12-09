@@ -209,31 +209,25 @@ window.onload = () => {
   <div class="modal-content">
     <span class="close">&times;</span>
     <h3 style="margin-top: 15px; margin-bottom: 20px;">All MO Data</h3>
+
     <div id="moTabs">
-  <div class="tab-header">
-    <button class="tab-btn active" data-tab="percentTab">📈 By %</button>
-    <button class="tab-btn" data-tab="payoutTab">💵 By Payout</button>
+      <div class="tab-header">
+        <button class="tab-btn active" data-tab="percentTab">📈 By %</button>
+        <button class="tab-btn" data-tab="payoutTab">💵 By Payout</button>
+      </div>
+
+      <div class="tab-content" id="percentTab" style="display:block;">
+        <div class="mo-bar-wrapper" id="percentBars"></div>
+        <p class="mo-note">Updated by Mr Teddy, Miru, and Samaru!</p>
+      </div>
+
+      <div class="tab-content" id="payoutTab" style="display:none;">
+        <div class="mo-bar-wrapper" id="payoutBars"></div>
+        <p class="mo-note">Payouts estimated with max skills and 10+ players on the same SMO</p>
+      </div>
+    </div>
   </div>
-
-	<div class="mo-bar-wrapper" id="percentBars"></div>
-	<p style="text-align: center; color: #aaa; font-size: 0.85em; margin-top: 12px;">
-	  Updated by Mr Teddy, Miru, and Samaru!
-	</p>
-
-	<div class="mo-bar-wrapper" id="payoutBars"></div>
-	<p style="text-align: center; color: #aaa; font-size: 0.85em; margin-top: 12px;">
-	  Payouts estimated with max skills and 10+ players on the same SMO
-	</p>
-		
 </div>
-  </div>
-</div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    twemoji.parse(document.body, { folder: 'svg', ext: '.svg' });
-  });
-</script>
 
 <!-- Sim Info Modal -->
 <div id="sim-modal" class="modal" style="display: none;">
