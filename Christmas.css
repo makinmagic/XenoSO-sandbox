@@ -747,6 +747,8 @@ span[title="Admin"] {
   margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 .mo-note {
@@ -759,7 +761,9 @@ span[title="Admin"] {
 .mo-row {
   display: flex;
   align-items: center;
-  margin: 10px 0;
+  margin-left: 0 !important;
+  padding-left: 0
+  justify-content: flex-start !important;
 }
 
 .mo-label {
@@ -768,6 +772,7 @@ span[title="Admin"] {
   font-weight: bold;
   font-size: 20px;
   margin-right: 10px;
+  margin-left: 0 !important;
 }
 
 .mo-bar {
