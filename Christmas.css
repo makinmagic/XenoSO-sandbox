@@ -759,24 +759,23 @@ span[title="Admin"] {
 .mo-row {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   margin: 10px 0;
-  width: 100%;
 }
 
 .mo-label {
   width: 120px;
-  text-align: right;
+  text-align: left;
   padding-right: 15px;
   font-weight: bold;
   font-size: 20px;
 }
 
 .mo-bar {
-  height: 42px;
-  border-radius: 8px;
   position: relative;
+  height: 42px;
+  border-radius: 10px;
   flex-grow: 1;
-  margin-right: 20px;
 }
 
 .mo-bar span {
@@ -786,7 +785,7 @@ span[title="Admin"] {
   transform: translate(-50%, -50%);
   font-weight: bold;
   font-size: 18px;
-  color: white;
+  color: #fff;
 }
 
 .mo-value {
