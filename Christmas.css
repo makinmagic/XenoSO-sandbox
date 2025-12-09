@@ -729,15 +729,17 @@ span[title="Admin"] {
 
 /* MO Charts */
 
+#moModal .modal-content {
+    max-width: 900px !important;
+    width: 90% !important;
+    text-align: left !important;
+}
+
 .tab-content {
   width: 100%;
   max-width: 100%;
   padding-left: 0;
   padding-right: 0;
-}
-
-#moModal .modal-content {
-  text-align: left;
 }
 
 .mo-bar-wrapper {
