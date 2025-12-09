@@ -763,19 +763,19 @@ span[title="Admin"] {
 }
 
 .mo-label {
-  width: 120px;
+  flex: 0 0 auto;
   text-align: left;
-  padding-right: 15px;
   font-weight: bold;
   font-size: 20px;
+  margin-right: 10px;
 }
 
 .mo-bar {
   position: relative;
+  flex: 0 0 auto;
   height: 42px;
   border-radius: 10px;
   margin-right: 20px;
-  flex: 0 0 auto;
 }
 
 .mo-bar span {
