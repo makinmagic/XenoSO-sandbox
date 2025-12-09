@@ -1753,6 +1753,8 @@ async function loadTopPayingMOs() {
     // Percentages
 	const percentContainer = document.getElementById("percentBars");
 	percentContainer.innerHTML = "";
+
+	const maxPct = Math.max(...sorted.map(([, val]) => parseInt(val)));
 	
 	sorted.forEach(([key, val]) => {
 	  const pct = parseInt(val);
@@ -1762,14 +1764,16 @@ async function loadTopPayingMOs() {
 	    pct >= 100 ? '#8e44ad' :
 	                 '#c0392b';
 	
+	  const relWidth = (pct / maxPct) * 100;
+	
 	  const row = document.createElement("div");
 	  row.className = "mo-row";
 	  row.innerHTML = `
-	  <div class="mo-label">${key}</div>
-	  <div class="mo-bar" style="background:${color}; width:${pct}%;">
+	    <div class="mo-label">${key}</div>
+	    <div class="mo-bar" style="background:${color}; width:${relWidth}%;">
 	      <span>${pct}%</span>
-	  </div>
-	`;
+	    </div>
+	  `;
 	  percentContainer.appendChild(row);
 	});
 
