@@ -760,10 +760,12 @@ span[title="Admin"] {
 }
 
 .mo-label {
+  min-width: 140px;
+  max-width: 140px;
   text-align: left;
-  padding-right: 0;
   font-weight: bold;
   font-size: 20px;
+  padding-right: 0;
 }
 
 .mo-bar {
