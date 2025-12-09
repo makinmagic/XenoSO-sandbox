@@ -1810,14 +1810,18 @@ async function loadTopPayingMOs() {
 	});
 
     document.querySelectorAll(".tab-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-        document.querySelectorAll(".tab-content").forEach(tab => tab.style.display = "none");
-
-        btn.classList.add("active");
-        document.getElementById(btn.dataset.tab).style.display = "block";
-      });
-    });
+	  btn.addEventListener("click", () => {
+	    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+	    btn.classList.add("active");
+	
+	    document.querySelectorAll("#moModal .tab-content").forEach(tab => {
+	      tab.style.display = "none";
+	    });
+	
+	    const id = btn.dataset.tab;
+	    document.getElementById(id).style.display = "block";
+	  });
+	});
 
     document.querySelectorAll(".modal .close").forEach((btn) => {
       btn.addEventListener("click", (e) => {
