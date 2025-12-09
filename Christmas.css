@@ -757,38 +757,43 @@ span[title="Admin"] {
 }
 
 .mo-row {
-  width: 100%;
-  max-width: 100%;
   display: flex;
   align-items: center;
-  margin: 12px 0;
-  height: 36px; 
-}
-
-.mo-bar {
-  height: 26px;
-  border-radius: 8px;
+  margin: 10px 0;
+  width: 100%;
 }
 
 .mo-label {
-  min-width: 140px;
-  max-width: 140px;
-  text-align: left;
-  line-height: 26px;
+  width: 120px;
+  text-align: right;
+  padding-right: 15px;
+  font-weight: bold;
+  font-size: 20px;
 }
 
-#moModal .mo-bar {
+.mo-bar {
+  height: 42px;
+  border-radius: 8px;
+  position: relative;
   flex-grow: 1;
-  height: 26px;
-  border-radius: 6px;
-  margin: 0 10px;
+  margin-right: 20px;
+}
+
+.mo-bar span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  font-size: 18px;
+  color: white;
 }
 
 .mo-value {
-  min-width: 60px;
-  text-align: right;
+  width: 60px;
+  text-align: left;
   font-weight: bold;
-  line-height: 26px;
+  font-size: 20px;
 }
 
     /* Stars background - used with permission from Sorta */
