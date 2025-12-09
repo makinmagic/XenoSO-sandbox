@@ -730,9 +730,8 @@ span[title="Admin"] {
 /* MO Charts */
 
 #moModal .modal-content {
-    max-width: 900px !important;
-    width: 90% !important;
-    text-align: left !important;
+  max-width: 650px;
+  margin: 4% auto;
 }
 
 .tab-content {
@@ -744,8 +743,8 @@ span[title="Admin"] {
 
 .mo-bar-wrapper {
   width: 100%;
-  max-width: 100%;
-  margin: 0;
+  max-width: 550px;
+  margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box;
 }
