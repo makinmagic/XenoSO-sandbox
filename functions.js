@@ -1765,10 +1765,11 @@ async function loadTopPayingMOs() {
 	  const row = document.createElement("div");
 	  row.className = "mo-row";
 	  row.innerHTML = `
-	    <div class="mo-label">${key}</div>
-	    <div class="mo-bar" style="background:${color}; width:${pct}%;"></div>
-	    <div class="mo-value">${pct}%</div>
-	  `;
+	  <div class="mo-label">${key}</div>
+	  <div class="mo-bar" style="background:${color}; width:${pct}%;">
+	      <span>${pct}%</span>
+	  </div>
+	`;
 	  percentContainer.appendChild(row);
 	});
 
