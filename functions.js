@@ -1808,10 +1808,11 @@ async function loadTopPayingMOs() {
 	  const row = document.createElement("div");
 	  row.className = "mo-row";
 	  row.innerHTML = `
-	    <div class="mo-label">${key}</div>
-	    <div class="mo-bar" style="background:${color}; width:${width}%"></div>
-	    <div class="mo-value">$${actual}</div>
-	  `;
+	  <div class="mo-label">${key}</div>
+	  <div class="mo-bar" style="background:${color}; width:${width}%">
+	    <span>$${actual}</span>
+	  </div>
+	`;
 	  payoutContainer.appendChild(row);
 	});
 
