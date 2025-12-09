@@ -1750,11 +1750,11 @@ async function loadTopPayingMOs() {
       modal.style.display = "block";
     };
 
-    // Percentages
+	// Percentages
 	const percentContainer = document.getElementById("percentBars");
 	percentContainer.innerHTML = "";
-
-	const maxPct = Math.max(...sorted.map(([, val]) => parseInt(val)));
+	
+	const maxPct = 150;
 	
 	sorted.forEach(([key, val]) => {
 	  const pct = parseInt(val);
@@ -1764,7 +1764,8 @@ async function loadTopPayingMOs() {
 	    pct >= 100 ? '#8e44ad' :
 	                 '#c0392b';
 	
-	  const relWidth = (pct / maxPct) * 100;
+	  const clamped = Math.min(pct, maxPct);
+	  const relWidth = (clamped / maxPct) * 100;
 	
 	  const row = document.createElement("div");
 	  row.className = "mo-row";
