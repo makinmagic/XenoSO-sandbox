@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Define emoji rules
 function formatDisplayName(name) {
-  const adminNames = ["Sorta", "Savaki", "Daat", "Xeno", "Eric", "Sneaky", "Nyx", "Bruglar", "Breaker", "Magic Genie", "PETA", "Holly Claus", "Santa"];
+  const adminNames = ["Sorta", "Savaki", "Daat", "Xeno", "Eric", "Sneaky", "Nyx", "Bruglar", "Breaker", "Magic Genie", "PETA", "Holly Claus", "Santa", "Headless Horseman"];
   const mentorNames = ["Mentor Teddy", "Mr Teddy", "Jack Lumberjack", "Beary Cold"];
 
   let display = name;
@@ -323,7 +323,7 @@ function filterLots(type) {
         const admitIcons = {
             0: "🟢", // Admit All
             1: "🟡", // Admit List
-            2: "🟡", // Ban List
+            2: "🟢", // Ban List
             3: "🔴", // Ban All
             4: "🟢"  // Admit All
         };
@@ -412,7 +412,7 @@ async function displayLotInfo(lotId) {
         const admitModeMapping = {
             0: '🟢 Admit All',
             1: '🟡 Admit List',
-            2: '🟡 Ban List',
+            2: '🟢 Ban List',
             3: '🔴 Ban All',
             4: '🟢 Admit All'
         };
@@ -466,7 +466,7 @@ let appendedHiddenHost = null;
 
 const adminNamesLower = [
   "sorta","savaki","daat","xeno","eric","sneaky",
-  "nyx","bruglar","breaker","magic genie","peta","holly claus","santa" 
+  "nyx","bruglar","breaker","magic genie","peta","holly claus","santa", "headless horseman" 
 ];
 
 const allHosts = [ownerName, ...roommateNames]
@@ -750,7 +750,7 @@ const memorialEntry = memorialList.find(entry =>
 	    ${jobName ? `<p><strong>Job:</strong> ${jobName}</p>` : ''}
 		    <p><strong>Next Skill Lock:</strong> ${nextLock.formatted}</p>
 				${playerData.mayor_nhood !== null 
-		    ? `<p>🎩 Mayor of ${nhoodMap[playerData.mayor_nhood]}</p>`
+		    ? `<p><span style="filter: brightness(1) drop-shadow(0 0 2px #fff);">🎩</span> Mayor of ${nhoodMap[playerData.mayor_nhood]}</p>`
 		    : ''
 		}
         `;
@@ -943,7 +943,7 @@ async function searchSim(event) {
 		${jobName ? `<p><strong>Job:</strong> ${jobName}</p>` : ''}
 		        <p><strong>Next Skill Lock:</strong> ${nextLock.formatted}</p>
 		${playerData.mayor_nhood !== null 
-		    ? `<p>🎩 Mayor of ${nhoodMap[playerData.mayor_nhood]}</p>`
+		    ? `<p><span style="filter: brightness(1) drop-shadow(0 0 2px #fff);">🎩</span> Mayor of ${nhoodMap[playerData.mayor_nhood]}</p>`
 		    : ''
 		}
                 <p><strong>Currently Online:</strong> ${isOnline ? 'Yes 🟢' : 'No 🔴'}</p>
@@ -1122,7 +1122,7 @@ const knownSims = Array.from(playersContainer.querySelectorAll('tr'))
 
 const adminNamesLower = [
   "sorta","savaki","daat","xeno","eric","sneaky",
-  "nyx","bruglar","breaker","magic genie","peta","holly claus","santa"
+  "nyx","bruglar","breaker","magic genie","peta","holly claus","santa", "headless horseman"
 ];
 
 let appendedHiddenHost = null;
@@ -1333,7 +1333,7 @@ async function openSimModal(event) {
   	${jobName ? `<p><strong>Job:</strong> ${jobName}</p>` : ''}
 	<p><strong>Next Skill Lock:</strong> ${nextLock.formatted}</p>
 	${playerData.mayor_nhood !== null 
-		    ? `<p>🎩 Mayor of ${nhoodMap[playerData.mayor_nhood]}</p>`
+		    ? `<p><span style="filter: brightness(1) drop-shadow(0 0 2px #fff);">🎩</span> Mayor of ${nhoodMap[playerData.mayor_nhood]}</p>`
 		    : ''
 		}
   	<p><strong>Currently Online:</strong> ${isOnline ? 'Yes 🟢' : 'No 🔴'}</p>
@@ -1750,104 +1750,52 @@ async function loadTopPayingMOs() {
       modal.style.display = "block";
     };
 
-    // Percentage Chart
-    const ctx = document.getElementById("percentChart").getContext("2d");
-    const labels = sorted.map(([key]) => key); // TEXT ONLY
-    const dataPoints = sorted.map(([, val]) => parseInt(val));
+    // Percentages
+	const percentContainer = document.getElementById("percentBars");
+	percentContainer.innerHTML = "";
+	
+	sorted.forEach(([key, val]) => {
+	  const pct = parseInt(val);
+	  const color =
+	    pct === 150 ? '#f39c12' :
+	    pct >= 140 ? '#27ae60' :
+	    pct >= 100 ? '#8e44ad' :
+	                 '#c0392b';
+	
+	  const row = document.createElement("div");
+	  row.className = "mo-row";
+	  row.innerHTML = `
+	    <div class="mo-label">${key}</div>
+	    <div class="mo-bar" style="background:${color}; width:${pct}%;"></div>
+	    <div class="mo-value">${pct}%</div>
+	  `;
+	  percentContainer.appendChild(row);
+	});
 
-    if (percentChart) {
-      percentChart.destroy();
-    }
-
-    percentChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: '% Multiplier',
-          borderRadius: 6,
-          data: dataPoints,
-          backgroundColor: dataPoints.map(val =>
-            val === 150 ? '#f39c12' : val >= 140 ? '#27ae60' : val >= 100 ? '#8e44ad' : '#c0392b'
-          )
-        }]
-      },
-      options: {
-        indexAxis: 'y',
-        layout: { padding: { left: 10, right: 10, top: 5, bottom: 5 } },
-        scales: {
-          x: { display: false },
-          y: {
-            ticks: { color: '#eee', font: { size: 18, weight: 'bold' } },
-            grid: { color: '#333' }
-          }
-        },
-        plugins: {
-          legend: { display: false },
-          tooltip: { callbacks: { label: ctx => `${ctx.raw}%` } },
-          datalabels: {
-            anchor: 'center',
-            align: 'center',
-            color: '#fff',
-            font: { weight: 'bold', size: 18 },
-            formatter: value => `${value}%`
-          }
-        }
-      },
-      plugins: [ChartDataLabels]
-    });
-
-    // Payout Chart
-    const payoutCtx = document.getElementById("payoutChart").getContext("2d");
-    const entriesWithPayout = entries.map(([key, val]) => {
-      const pct = parseInt(val);
-      const payout150 = moPayoutAt150[key];
-      const base = payout150 / 1.5;
-      const actual = Math.round(base * (pct / 100));
-      return { key, pct, actual };
-    }).sort((a, b) => b.actual - a.actual);
-
-    const payoutLabels = entriesWithPayout.map(entry => entry.key);
-    const payoutValues = entriesWithPayout.map(entry => entry.actual);
-    const payoutColors = payoutValues.map(val =>
-      val >= 500 ? '#f39c12' : val >= 300 ? '#27ae60' : '#c0392b'
-    );
-
-    new Chart(payoutCtx, {
-      type: 'bar',
-      data: {
-        labels: payoutLabels,
-        datasets: [{
-          label: 'Total Payout ($)',
-          borderRadius: 6,
-          data: payoutValues,
-          backgroundColor: payoutColors
-        }]
-      },
-      options: {
-        indexAxis: 'y',
-        layout: { padding: { left: 10, right: 10, top: 5, bottom: 5 } },
-        scales: {
-          x: { display: false },
-          y: {
-            ticks: { color: '#eee', font: { size: 18, weight: 'bold' } },
-            grid: { color: '#333' }
-          }
-        },
-        plugins: {
-          legend: { display: false },
-          tooltip: { callbacks: { label: ctx => `$${ctx.raw}` } },
-          datalabels: {
-            anchor: 'center',
-            align: 'center',
-            color: '#fff',
-            font: { weight: 'bold', size: 18 },
-            formatter: value => `$${value}`
-          }
-        }
-      },
-      plugins: [ChartDataLabels]
-    });
+	  // Payouts
+	const payoutContainer = document.getElementById("payoutBars");
+	payoutContainer.innerHTML = "";
+	
+	entriesWithPayout.forEach(entry => {
+	  const { key, actual } = entry;
+	
+	  const color =
+	    actual >= 500 ? '#f39c12' :
+	    actual >= 300 ? '#27ae60' :
+	                    '#c0392b';
+	
+	  const maxPayout = entriesWithPayout[0].actual;
+	  const width = Math.round((actual / maxPayout) * 100);
+	
+	  const row = document.createElement("div");
+	  row.className = "mo-row";
+	  row.innerHTML = `
+	    <div class="mo-label">${key}</div>
+	    <div class="mo-bar" style="background:${color}; width:${width}%"></div>
+	    <div class="mo-value">$${actual}</div>
+	  `;
+	  payoutContainer.appendChild(row);
+	});
 
     document.querySelectorAll(".tab-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
