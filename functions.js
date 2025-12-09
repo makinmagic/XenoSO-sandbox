@@ -1775,6 +1775,18 @@ async function loadTopPayingMOs() {
 	  // Payouts
 	const payoutContainer = document.getElementById("payoutBars");
 	payoutContainer.innerHTML = "";
+
+	const entriesWithPayout = entries.map(([key, val]) => {
+	  const pct = parseInt(val);
+	  const payout150 = moPayoutAt150[key];
+	
+	  if (!payout150) return { key, pct, actual: 0 };
+	
+	  const base = payout150 / 1.5;
+	  const actual = Math.round(base * (pct / 100));
+	
+	  return { key, pct, actual };
+	}).sort((a, b) => b.actual - a.actual);
 	
 	entriesWithPayout.forEach(entry => {
 	  const { key, actual } = entry;
