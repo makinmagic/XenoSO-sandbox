@@ -1534,20 +1534,31 @@ function displayEventInfo(event) {
 
     let formattedTime;
 
-    if (isOngoing && longEvent) {
-        const remainingText = formatRemainingTime(eventEndDate, now);
-        formattedTime = `Ongoing for another ${remainingText}`;
-    } else {
-        formattedTime = `${eventStartDate.toLocaleTimeString(undefined, {
-            hour: 'numeric',
-            minute: 'numeric',
-            hour12: true
-        })} to ${eventEndDate.toLocaleTimeString(undefined, {
-            hour: 'numeric',
-            minute: 'numeric',
-            hour12: true
-        })} (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
-    }
+	if (isOngoing && longEvent) {
+	    const remainingText = formatRemainingTime(eventEndDate, now);
+	    formattedTime = `Ongoing for another ${remainingText}`;
+	} else {
+	
+	    const startDateStr = eventStartDate.toISOString().slice(0, 10);
+	    const endDateStr   = eventEndDate.toISOString().slice(0, 10);
+	
+	    const nextDayText = (endDateStr !== startDateStr) ? " (next day)" : "";
+	
+	    formattedTime = `
+	        ${eventStartDate.toLocaleTimeString(undefined, {
+	            hour: 'numeric',
+	            minute: 'numeric',
+	            hour12: true
+	        })}
+	        to
+	        ${eventEndDate.toLocaleTimeString(undefined, {
+	            hour: 'numeric',
+	            minute: 'numeric',
+	            hour12: true
+	        })}${nextDayText}
+	        (${Intl.DateTimeFormat().resolvedOptions().timeZone})
+	    `.trim();
+	}
 
     const eventId = event['Event ID'] || '';
 
