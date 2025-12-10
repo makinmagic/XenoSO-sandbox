@@ -1411,6 +1411,38 @@ function closeSimModal() {
 const eventsUrl = 'https://opensheet.elk.sh/1m3_-Vj_cOlASYfhfQarUyECk0LyZF5GYj_mZoHHQ0ho/Events';
 const flagFormBaseUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSfop2YQVz2xpxrOASE0BeyD7VN2m2e1JerLrOla5ZviCSYucg/viewform?usp=pp_url&entry.1329864422=';
 
+function getEventTiming(event) {
+    const start = new Date(event.startTime);
+    const end = new Date(event.endTime);
+    const durationMinutes = (end - start) / 60000;
+    return { start, end, durationMinutes };
+}
+
+function isEventOngoing(event, now = new Date()) {
+    const { start, end } = getEventTiming(event);
+    return now >= start && now <= end;
+}
+
+function isLongEvent(event) {
+    const { durationMinutes } = getEventTiming(event);
+    return durationMinutes > 120;
+}
+
+function formatRemainingTime(end, now = new Date()) {
+    let ms = end - now;
+    if (ms <= 0) return 'less than 1 minute';
+
+    const totalMinutes = Math.round(ms / 60000);
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+
+    const parts = [];
+    if (hours > 0) parts.push(`${hours}h`);
+    if (minutes > 0) parts.push(`${minutes}m`);
+
+    return parts.length ? parts.join(' ') : 'less than 1 minute';
+}
+
 function isEventFlagged(event) {
     const flaggedRaw = (event.Flagged || event.flagged || '').toString().trim().toLowerCase();
     return flaggedRaw === 'true' || flaggedRaw === 'yes' || flaggedRaw === '1';
@@ -1422,49 +1454,57 @@ async function fetchEvents() {
         if (!response.ok) {
             throw new Error('Failed to load events.json');
         }
-        const events = await response.json();
+        const rawEvents = await response.json();
 
-        const eventsContainer = document.getElementById('events-table').getElementsByTagName('tbody')[0];
+        const eventsContainer = document
+            .getElementById('events-table')
+            .getElementsByTagName('tbody')[0];
         eventsContainer.innerHTML = '';
 
         const now = new Date();
 
-	const upcomingEvents = events
-    .filter(event => !isEventFlagged(event) && new Date(event.startTime) > now)
-    .sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
+        const events = rawEvents
+            .filter(event => !isEventFlagged(event))
+            .sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
 
-        if (upcomingEvents.length === 0) {
-
+        if (events.length === 0) {
             const row = eventsContainer.insertRow();
             const cell = row.insertCell();
             cell.colSpan = 3;
             cell.style.textAlign = 'center';
-            cell.textContent = "No upcoming events.";
+            cell.textContent = "No scheduled events.";
             cell.style.fontStyle = "italic";
-        } else {
+            return;
+        }
 
-            upcomingEvents.forEach(event => {
-                const row = eventsContainer.insertRow();
-                const eventDate = new Date(event.startTime);
-                const formattedDate = eventDate.toLocaleDateString(undefined, {
-                    weekday: 'long', month: 'long', day: 'numeric'
-                });
-                const formattedTime = `${eventDate.toLocaleTimeString(undefined, { hour: 'numeric', minute: 'numeric', hour12: true })}`;
+        events.forEach(event => {
+            const { start, end } = getEventTiming(event);
+            const ongoing = now >= start && now <= end;
 
-                row.innerHTML = `
-                    <td>${formattedDate}</td>
-                    <td>${event.name}</td>
-                    <td>${event.location}</td>
-                `;
-                row.addEventListener('click', () => {
-                    displayEventInfo(event);
-			document.getElementById('console-container')?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-    });
+            const row = eventsContainer.insertRow();
+
+            const formattedDate = ongoing
+                ? 'Happening Now'
+                : start.toLocaleDateString(undefined, {
+                      weekday: 'long',
+                      month: 'long',
+                      day: 'numeric'
+                  });
+
+            row.innerHTML = `
+                <td>${formattedDate}</td>
+                <td>${event.name}</td>
+                <td>${event.location}</td>
+            `;
+
+            row.addEventListener('click', () => {
+                displayEventInfo(event);
+                document.getElementById('console-container')?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
                 });
             });
-        }
+        });
     } catch (error) {
         console.error('Failed to fetch events:', error);
     }
@@ -1474,18 +1514,33 @@ function displayEventInfo(event) {
     const consoleContent = document.getElementById('console-content');
     setMemorialMode(false, document.getElementById('console-container'), consoleContent);
 
-    const eventStartDate = new Date(event.startTime);
-    const eventEndDate = new Date(event.endTime);
+    const { start: eventStartDate, end: eventEndDate, durationMinutes } = getEventTiming(event);
+    const now = new Date();
+    const isOngoing = now >= eventStartDate && now <= eventEndDate;
+    const longEvent = durationMinutes > 120;
 
     const formattedDate = eventStartDate.toLocaleDateString(undefined, {
-        weekday: 'long', month: 'long', day: 'numeric'
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric'
     });
 
-    const formattedTime = `${eventStartDate.toLocaleTimeString(undefined, { 
-        hour: 'numeric', minute: 'numeric', hour12: true 
-    })} to ${eventEndDate.toLocaleTimeString(undefined, { 
-        hour: 'numeric', minute: 'numeric', hour12: true 
-    })} (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
+    let formattedTime;
+
+    if (isOngoing && longEvent) {
+        const remainingText = formatRemainingTime(eventEndDate, now);
+        formattedTime = `Ongoing for another ${remainingText}`;
+    } else {
+        formattedTime = `${eventStartDate.toLocaleTimeString(undefined, {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true
+        })} to ${eventEndDate.toLocaleTimeString(undefined, {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true
+        })} (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
+    }
 
     const eventId = event['Event ID'] || '';
 
@@ -1569,25 +1624,63 @@ async function displayCurrentEvent() {
 
         const now = new Date();
         const currentEventContainer = document.getElementById("currentEvent");
-        let currentEvents = [];
+
+        const ongoingEvents = [];
+        const spotlightEvents = [];
 
         events.forEach(event => {
             if (isEventFlagged(event)) return;
 
-            const startTime = new Date(event.startTime);
-            const endTime = new Date(event.endTime);
+            const { start, end, durationMinutes } = getEventTiming(event);
+            const isOngoing = now >= start && now <= end;
 
-            if (now >= startTime && now <= endTime) {
-                currentEvents.push(event);
+            if (!isOngoing) return;
+
+            ongoingEvents.push(event);
+
+            const minutesSinceStart = (now - start) / 60000;
+            const isLong = durationMinutes > 120;
+            const inSpotlightWindow = !isLong || minutesSinceStart <= 120;
+
+            if (inSpotlightWindow) {
+                spotlightEvents.push(event);
             }
         });
 
-        if (currentEvents.length > 0) {
-            currentEventContainer.innerHTML = currentEvents
-                .map(event => `🔥 Current Event: ${event.name} at ${event.location}!`)
-                .join('<br>');
+        ongoingEvents.forEach(event => addEventIconToLocation(event.location));
 
-            currentEvents.forEach(event => addEventIconToLocation(event.location));
+        currentEventContainer.innerHTML = '';
+
+        if (spotlightEvents.length > 0) {
+            spotlightEvents.forEach((event, index) => {
+                const wrapper = document.createElement('div');
+
+                const label = document.createTextNode('🥳 Current Event: ');
+                wrapper.appendChild(label);
+
+                const nameLink = document.createElement('span');
+                nameLink.textContent = event.name;
+                nameLink.className = 'current-event-link';
+                nameLink.style.textDecoration = 'underline';
+                nameLink.style.cursor = 'pointer';
+                nameLink.addEventListener('click', () => {
+                    displayEventInfo(event);
+                    document.getElementById('console-container')?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                });
+                wrapper.appendChild(nameLink);
+
+                const tail = document.createTextNode(` at ${event.location}!`);
+                wrapper.appendChild(tail);
+
+                if (index < spotlightEvents.length - 1) {
+                    wrapper.style.marginBottom = '4px';
+                }
+
+                currentEventContainer.appendChild(wrapper);
+            });
         } else {
             currentEventContainer.innerHTML = "";
         }
@@ -1596,66 +1689,62 @@ async function displayCurrentEvent() {
     }
 }
 
-// Function to add the fire icon to the active event's location in the Active Lots
 function addEventIconToLocation(locationName) {
     const lotsTable = document.getElementById("lots");
+    if (!lotsTable) return;
+
     const rows = lotsTable.querySelectorAll("tbody tr");
 
     rows.forEach(row => {
         const locationCell = row.querySelector("td:first-child");
-        if (locationCell && locationCell.textContent.trim().toLowerCase() === locationName.trim().toLowerCase()) {
-            // Check if the fire icon is already present to avoid duplicates
-if (!locationCell.querySelector('.event-icon')) {
-    locationCell.insertAdjacentHTML(
-        'beforeend',
-        ' <span class="event-icon" title="Event is ongoing!">🔥</span>'
-    );
-}
+        if (
+            locationCell &&
+            locationCell.textContent.trim().toLowerCase() === locationName.trim().toLowerCase()
+        ) {
+            if (!locationCell.querySelector('.event-icon')) {
+                locationCell.insertAdjacentHTML(
+                    'beforeend',
+                    ' <span class="event-icon" title="Event is ongoing!">🥳</span>'
+                );
+            }
         }
     });
 }
 
 function toggleFavorite(type, id, name, event) {
-    if (event) event.stopPropagation(); // Prevent parent events from triggering
+    if (event) event.stopPropagation();
 
     console.log(`toggleFavorite called for type: ${type}, id: ${id}, name: ${name}`);
 
-    // Retrieve current favorites and name-to-ID mapping from localStorage
     const favorites = JSON.parse(localStorage.getItem('favorites')) || {};
     const nameToIdMap = JSON.parse(localStorage.getItem('nameToIdMap')) || {};
 
-    // Ensure the type exists in the favorites object
     if (!favorites[type]) favorites[type] = {};
 
-    // Add name-to-ID mapping if it doesn't already exist
     if (!nameToIdMap[name]) {
         nameToIdMap[name] = id;
         localStorage.setItem('nameToIdMap', JSON.stringify(nameToIdMap));
         console.log(`Added name-to-ID mapping: ${name} -> ${id}`);
     }
 
-    // Add or remove the favorite
     if (favorites[type][id]) {
         console.log(`Removing favorite: ${id}`);
-        delete favorites[type][id]; // Remove from favorites
+        delete favorites[type][id];
     } else {
         console.log(`Adding favorite: ${id}`);
-        favorites[type][id] = name; // Add to favorites
+        favorites[type][id] = name;
     }
 
-    // Save updated favorites to localStorage
     localStorage.setItem('favorites', JSON.stringify(favorites));
     console.log('Updated favorites:', favorites);
 
-    // Update the specific star that was clicked
     const clickedStar = event.target;
     if (favorites[type][id]) {
-        clickedStar.className = 'fa-solid fa-star'; // Mark as favorited
+        clickedStar.className = 'fa-solid fa-star';
     } else {
-        clickedStar.className = 'fa-regular fa-star'; // Mark as unfavorited
+        clickedStar.className = 'fa-regular fa-star';
     }
 
-    // Isolate updates to the Console star
     const consoleContent = document.getElementById('console-content');
     if (consoleContent.dataset.id === id && consoleContent.dataset.type === type) {
         const consoleStar = consoleContent.querySelector('.fa-star');
@@ -1669,27 +1758,23 @@ function toggleFavorite(type, id, name, event) {
     }
 }
 
-// Function to add a favorite star
 function addFavoriteStar(type, id, name) {
-    // Check favorites from localStorage
+	
     const favorites = JSON.parse(localStorage.getItem('favorites')) || {};
     const isFavorite = favorites[type] && favorites[type][id];
-
-    // Create the star icon element
     const starIcon = document.createElement('i');
     starIcon.className = isFavorite ? 'fa-solid fa-star' : 'fa-regular fa-star';
     starIcon.style.cursor = 'pointer';
     starIcon.style.marginLeft = '10px';
     starIcon.title = 'Click to toggle favorite';
 
-    // Toggle favorite status on click
     starIcon.addEventListener('click', () => {
         if (!favorites[type]) favorites[type] = {};
         if (favorites[type][id]) {
-            delete favorites[type][id]; // Remove from favorites
+            delete favorites[type][id];
             starIcon.className = 'fa-regular fa-star';
         } else {
-            favorites[type][id] = name; // Add to favorites
+            favorites[type][id] = name;
             starIcon.className = 'fa-solid fa-star';
         }
         localStorage.setItem('favorites', JSON.stringify(favorites));
