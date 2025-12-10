@@ -1538,11 +1538,11 @@ function displayEventInfo(event) {
 	    const remainingText = formatRemainingTime(eventEndDate, now);
 	    formattedTime = `Ongoing for another ${remainingText}`;
 	} else {
+
+	    const startLocalDate = eventStartDate.toLocaleDateString("en-US");
+	    const endLocalDate   = eventEndDate.toLocaleDateString("en-US");
 	
-	    const startDateStr = eventStartDate.toISOString().slice(0, 10);
-	    const endDateStr   = eventEndDate.toISOString().slice(0, 10);
-	
-	    const nextDayText = (endDateStr !== startDateStr) ? " (next day)" : "";
+	    const nextDayText = (startLocalDate !== endLocalDate) ? " (next day)" : "";
 	
 	    formattedTime = `
 	        ${eventStartDate.toLocaleTimeString(undefined, {
@@ -1559,7 +1559,6 @@ function displayEventInfo(event) {
 	        (${Intl.DateTimeFormat().resolvedOptions().timeZone})
 	    `.trim();
 	}
-
     const eventId = event['Event ID'] || '';
 
     const flagLinkHtml = eventId
