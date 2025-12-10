@@ -1464,7 +1464,14 @@ async function fetchEvents() {
         const now = new Date();
 
         const events = rawEvents
-            .filter(event => !isEventFlagged(event))
+            .filter(event => {
+                if (isEventFlagged(event)) return false;
+
+                const { start, end } = getEventTiming(event);
+                if (isNaN(start.getTime()) || isNaN(end.getTime())) return false;
+
+                return end >= now;
+            })
             .sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
 
         if (events.length === 0) {
