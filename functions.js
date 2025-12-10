@@ -535,8 +535,10 @@ consoleContent.innerHTML = `
            onclick="toggleFavorite('lots', '${lotId}', '${lotData.name}', event)"></i>
     </div>
     <img src="https://api.xenoso.space/userapi/city/1/${lotId}.png" 
-         alt="${lotData.name}" 
-         class="console-img">
+     alt="${lotData.name}" 
+     class="console-img"
+     style="cursor: zoom-in;"
+     onclick="openLotImageModal(this.src, this.alt)">
     <div class="description-container">${formattedDescription}</div>
     <p><strong>Lot Type:</strong> ${categoryMapping[lotData.category] || 'Unknown'}</p>
     <p><strong>Admit Mode:</strong> ${admitModeMapping[lotData.admit_mode] || 'Unknown'}</p>
@@ -592,6 +594,25 @@ consoleContent.innerHTML = `
         consoleContent.innerHTML = 'Error loading lot details.';
     }
 }
+
+function openLotImageModal(src, alt) {
+    const modal = document.getElementById('lot-image-modal');
+    const img = document.getElementById('lot-image-modal-img');
+
+    img.src = src;
+    img.alt = alt;
+
+    modal.style.display = 'block';
+}
+
+function closeLotImageModal() {
+    document.getElementById('lot-image-modal').style.display = 'none';
+}
+
+window.addEventListener('click', function(e) {
+    const modal = document.getElementById('lot-image-modal');
+    if (e.target === modal) modal.style.display = 'none';
+});
 
 // Memorial List
 async function fetchMemorialList() {
@@ -1191,8 +1212,10 @@ setMemorialMode(false, consoleContainer, consoleContent);
                        onclick="toggleFavorite('lots', '${lotData.location}', '${lotData.name}', event)"></i>
                 </div>
                 <img src="https://api.xenoso.space/userapi/city/1/${lotData.location}.png" 
-                   alt="${lotData.name}" 
-                   class="console-img">
+			     alt="${lotData.name}" 
+			     class="console-img"
+			     style="cursor: zoom-in;"
+			     onclick="openLotImageModal(this.src, this.alt)">
                 <div class="description-container">${formattedDescription}</div>
                 <p><strong>Lot Type:</strong> ${categoryMapping[lotData.category] || 'Unknown'}</p>
 		<p><strong>Established on:</strong> ${creationDate}</p>
