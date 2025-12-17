@@ -1491,7 +1491,7 @@ async function fetchEvents() {
             const row = eventsContainer.insertRow();
 
             const formattedDate = ongoing
-                ? 'Happening Now'
+                ? '<em>Happening Now</em>'
                 : start.toLocaleDateString(undefined, {
                       weekday: 'long',
                       month: 'long',
