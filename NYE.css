@@ -64,9 +64,9 @@ h1 {
     .container {
         width: 49%;
         border-radius: 8px;
-        border: 2px solid #f5bc2d; /* Continue here */
+        border: 2px solid #f5bc2d;
         box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-        background: #034f1b;
+        background: radial-gradient(ellipse 130% 100% at top, rgba(255, 215, 0, 0.20), #0b0b0b 70%);
         border-radius: 8px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
         padding: 10px;
