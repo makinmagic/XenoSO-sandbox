@@ -750,7 +750,7 @@ body.dark-mode #console-content a {
   text-decoration: underline;
 }
 
-span[title="Mentor"],
+span[title="Support Staff"],
 span[title="Admin"] {
   filter: brightness(1) drop-shadow(0 0 2px #fff);
   margin-left: 2px;
