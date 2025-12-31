@@ -2117,39 +2117,55 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-//Countdown
+// Countdown
 async function loadCountdown() {
   try {
-    const response = await fetch('https://opensheet.vercel.app/1eTaXmyKRXZmWCvX5ZnSbjaWlT8X_KDWvN2PwBrlwEmc/Countdown');
+    const response = await fetch(
+      'https://opensheet.vercel.app/1eTaXmyKRXZmWCvX5ZnSbjaWlT8X_KDWvN2PwBrlwEmc/Countdown'
+    );
     const data = await response.json();
 
-    const countdownData = data[0];
-    const endTime = new Date(countdownData.endTime).getTime();
-    const message = countdownData.message;
+    const countdownData = data
+      .map(item => ({
+        ...item,
+        end: new Date(item.endTime).getTime()
+      }))
+      .filter(item => !isNaN(item.end) && item.end > Date.now())
+      .sort((a, b) => a.end - b.end)[0];
 
     const countdownEl = document.getElementById("countdown");
+
+    if (!countdownData) {
+      countdownEl.style.display = "none";
+      return;
+    }
+
+    const endTime = countdownData.end;
+    const message = countdownData.message;
+
     countdownEl.innerHTML = `${message} <span id="time"></span>`;
     const timeEl = document.getElementById("time");
 
     function updateCountdown() {
-      const now = new Date().getTime();
+      const now = Date.now();
       const timeRemaining = endTime - now;
 
-      if (timeRemaining > 0) {
-        const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-
-        let display = '';
-	if (days > 0) display += `${days}d `;
-	display += `${hours}h ${minutes}m ${seconds}s`;
-	timeEl.innerHTML = display;
-
-      } else {
+      if (timeRemaining <= 0) {
         countdownEl.style.display = "none";
         clearInterval(interval);
+        return;
       }
+
+      const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+      let display = '';
+      if (days > 0) display += `${days}d `;
+      display += `${hours}h ${minutes}m ${seconds}s`;
+
+      timeEl.textContent = display;
     }
 
     const interval = setInterval(updateCountdown, 1000);
