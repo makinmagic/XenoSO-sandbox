@@ -44,15 +44,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Define emoji rules
 function formatDisplayName(name) {
-  const adminNames = ["Sorta", "Savaki", "Daat", "Xeno", "Eric", "Sneaky", "Nyx", "Bruglar", "Breaker", "Magic Genie", "PETA", "Holly Claus", "Santa", "Headless Horseman"];
-  const mentorNames = ["Mentor Teddy", "Mr Teddy", "Jack Lumberjack", "Beary Cold"];
+  const adminNames = ["Sorta", "Savaki", "Daat", "Xeno", "Eric", "Sneaky", "Nyx", "Bruglar", "Breaker", "Magic Genie", "PETA", "Holly Claus", "Santa", "Nyra Vale", "-_-", "Headless Horseman"];
+  const supportstaffNames = ["Xeno Teddy", "Teddy Claus", "Mr Teddy", "Jack Lumberjack", "Beary Cold", "Rainbow Brite", "Snickey Doodler", "Mera", "Sit and Spin"];
+
+  const ADMIN_BADGE_URL = "https://makinmagic.github.io/XenoSO-sandbox/images/3.png";
+  const STAFF_BADGE_URL = "https://makinmagic.github.io/XenoSO-sandbox/images/4.png";
 
   let display = name;
 
   if (adminNames.includes(name)) {
-    display += ` <span title="Admin">🛡️</span>`;
-  } else if (mentorNames.includes(name)) {
-    display += ` <span title="Mentor">🎓</span>`;
+    display += ` <img class="staff-badge" src="${ADMIN_BADGE_URL}" alt="Admin" title="Admin">`;
+  } else if (supportstaffNames.includes(name)) {
+    display += ` <img class="staff-badge" src="${STAFF_BADGE_URL}" alt="Support Staff" title="Support Staff">`;
   }
 
   return display;
@@ -466,7 +469,7 @@ let appendedHiddenHost = null;
 
 const adminNamesLower = [
   "sorta","savaki","daat","xeno","eric","sneaky",
-  "nyx","bruglar","breaker","magic genie","peta","holly claus","santa", "headless horseman" 
+  "nyx","bruglar","breaker","magic genie","peta","holly claus","santa","nyra vale","-_-","headless horseman" 
 ];
 
 const allHosts = [ownerName, ...roommateNames]
@@ -543,7 +546,7 @@ consoleContent.innerHTML = `
     <p><strong>Lot Type:</strong> ${categoryMapping[lotData.category] || 'Unknown'}</p>
     <p><strong>Admit Mode:</strong> ${admitModeMapping[lotData.admit_mode] || 'Unknown'}</p>
     <p><strong>Established on:</strong> ${creationDate}</p>
-    <p><strong>Owner:</strong> <span class="sim-name" data-simname="${ownerName}" onclick="openSimModal(event)" style="color: #FFA502;">${ownerName}</span></p>
+    <p><strong>Owner:</strong> <span class="sim-name" data-simname="${ownerName}" onclick="openSimModal(event)" style="color: #0ff;">${ownerName}</span></p>
     <p><strong>Roommates:</strong> ${
         roommateNames.length > 0
         ? roommateNames.map(name =>
@@ -558,7 +561,7 @@ consoleContent.innerHTML = `
             const isHidden = name.includes('(hidden)');
             const isOwner = trimmed === ownerName;
             const isRoommate = roommateNames.includes(trimmed);
-            const color = isOwner ? '#FFA502' : isRoommate ? '#DDA0DD' : '#FFF';
+            const color = isOwner ? '#0ff' : isRoommate ? '#DDA0DD' : '#FFF';
             return `<span class="sim-name" data-simname="${trimmed}" onclick="openSimModal(event)" style="color: ${color};">${formatDisplayName(trimmed)}${isHidden ? ' (hidden)' : ''}</span>`;
       }).join(', ')
     : 'None'
@@ -1143,7 +1146,7 @@ const knownSims = Array.from(playersContainer.querySelectorAll('tr'))
 
 const adminNamesLower = [
   "sorta","savaki","daat","xeno","eric","sneaky",
-  "nyx","bruglar","breaker","magic genie","peta","holly claus","santa", "headless horseman"
+  "nyx","bruglar","breaker","magic genie","peta","holly claus","santa","nyra vale","-_-","headless horseman"
 ];
 
 let appendedHiddenHost = null;
@@ -1221,7 +1224,7 @@ setMemorialMode(false, consoleContainer, consoleContent);
 		<p><strong>Established on:</strong> ${creationDate}</p>
                 <p><strong>Admit Mode:</strong> ${admitModeMapping[lotData.admit_mode] || 'Unknown'}</p>
                 <p><strong>Owner:</strong> 
-  <span class="sim-name" data-simname="${ownerName}" onclick="openSimModal(event)" style="color: #FFA502;">
+  <span class="sim-name" data-simname="${ownerName}" onclick="openSimModal(event)" style="color: #0ff;">
     ${ownerName}
   </span>
 </p>
@@ -1244,7 +1247,7 @@ ${isActive ? `
           const isHidden = name.includes('(hidden)');
           const isOwner = trimmed === ownerName;
           const isRoommate = roommateNames.includes(trimmed);
-          const color = isOwner ? '#FFA502' : isRoommate ? '#DDA0DD' : '#FFF';
+          const color = isOwner ? '#0ff' : isRoommate ? '#DDA0DD' : '#FFF';
           return `<span class="sim-name" data-simname="${trimmed}" onclick="openSimModal(event)" style="color: ${color};">${formatDisplayName(trimmed)}${isHidden ? ' (hidden)' : ''}</span>`;
       }).join(', ')
     : 'None'
@@ -2093,13 +2096,13 @@ function sortByFavorites() {
       }
     }
 
-//One-off events
+/* //One-off events
 
 document.addEventListener("DOMContentLoaded", function () {
   const now = new Date();
 
-  const start = new Date(Date.UTC(2025, 10, 8, 5, 0, 0)); // Nov 8 midnight EST
-  const expiry = new Date(Date.UTC(2025, 10, 10, 5, 0, 0)); // Nov 10 midnight EST
+  const start = new Date(Date.UTC(2025, 11, 23, 5, 0, 0)); // Dec 23 midnight EST
+  const expiry = new Date(Date.UTC(2025, 11, 24, 5, 0, 0)); // Dec 24 midnight EST
 
   const msg = document.getElementById('event-message');
   if (!msg) return;
@@ -2115,6 +2118,37 @@ document.addEventListener("DOMContentLoaded", function () {
       setTimeout(() => msg.style.display = 'none', expiry - start);
     }, start - now);
   }
+}); */
+
+/* // One-off local-date event: Christmas message
+document.addEventListener("DOMContentLoaded", function () {
+  const now = new Date();
+
+  const msg = document.getElementById("event-message");
+  if (!msg) return;
+
+  const isChristmas =
+    now.getMonth() === 11 && // December
+    now.getDate() === 25;
+
+  msg.style.display = isChristmas ? "" : "none";
+}); */
+
+// One-off local-date event: NYE message
+document.addEventListener("DOMContentLoaded", function () {
+  const now = new Date();
+
+  const msg = document.getElementById("event-message");
+  if (!msg) return;
+
+  const month = now.getMonth();
+  const day = now.getDate();
+
+  const isNewYear =
+    (month === 11 && day === 31) ||
+    (month === 0 && day === 1);
+
+  msg.style.display = isNewYear ? "" : "none";
 });
 
 // Countdown
