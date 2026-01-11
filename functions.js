@@ -47,8 +47,8 @@ function formatDisplayName(name) {
   const adminNames = ["Sorta", "Savaki", "Daat", "Xeno", "Eric", "Sneaky", "Nyx", "Bruglar", "Breaker", "Magic Genie", "PETA", "Holly Claus", "Santa", "Nyra Vale", "-_-", "Headless Horseman"];
   const supportstaffNames = ["Xeno Teddy", "Teddy Claus", "Mr Teddy", "Jack Lumberjack", "Beary Cold", "Rainbow Brite", "Snickey Doodler", "Mera", "Sit and Spin"];
 
-  const ADMIN_BADGE_URL = "https://makinmagic.github.io/XenoSO-sandbox/images/3.png";
-  const STAFF_BADGE_URL = "https://makinmagic.github.io/XenoSO-sandbox/images/4.png";
+  const ADMIN_BADGE_URL = "https://makinmagic.github.io/XenoSO-sandbox/images/5.png";
+  const STAFF_BADGE_URL = "https://makinmagic.github.io/XenoSO-sandbox/images/6.png";
 
   let display = name;
 
