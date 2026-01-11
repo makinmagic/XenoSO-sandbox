@@ -53,9 +53,9 @@ function formatDisplayName(name) {
   let display = name;
 
   if (adminNames.includes(name)) {
-    display += ` <img class="staff-badge" src="${ADMIN_BADGE_URL}" alt="Admin" title="Admin">`;
+    display += ` <img class="badge" src="${ADMIN_BADGE_URL}" alt="Admin" title="Admin">`;
   } else if (supportstaffNames.includes(name)) {
-    display += ` <img class="staff-badge" src="${STAFF_BADGE_URL}" alt="Support Staff" title="Support Staff">`;
+    display += ` <img class="badge" src="${STAFF_BADGE_URL}" alt="Support Staff" title="Support Staff">`;
   }
 
   return display;
